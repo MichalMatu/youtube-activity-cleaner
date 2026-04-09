@@ -1,6 +1,27 @@
 # YouTube Activity Cleaner
 
-This repository contains a browser-console script for removing your YouTube comments from Google My Activity.
+This repository contains:
+
+- a browser-console script for removing your YouTube comments from Google My Activity
+- a simple Chrome extension in [`extension/`](extension/) that starts and stops the cleaner from a popup
+
+## Chrome Extension
+
+If you do not want to paste code into the console every time, you can load the extension from the [`extension/`](extension/) folder.
+
+### Load it in Chrome
+
+1. Open `chrome://extensions`
+2. Enable `Developer mode`
+3. Click `Load unpacked`
+4. Select the [`extension/`](extension/) folder from this repository
+5. Open the `Your YouTube comments` page in Google My Activity
+6. Click the extension icon
+7. Press `Start`
+
+### Important note
+
+The extension uses the same page automation approach as the console script, so the Google My Activity tab should stay visible while it is working. Chrome throttles hidden tabs.
 
 ## Quick Flow
 
@@ -11,6 +32,8 @@ This repository contains a browser-console script for removing your YouTube comm
 5. Copy `yt-comment-cleaner.js`
 6. Paste it into the browser console and press Enter
 7. Stop it later with `stopYtCommentCleaner()`
+
+If you prefer, you can use the extension instead of the console script.
 
 ## Step-By-Step Guide
 

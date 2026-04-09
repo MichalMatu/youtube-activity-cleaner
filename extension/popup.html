@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Activity Cleaner</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <p class="eyebrow">Chrome extension</p>
+      <h1>YouTube Activity Cleaner</h1>
+      <p class="lead">
+        Run the cleaner on the <strong>Your YouTube comments</strong> page in Google My
+        Activity.
+      </p>
+
+      <section class="panel">
+        <p class="label">Current tab</p>
+        <p id="page-state" class="status-text">Checking page...</p>
+        <p id="run-state" class="hint">Open the comments page to continue.</p>
+      </section>
+
+      <section class="panel">
+        <p class="label">Cleaner status</p>
+        <dl class="stats">
+          <div>
+            <dt>Deleted</dt>
+            <dd id="deleted-count">0</dd>
+          </div>
+          <div>
+            <dt>Attempts</dt>
+            <dd id="attempted-count">0</dd>
+          </div>
+          <div>
+            <dt>Failed</dt>
+            <dd id="failed-count">0</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="actions">
+        <button id="start-button" class="primary" type="button">Start</button>
+        <button id="stop-button" type="button">Stop</button>
+      </div>
+
+      <button id="open-page-button" class="secondary" type="button">
+        Open YouTube comments page
+      </button>
+
+      <p class="footnote">
+        Keep this tab visible while the cleaner is working. Chrome throttles hidden tabs.
+      </p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Activity Cleaner",
+  "version": "1.0.0",
+  "description": "Run the YouTube comment cleaner on the Google My Activity comments page.",
+  "permissions": ["tabs"],
+  "host_permissions": ["https://myactivity.google.com/*"],
+  "action": {
+    "default_title": "YouTube Activity Cleaner",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://myactivity.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
