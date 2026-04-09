@@ -73,6 +73,10 @@ h1 {
   margin-top: 8px;
 }
 
+.debug-hint {
+  color: #fcd34d;
+}
+
 .settings-panel {
   padding: 0;
   overflow: hidden;

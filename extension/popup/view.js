@@ -4,8 +4,10 @@
 
   popup.elements = {
     pageStateElement: document.querySelector("#page-state"),
+    tabStateElement: document.querySelector("#tab-state"),
     runStateElement: document.querySelector("#run-state"),
     powerStateElement: document.querySelector("#power-state"),
+    debugStateElement: document.querySelector("#debug-state"),
     settingsStateElement: document.querySelector("#settings-state"),
     settingsPreviewElement: document.querySelector("#settings-preview"),
     deletedCountElement: document.querySelector("#deleted-count"),
@@ -40,22 +42,61 @@
       "Keep-awake will be enabled automatically while cleaning is running.";
   };
 
-  popup.renderStatus = (status, tab) => {
-    const onSupportedPage = popup.isSupportedUrl(tab?.url);
+  popup.renderDebugState = (message, isError = false) => {
+    popup.elements.debugStateElement.textContent = message;
+    popup.elements.debugStateElement.style.color = isError ? "#fca5a5" : "#fcd34d";
+  };
 
-    popup.elements.pageStateElement.textContent = onSupportedPage
-      ? "Ready on the YouTube comments page."
-      : "Open Google My Activity -> Your YouTube comments.";
+  popup.renderStatus = (status, context) => {
+    const { activeTab, targetTab, isTrackedTab, isUsingActiveTab, canStartFromActiveTab } =
+      context;
+    const onSupportedPage = popup.isSupportedUrl(targetTab?.url);
+
+    if (onSupportedPage) {
+      popup.elements.pageStateElement.textContent = isUsingActiveTab
+        ? "Ready on the YouTube comments page."
+        : "Connected to a cleaner tab in another tab.";
+      popup.elements.tabStateElement.textContent = isUsingActiveTab
+        ? "Using the current tab for cleaner commands."
+        : `Using: ${targetTab?.title || "YouTube comments tab"}`;
+    } else if (popup.isSupportedUrl(activeTab?.url)) {
+      popup.elements.pageStateElement.textContent = "Ready to start on the current tab.";
+      popup.elements.tabStateElement.textContent =
+        "Start will attach the cleaner to this tab.";
+    } else {
+      popup.elements.pageStateElement.textContent =
+        "Open Google My Activity -> Your YouTube comments.";
+      popup.elements.tabStateElement.textContent =
+        "No connected cleaner tab was found right now.";
+    }
 
     popup.elements.deletedCountElement.textContent = String(status?.deleted || 0);
     popup.elements.attemptedCountElement.textContent = String(status?.attempted || 0);
     popup.elements.failedCountElement.textContent = String(status?.failed || 0);
     popup.renderPowerState(status);
 
+    if (status?.retryAttempt > 0 && status?.retryDelayMs > 0) {
+      popup.renderDebugState(
+        `Retry ${status.retryAttempt} scheduled in ${(status.retryDelayMs / 1000).toFixed(1)}s.`
+      );
+    } else if (status?.paused) {
+      popup.renderDebugState("Paused because the cleaner tab is not visible.");
+    } else if (status?.lastError) {
+      popup.renderDebugState(`Last issue: ${status.lastError}`, true);
+    } else if (isTrackedTab && !isUsingActiveTab) {
+      popup.renderDebugState(
+        "You can monitor status here, but the cleaner tab still needs to stay visible."
+      );
+    } else {
+      popup.renderDebugState("No active retries or errors.");
+    }
+
     if (!onSupportedPage) {
       popup.elements.runStateElement.textContent =
-        "This extension works only on the YouTube comments page.";
-      popup.setButtonsState({ canStart: false, canStop: false });
+        canStartFromActiveTab
+          ? "Start is available on the current supported tab."
+          : "This extension works only on the YouTube comments page.";
+      popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
       return;
     }
 
@@ -70,18 +111,19 @@
     }
 
     popup.elements.runStateElement.textContent = status?.lastMessage || "Cleaner is idle.";
-    popup.setButtonsState({ canStart: true, canStop: false });
+    popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
   };
 
-  popup.renderError = (message, tab) => {
-    popup.renderStatus(null, tab);
+  popup.renderError = (message, context) => {
+    popup.renderStatus(null, context);
     popup.elements.runStateElement.textContent = message;
   };
 
-  popup.renderDisconnectedPage = (message, tab) => {
-    popup.renderStatus(null, tab);
+  popup.renderDisconnectedPage = (message, context) => {
+    popup.renderStatus(null, context);
     popup.elements.runStateElement.textContent = message;
     popup.setButtonsState({ canStart: false, canStop: false });
+    popup.renderDebugState(message, true);
   };
 
   popup.renderSettingsState = (message, isError = false) => {

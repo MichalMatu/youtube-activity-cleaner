@@ -42,7 +42,8 @@ If the extension icon is not pinned, click the Chrome `Extensions` button and op
 5. Open the collapsed `Settings` section only if you want a slower, safer, or more aggressive run
 6. Click `Start`
 7. Keep that Google My Activity tab visible while the cleaner is working
-8. Click `Stop` to stop the current run
+8. You can switch to another tab and still open the popup to monitor status or click `Stop`
+9. Click `Stop` to stop the current run
 
 Live counters:
 

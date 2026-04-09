@@ -5,11 +5,11 @@
   const {
     ext,
     Messages,
-    Constants,
     getSettings,
     saveSettings,
     resetSettings,
     sanitizeSettings,
+    isSupportedUrl,
   } = shared;
 
   popup.formatSecondsInputValue = (ms) => {
@@ -73,28 +73,26 @@
     return tab || null;
   };
 
-  popup.isSupportedUrl = (url) =>
-    typeof url === "string" &&
-    url.startsWith(`https://${Constants.SUPPORTED_PAGE_HOST}/`) &&
-    url.includes(Constants.SUPPORTED_PAGE_FRAGMENT);
+  popup.isSupportedUrl = isSupportedUrl;
 
   popup.isMissingReceiverError = (error) =>
     /Could not establish connection|Receiving end does not exist/i.test(
       error?.message || ""
     );
 
-  popup.getDisconnectedPageMessage = (tab) => {
+  popup.getDisconnectedPageMessage = (tab, isTrackedTab = false) => {
     if (tab?.status === "loading") {
       return "The comments page is still loading. Wait a moment and try again.";
     }
 
-    return "Reload the comments page once so the extension can connect to it.";
+    return isTrackedTab
+      ? "Reload the cleaner tab once so the extension can reconnect to it."
+      : "Reload the comments page once so the extension can connect to it.";
   };
 
-  popup.sendToTab = async (message) => {
-    const tab = await popup.getActiveTab();
+  popup.sendMessageToTab = async (tab, message) => {
     if (!tab?.id) {
-      throw new Error("No active tab found.");
+      throw new Error("No target tab found.");
     }
 
     return {
@@ -103,21 +101,101 @@
     };
   };
 
+  popup.getCleanerSession = async () => {
+    const response = await ext.runtime.sendMessage({ type: Messages.GET_CLEANER_TAB });
+    if (response?.ok === false) {
+      throw new Error(response.error || "Could not read the cleaner tab session.");
+    }
+
+    return response?.session || { tabId: null, hasCleanerTab: false };
+  };
+
+  popup.setCleanerTab = async (tabId) => {
+    const response = await ext.runtime.sendMessage({
+      type: Messages.SET_CLEANER_TAB,
+      tabId,
+    });
+    if (response?.ok === false) {
+      throw new Error(response.error || "Could not remember the cleaner tab.");
+    }
+
+    return response?.session || { tabId: null, hasCleanerTab: false };
+  };
+
+  popup.clearCleanerTab = async () => {
+    const response = await ext.runtime.sendMessage({ type: Messages.CLEAR_CLEANER_TAB });
+    if (response?.ok === false) {
+      throw new Error(response.error || "Could not clear the cleaner tab.");
+    }
+
+    return response?.session || { tabId: null, hasCleanerTab: false };
+  };
+
+  popup.getTabById = async (tabId) => {
+    if (!Number.isInteger(tabId)) {
+      return null;
+    }
+
+    try {
+      return await ext.tabs.get(tabId);
+    } catch (_error) {
+      return null;
+    }
+  };
+
+  popup.resolveTargetContext = async () => {
+    const [activeTab, cleanerSession] = await Promise.all([
+      popup.getActiveTab(),
+      popup.getCleanerSession(),
+    ]);
+    let trackedTab = await popup.getTabById(cleanerSession.tabId);
+
+    if (trackedTab && !popup.isSupportedUrl(trackedTab.url)) {
+      trackedTab = null;
+    }
+
+    if (cleanerSession.hasCleanerTab && !trackedTab) {
+      await popup.clearCleanerTab();
+    }
+
+    const activeTabSupported = popup.isSupportedUrl(activeTab?.url);
+    const targetTab = trackedTab || (activeTabSupported ? activeTab : null);
+    const isTrackedTab = Boolean(trackedTab);
+    const isUsingActiveTab = Boolean(targetTab?.id && activeTab?.id && targetTab.id === activeTab.id);
+
+    return {
+      activeTab,
+      activeTabSupported,
+      targetTab,
+      isTrackedTab,
+      isUsingActiveTab,
+      canStartFromActiveTab: activeTabSupported,
+    };
+  };
+
   popup.refreshStatus = async () => {
-    const tab = await popup.getActiveTab();
-    if (!tab) {
-      popup.renderError("No active tab found.", null);
+    const context = await popup.resolveTargetContext();
+    if (!context.activeTab) {
+      popup.renderError("No active tab found.", {
+        activeTab: null,
+        targetTab: null,
+        isTrackedTab: false,
+        isUsingActiveTab: false,
+        canStartFromActiveTab: false,
+      });
       return;
     }
 
-    if (!popup.isSupportedUrl(tab.url)) {
-      popup.renderStatus(null, tab);
+    if (!context.targetTab) {
+      popup.renderStatus(null, context);
       return;
     }
 
     try {
       const [{ response }, keepAwake] = await Promise.all([
-        popup.sendToTab({ type: Messages.GET_CLEANER_STATUS }),
+        popup.sendMessageToTab(context.targetTab, {
+          type: Messages.GET_CLEANER_STATUS,
+        }),
         ext.runtime.sendMessage({ type: Messages.GET_KEEP_AWAKE_STATUS }),
       ]);
 
@@ -126,41 +204,58 @@
           ...response?.status,
           keepAwakeActive: keepAwake?.keepAwakeActive,
         },
-        tab
+        context
       );
     } catch (error) {
       if (popup.isMissingReceiverError(error)) {
-        popup.renderDisconnectedPage(popup.getDisconnectedPageMessage(tab), tab);
+        popup.renderDisconnectedPage(
+          popup.getDisconnectedPageMessage(context.targetTab, context.isTrackedTab),
+          context
+        );
         return;
       }
 
-      popup.renderError("Reload the comments page and try again.", tab);
+      popup.renderError("Reload the comments page and try again.", context);
       console.error(error);
     }
   };
 
   popup.elements.startButton.addEventListener("click", async () => {
     try {
+      const context = await popup.resolveTargetContext();
+      if (!context.activeTabSupported || !context.activeTab?.id) {
+        throw new Error("Open the YouTube comments page in the current tab first.");
+      }
+
       await popup.saveSettingsFromForm("Settings saved. Starting cleaner with the saved values.");
-      const { tab, response } = await popup.sendToTab({
+      await popup.setCleanerTab(context.activeTab.id);
+      const { tab, response } = await popup.sendMessageToTab(context.activeTab, {
         type: Messages.START_CLEANER,
       });
       if (response?.ok === false) {
         throw new Error(response.error || "Could not start cleaner.");
       }
 
-      popup.renderStatus(response?.status, tab);
+      popup.renderStatus(response?.status, {
+        ...context,
+        targetTab: tab,
+        isTrackedTab: true,
+        isUsingActiveTab: true,
+      });
     } catch (error) {
-      const activeTab = await popup.getActiveTab();
+      const context = await popup.resolveTargetContext();
 
       if (popup.isMissingReceiverError(error)) {
-        const message = popup.getDisconnectedPageMessage(activeTab);
-        popup.renderDisconnectedPage(message, activeTab);
+        const message = popup.getDisconnectedPageMessage(
+          context.activeTab,
+          Boolean(context.isTrackedTab && context.isUsingActiveTab)
+        );
+        popup.renderDisconnectedPage(message, context);
         popup.renderSettingsState(message, true);
         return;
       }
 
-      popup.renderError(error.message, activeTab);
+      popup.renderError(error.message, context);
       popup.renderSettingsState(`Could not start cleaner: ${error.message}`, true);
       console.error(error);
     }
@@ -168,22 +263,30 @@
 
   popup.elements.stopButton.addEventListener("click", async () => {
     try {
-      const { tab, response } = await popup.sendToTab({
+      const context = await popup.resolveTargetContext();
+      if (!context.targetTab) {
+        throw new Error("No cleaner tab is connected right now.");
+      }
+
+      const { tab, response } = await popup.sendMessageToTab(context.targetTab, {
         type: Messages.STOP_CLEANER,
       });
-      popup.renderStatus(response?.status, tab);
+      popup.renderStatus(response?.status, {
+        ...context,
+        targetTab: tab,
+      });
     } catch (error) {
-      popup.renderError(error.message, await popup.getActiveTab());
+      popup.renderError(error.message, await popup.resolveTargetContext());
       console.error(error);
     }
   });
 
   popup.elements.openPageButton.addEventListener("click", async () => {
-    await ext.tabs.create({ url: Constants.COMMENTS_PAGE_URL });
+    await ext.tabs.create({ url: shared.Constants.COMMENTS_PAGE_URL });
   });
 
   popup.elements.supportButton.addEventListener("click", async () => {
-    await ext.tabs.create({ url: Constants.SUPPORT_URL });
+    await ext.tabs.create({ url: shared.Constants.SUPPORT_URL });
   });
 
   popup.elements.settingsForm.addEventListener("submit", async (event) => {

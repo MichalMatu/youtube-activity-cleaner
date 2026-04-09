@@ -8,7 +8,7 @@
 
   const getKeepAwakeStatus = () => ({ keepAwakeActive });
 
-  background.handlePowerMessage = (message, sendResponse) => {
+  background.handlePowerMessage = (message, _sender, sendResponse) => {
     if (!message?.type) {
       return false;
     }

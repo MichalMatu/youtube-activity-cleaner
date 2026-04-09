@@ -9,4 +9,9 @@
     SUPPORTED_PAGE_FRAGMENT: "page=youtube_comments",
     SUPPORT_URL: "https://buymeacoffee.com/michalmatuh",
   });
+
+  shared.isSupportedUrl = (url) =>
+    typeof url === "string" &&
+    url.startsWith(`https://${shared.Constants.SUPPORTED_PAGE_HOST}/`) &&
+    url.includes(shared.Constants.SUPPORTED_PAGE_FRAGMENT);
 })();
