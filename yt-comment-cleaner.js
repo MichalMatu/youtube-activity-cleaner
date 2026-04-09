@@ -1,3 +1,7 @@
+// Copy the entire file and paste it into DevTools -> Console on:
+// Google My Activity -> Your YouTube comments
+// Stop it later with: stopYtCommentCleaner()
+
 (() => {
   if (window.__ytCommentCleanerRunning) {
     console.warn(

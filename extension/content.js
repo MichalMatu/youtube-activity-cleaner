@@ -83,6 +83,22 @@ const setCleanerMessage = (message) => {
   ytActivityCleanerState.lastMessage = message;
 };
 
+const requestKeepAwake = async () => {
+  try {
+    await chrome.runtime.sendMessage({ type: "requestKeepAwake" });
+  } catch (error) {
+    console.warn("Could not enable keep-awake mode.", error);
+  }
+};
+
+const releaseKeepAwake = async () => {
+  try {
+    await chrome.runtime.sendMessage({ type: "releaseKeepAwake" });
+  } catch (error) {
+    console.warn("Could not release keep-awake mode.", error);
+  }
+};
+
 const isVisible = (element) => {
   if (!element || element.disabled || !element.isConnected) {
     return false;
@@ -480,6 +496,7 @@ const runCleaner = async () => {
   let idleRounds = 0;
   let failureStreak = 0;
 
+  await requestKeepAwake();
   setCleanerMessage("Cleaner started.");
   console.log("YouTube Activity Cleaner started from the extension.");
 
@@ -564,6 +581,7 @@ const runCleaner = async () => {
 
   ytActivityCleanerState.running = false;
   ytActivityCleanerState.paused = false;
+  await releaseKeepAwake();
 
   if (ytActivityCleanerState.stopRequested) {
     setCleanerMessage("Stopped by the user.");
@@ -600,6 +618,7 @@ const startCleaner = () => {
     ytActivityCleanerState.stopRequested = false;
     ytActivityCleanerState.failed += 1;
     setCleanerMessage(`Cleaner stopped because of an error: ${error.message}`);
+    releaseKeepAwake();
     console.error("YouTube Activity Cleaner stopped because of an error:", error);
   });
 

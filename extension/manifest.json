@@ -3,8 +3,11 @@
   "name": "YouTube Activity Cleaner",
   "version": "1.0.0",
   "description": "Run the YouTube comment cleaner on the Google My Activity comments page.",
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "power"],
   "host_permissions": ["https://myactivity.google.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_title": "YouTube Activity Cleaner",
     "default_popup": "popup.html"

@@ -68,6 +68,10 @@ h1 {
   font-size: 13px;
 }
 
+.power-hint {
+  margin-top: 10px;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

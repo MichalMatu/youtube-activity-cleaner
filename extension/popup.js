@@ -4,6 +4,7 @@ const SUPPORTED_PAGE_FRAGMENT = "page=youtube_comments";
 
 const pageStateElement = document.querySelector("#page-state");
 const runStateElement = document.querySelector("#run-state");
+const powerStateElement = document.querySelector("#power-state");
 const deletedCountElement = document.querySelector("#deleted-count");
 const attemptedCountElement = document.querySelector("#attempted-count");
 const failedCountElement = document.querySelector("#failed-count");
@@ -28,6 +29,17 @@ const setButtonsState = ({ canStart, canStop }) => {
   stopButton.disabled = !canStop;
 };
 
+const renderPowerState = (status) => {
+  if (status?.keepAwakeActive) {
+    powerStateElement.textContent =
+      "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs.";
+    return;
+  }
+
+  powerStateElement.textContent =
+    "Keep-awake will be enabled automatically while cleaning is running.";
+};
+
 const renderStatus = (status, tab) => {
   const onSupportedPage = isSupportedUrl(tab?.url);
   pageStateElement.textContent = onSupportedPage
@@ -37,6 +49,7 @@ const renderStatus = (status, tab) => {
   deletedCountElement.textContent = String(status?.deleted || 0);
   attemptedCountElement.textContent = String(status?.attempted || 0);
   failedCountElement.textContent = String(status?.failed || 0);
+  renderPowerState(status);
 
   if (!onSupportedPage) {
     runStateElement.textContent = "This extension works only on the YouTube comments page.";
@@ -85,8 +98,18 @@ const refreshStatus = async () => {
   }
 
   try {
-    const { response } = await sendToTab({ type: "getStatus" });
-    renderStatus(response?.status, tab);
+    const [{ response }, keepAwake] = await Promise.all([
+      sendToTab({ type: "getStatus" }),
+      chrome.runtime.sendMessage({ type: "getKeepAwakeStatus" }),
+    ]);
+
+    renderStatus(
+      {
+        ...response?.status,
+        keepAwakeActive: keepAwake?.keepAwakeActive,
+      },
+      tab
+    );
   } catch (error) {
     renderError("Reload the comments page and try again.", tab);
     console.error(error);
