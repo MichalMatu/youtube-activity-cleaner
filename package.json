@@ -2,6 +2,8 @@
   "name": "youtube-activity-cleaner",
   "private": true,
   "scripts": {
+    "assets": "python3 scripts/generate_store_assets.py",
+    "package": "bash scripts/package_extension.sh",
     "test": "node --test"
   }
 }

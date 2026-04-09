@@ -19,6 +19,20 @@ Run the lightweight unit tests with:
 npm test
 ```
 
+### Release helpers
+
+Generate extension icons and Chrome Web Store assets:
+
+```bash
+npm run assets
+```
+
+Build a Chrome Web Store upload ZIP with `manifest.json` at the archive root:
+
+```bash
+npm run package
+```
+
 ### Install
 
 1. Open `chrome://extensions`
@@ -74,6 +88,21 @@ The popup also includes a `Buy me a coffee` button if you want to support the pr
 ### Important
 
 The extension enables Chrome keep-awake mode while it runs, which helps prevent display sleep and screen saver interruptions. The Google My Activity tab should still stay visible while the cleaner runs because Chrome throttles hidden tabs.
+
+## Chrome Web Store Prep
+
+This repo now includes:
+
+- GitHub Pages-ready site files in [`docs/`](docs/)
+- Store listing drafts and reviewer notes in [`store/`](store/)
+- Generated icons and promotional assets in [`store/assets/`](store/assets/)
+
+Recommended next step before publishing:
+
+1. Enable GitHub Pages from the `docs/` directory
+2. Review the draft listing copy in [`store/chrome-web-store-listing.md`](store/chrome-web-store-listing.md)
+3. Run `npm run package`
+4. Upload the ZIP from `dist/` to the Chrome Web Store dashboard
 
 ### Support
 

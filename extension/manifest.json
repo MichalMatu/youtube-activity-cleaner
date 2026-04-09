@@ -3,6 +3,12 @@
   "name": "YouTube Activity Cleaner",
   "version": "1.0.0",
   "description": "Run the YouTube comment cleaner on the Google My Activity comments page.",
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  },
   "permissions": ["tabs", "power", "storage"],
   "host_permissions": ["https://myactivity.google.com/*"],
   "background": {
@@ -10,6 +16,12 @@
   },
   "action": {
     "default_title": "YouTube Activity Cleaner",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "128": "assets/icon-128.png"
+    },
     "default_popup": "popup/popup.html"
   },
   "content_scripts": [

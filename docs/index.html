@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Activity Cleaner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Chrome Extension</p>
+          <h1>YouTube Activity Cleaner</h1>
+          <p>
+            Clean old YouTube comments from the Google My Activity comments page with a focused,
+            local-first MV3 extension.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/MichalMatu/youtube-activity-cleaner">View GitHub Repository</a>
+            <a class="button secondary" href="support.html">Support</a>
+            <a class="button secondary" href="privacy.html">Privacy policy</a>
+          </div>
+          <div class="meta">
+            <div class="panel">
+              <h2>What It Does</h2>
+              <p>Finds visible delete actions on the Google My Activity comments page, confirms them, waits for the page to react, and repeats.</p>
+            </div>
+            <div class="panel">
+              <h2>What It Does Not Do</h2>
+              <p>It does not sign you in, sync data to a server, or store your YouTube history outside your browser.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img src="assets/hero-preview.png" alt="Chrome Web Store preview screenshot for YouTube Activity Cleaner" />
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Key Features</h2>
+        <div class="grid">
+          <div>
+            <p><strong>Fast or Safe mode.</strong> Choose a more aggressive run profile or a more conservative one before starting.</p>
+          </div>
+          <div>
+            <p><strong>Retry and backoff.</strong> The cleaner retries failed delete flows with clear status messages and failure protection.</p>
+          </div>
+          <div>
+            <p><strong>Local settings.</strong> Pacing and retry preferences are saved locally in Chrome and reused on the next run.</p>
+          </div>
+          <div>
+            <p><strong>No cloud backend.</strong> The extension uses browser permissions only for tabs, power keep-awake, and local storage.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>How To Use</h2>
+        <ol class="list">
+          <li>Load the unpacked extension from the <code>extension/</code> directory or install it from the Chrome Web Store later.</li>
+          <li>Open the Google My Activity page for Your YouTube comments.</li>
+          <li>Open the popup, review the settings, and click Start.</li>
+          <li>Keep the Google My Activity tab visible while the cleaner is working.</li>
+          <li>Use the popup to monitor progress or click Stop.</li>
+        </ol>
+      </section>
+
+      <p class="footer">
+        Support: <a href="support.html">support page</a>. Privacy: <a href="privacy.html">privacy policy</a>.
+      </p>
+    </main>
+  </body>
+</html>
