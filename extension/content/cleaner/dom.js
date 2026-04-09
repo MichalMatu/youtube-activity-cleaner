@@ -65,7 +65,7 @@
       behavior: "auto",
     });
 
-    if (!(await content.pauseAwareSleep(content.config.beforeClickMs))) {
+    if (!(await content.pauseAwareSleep(content.getSettingValue("beforeClickMs")))) {
       return false;
     }
 
@@ -115,4 +115,32 @@
 
   content.getLoadMoreButton = () =>
     content.getVisibleMatches(content.selectors.loadMore)[0] || null;
+
+  content.getDeleteButtonFromItemContainer = (itemContainer) => {
+    if (!itemContainer?.isConnected) {
+      return null;
+    }
+
+    return (
+      content
+        .getVisibleDeleteButtons()
+        .find((button) => content.getItemContainer(button) === itemContainer) || null
+    );
+  };
+
+  content.findRetryDeleteButton = (previousButton, description) => {
+    const previousContainer = content.getItemContainer(previousButton);
+    const sameItemButton = content.getDeleteButtonFromItemContainer(previousContainer);
+    if (sameItemButton) {
+      return sameItemButton;
+    }
+
+    return (
+      content
+        .getVisibleDeleteButtons()
+        .find((button) => content.describeItem(button) === description) ||
+      content.getVisibleDeleteButtons()[0] ||
+      null
+    );
+  };
 })();

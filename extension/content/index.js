@@ -31,8 +31,19 @@
     }
 
     if (message.type === Messages.START_CLEANER) {
-      sendResponse({ ok: true, status: content.startCleaner() });
-      return;
+      content
+        .startCleaner()
+        .then((status) => {
+          sendResponse({ ok: true, status });
+        })
+        .catch((error) => {
+          sendResponse({
+            ok: false,
+            error: error.message,
+            status: content.getCleanerStatus(),
+          });
+        });
+      return true;
     }
 
     if (message.type === Messages.STOP_CLEANER) {

@@ -18,6 +18,7 @@ This is the easiest way to run the cleaner.
 3. Click `Load unpacked`
 4. Select [`extension/`](extension/)
 5. Make sure `YouTube Activity Cleaner` appears in the list
+6. After local code changes, click `Reload` on the extension card
 
 <p align="center">
   <img src="screenshots/05-chrome-extensions-page-installed-cleaner.png" alt="Chrome extensions page with Developer mode enabled and YouTube Activity Cleaner installed" width="900">
@@ -38,21 +39,27 @@ If the extension icon is not pinned, click the Chrome `Extensions` button and op
 2. If needed, click `Open YouTube comments page`
 3. Reopen the popup on that page
 4. Wait for `Ready on the YouTube comments page.`
-5. Click `Start`
-6. Keep that Google My Activity tab visible while the cleaner is working
-7. Click `Stop` to stop the current run
+5. Open the collapsed `Settings` section only if you want a slower, safer, or more aggressive run
+6. Click `Start`
+7. Keep that Google My Activity tab visible while the cleaner is working
+8. Click `Stop` to stop the current run
 
 Live counters:
 
 - `Deleted`
-- `Attempts`
+- `Attempts` including retries
 - `Failed`
 
-The popup also includes a `Buy me a coffee` button if you want to support the project.
+Saved popup settings:
 
-<p align="center">
-  <img src="screenshots/08-extension-popup-youtube-activity-cleaner.png" alt="Extension popup with Start, Stop, and Open YouTube comments page buttons" width="420">
-</p>
+- delay between comments
+- wait after scrolling/loading more items
+- retry count and retry backoff
+- stop after a chosen number of failures in a row
+
+These settings are stored locally in Chrome and reused on the next run.
+
+The popup also includes a `Buy me a coffee` button if you want to support the project.
 
 ### Important
 

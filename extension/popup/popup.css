@@ -10,23 +10,23 @@ body {
 }
 
 .popup {
-  width: 320px;
-  padding: 16px;
+  width: 296px;
+  padding: 12px;
 }
 
 .eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: #f87171;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 h1 {
-  margin: 0 0 10px;
-  font-size: 20px;
-  line-height: 1.15;
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.1;
 }
 
 .lead,
@@ -39,20 +39,21 @@ h1 {
 
 .lead {
   color: #d1d5db;
+  font-size: 13px;
 }
 
 .panel {
-  margin-top: 14px;
-  padding: 12px;
+  margin-top: 10px;
+  padding: 10px;
   border: 1px solid #2b3038;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #1d2127;
 }
 
 .label {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   color: #9ca3af;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -63,58 +64,168 @@ h1 {
 }
 
 .hint {
-  margin-top: 6px;
+  margin-top: 4px;
   color: #cbd5e1;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .power-hint {
-  margin-top: 10px;
+  margin-top: 8px;
+}
+
+.settings-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.settings-summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-summary:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.settings-preview {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.settings-chevron {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #9ca3af;
+  border-bottom: 2px solid #9ca3af;
+  transform: rotate(45deg);
+  transition: transform 140ms ease;
+}
+
+.settings-panel[open] .settings-chevron {
+  transform: rotate(225deg);
+}
+
+.settings-body {
+  border-top: 1px solid #2b3038;
+  padding: 10px;
+}
+
+.settings-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.settings-hint {
+  margin-top: 0;
+}
+
+.settings-form {
+  display: grid;
+  gap: 8px;
+}
+
+.field {
+  display: grid;
+  gap: 5px;
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.field-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.field-input input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #313844;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  color: #f9fafb;
+  background: #121418;
+}
+
+.field-input input:focus {
+  outline: 2px solid #1f6feb;
+  outline-offset: 1px;
+}
+
+.suffix {
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
   margin: 0;
 }
 
 .stats div {
-  padding: 10px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 8px;
   background: #121418;
   text-align: center;
 }
 
 .stats dt {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: #9ca3af;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
 }
 
 .stats dd {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 button {
   border: 0;
-  border-radius: 10px;
-  padding: 11px 14px;
+  border-radius: 8px;
+  padding: 10px 12px;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
   color: #f9fafb;
   background: #2c3440;
+}
+
+button.compact-button {
+  padding: 9px 12px;
 }
 
 button:disabled {
@@ -128,19 +239,27 @@ button.primary {
 
 button.secondary {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
   background: #1f6feb;
+}
+
+button.ghost-button {
+  padding: 6px 8px;
+  background: #121418;
+  color: #d1d5db;
+  font-size: 12px;
 }
 
 button.support {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
   background: #f59e0b;
   color: #111827;
 }
 
 .footnote {
-  margin-top: 12px;
+  margin-top: 10px;
   color: #9ca3af;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.35;
 }

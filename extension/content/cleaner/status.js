@@ -34,7 +34,7 @@
 
   content.waitForStatusIdle = async () => {
     let quietSince = null;
-    let deadline = Date.now() + content.config.waitForStatusIdleMs;
+    let deadline = Date.now() + content.getSettingValue("waitForStatusIdleMs");
 
     while (Date.now() < deadline) {
       if (content.getState().stopRequested) {
@@ -57,14 +57,14 @@
           quietSince = Date.now();
         }
 
-        if (Date.now() - quietSince >= content.config.statusQuietMs) {
+        if (Date.now() - quietSince >= content.getSettingValue("statusQuietMs")) {
           return true;
         }
       } else {
         quietSince = null;
       }
 
-      await content.sleep(content.config.pollMs);
+      await content.sleep(content.getSettingValue("pollMs"));
     }
 
     return false;
@@ -75,7 +75,7 @@
     let sawSuccess = false;
     let sawRemoval = false;
     let lastSuccessMessage = "";
-    let deadline = Date.now() + content.config.waitForRemovalMs;
+    let deadline = Date.now() + content.getSettingValue("waitForRemovalMs");
 
     while (Date.now() < deadline) {
       if (content.getState().stopRequested) {
@@ -119,7 +119,7 @@
         };
       }
 
-      await content.sleep(content.config.pollMs);
+      await content.sleep(content.getSettingValue("pollMs"));
     }
 
     return {

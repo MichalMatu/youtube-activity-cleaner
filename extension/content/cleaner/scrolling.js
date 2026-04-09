@@ -80,7 +80,7 @@
         return result;
       }
 
-      await content.sleep(content.config.pollMs);
+      await content.sleep(content.getSettingValue("pollMs"));
     }
 
     return null;
@@ -94,7 +94,7 @@
   content.scrollPageStep = () => {
     content.scrollRoot.scrollBy(
       0,
-      Math.max(window.innerHeight * 0.9, content.config.scrollStepPx)
+      Math.max(window.innerHeight * 0.9, content.getSettingValue("scrollStepPx"))
     );
   };
 

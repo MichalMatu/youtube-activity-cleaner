@@ -10,10 +10,7 @@
     <main class="popup">
       <p class="eyebrow">Chrome extension</p>
       <h1>YouTube Activity Cleaner</h1>
-      <p class="lead">
-        Run the cleaner on the <strong>Your YouTube comments</strong> page in Google My
-        Activity.
-      </p>
+      <p class="lead">Clean comments from the Google My Activity comments page.</p>
 
       <section class="panel">
         <p class="label">Current tab</p>
@@ -42,16 +39,121 @@
         </p>
       </section>
 
+      <details id="settings-panel" class="panel settings-panel">
+        <summary class="settings-summary">
+          <div>
+            <p class="label">Settings</p>
+            <p id="settings-preview" class="settings-preview">Loading saved settings...</p>
+          </div>
+          <span class="settings-chevron" aria-hidden="true"></span>
+        </summary>
+
+        <div class="settings-body">
+          <div class="settings-toolbar">
+            <p id="settings-state" class="hint settings-hint">
+              Settings are saved locally in Chrome and used on the next run.
+            </p>
+            <button id="reset-settings-button" class="ghost-button" type="button">Reset</button>
+          </div>
+
+          <form id="settings-form" class="settings-form">
+            <label class="field">
+              <span>Delay between comments</span>
+              <div class="field-input">
+                <input
+                  id="between-items-seconds"
+                  name="betweenItemsSeconds"
+                  type="number"
+                  min="1.0"
+                  max="12.0"
+                  step="0.1"
+                  inputmode="decimal"
+                />
+                <span class="suffix">sec</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Wait after scroll/load</span>
+              <div class="field-input">
+                <input
+                  id="scroll-pause-seconds"
+                  name="scrollPauseSeconds"
+                  type="number"
+                  min="0.8"
+                  max="10.0"
+                  step="0.1"
+                  inputmode="decimal"
+                />
+                <span class="suffix">sec</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Retry failed delete</span>
+              <div class="field-input">
+                <input
+                  id="retry-limit"
+                  name="retryLimit"
+                  type="number"
+                  min="0"
+                  max="5"
+                  step="1"
+                  inputmode="numeric"
+                />
+                <span class="suffix">times</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Retry backoff</span>
+              <div class="field-input">
+                <input
+                  id="retry-backoff-seconds"
+                  name="retryBackoffSeconds"
+                  type="number"
+                  min="0.5"
+                  max="10.0"
+                  step="0.1"
+                  inputmode="decimal"
+                />
+                <span class="suffix">sec</span>
+              </div>
+            </label>
+
+            <label class="field">
+              <span>Stop after failures in a row</span>
+              <div class="field-input">
+                <input
+                  id="failure-streak-limit"
+                  name="failureStreakLimit"
+                  type="number"
+                  min="1"
+                  max="10"
+                  step="1"
+                  inputmode="numeric"
+                />
+                <span class="suffix">times</span>
+              </div>
+            </label>
+
+            <button id="save-settings-button" class="secondary compact-button" type="submit">
+              Save settings
+            </button>
+          </form>
+        </div>
+      </details>
+
       <div class="actions">
-        <button id="start-button" class="primary" type="button">Start</button>
-        <button id="stop-button" type="button">Stop</button>
+        <button id="start-button" class="primary compact-button" type="button">Start</button>
+        <button id="stop-button" class="compact-button" type="button">Stop</button>
       </div>
 
-      <button id="open-page-button" class="secondary" type="button">
+      <button id="open-page-button" class="secondary compact-button" type="button">
         Open YouTube comments page
       </button>
 
-      <button id="support-button" class="support" type="button">
+      <button id="support-button" class="support compact-button" type="button">
         Buy me a coffee
       </button>
 
@@ -64,6 +166,7 @@
     <script src="../shared/browser-api.js"></script>
     <script src="../shared/messages.js"></script>
     <script src="../shared/constants.js"></script>
+    <script src="../shared/settings.js"></script>
     <script src="view.js"></script>
     <script src="index.js"></script>
   </body>

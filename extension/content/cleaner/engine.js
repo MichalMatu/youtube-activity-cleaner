@@ -2,7 +2,13 @@
   const shared = globalThis.YtActivityCleanerShared;
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
-  const { ext, Messages } = shared;
+  const { ext, Messages, getSettings } = shared;
+
+  content.formatDurationMs = (ms) => {
+    const seconds = ms / 1000;
+
+    return Number.isInteger(seconds) ? `${seconds}s` : `${seconds.toFixed(1)}s`;
+  };
 
   content.requestKeepAwake = async () => {
     try {
@@ -20,20 +26,24 @@
     }
   };
 
-  content.deleteOneItem = async (deleteButton) => {
+  content.getRetryDelayMs = (failedAttemptNumber) =>
+    content.getSettingValue("retryBackoffMs") * failedAttemptNumber;
+
+  content.runSingleDeleteAttempt = async (deleteButton, description) => {
     const state = content.getState();
     const itemContainer = content.getItemContainer(deleteButton);
-    const description = content.describeItem(deleteButton);
 
     state.lastItem = description;
     content.setCleanerMessage(`Preparing to delete: ${description}`);
+    content.setCleanerError("");
+    state.retryAttempt = 0;
+    state.retryDelayMs = 0;
 
     await content.waitForStatusIdle();
 
     if (!(await content.clickElement(deleteButton))) {
       console.warn("Could not click delete button for:", description);
-      content.setCleanerMessage(`Could not click delete for: ${description}`);
-      return false;
+      return { success: false, reason: "could not click the delete button" };
     }
 
     const firstState = await content.waitFor(() => {
@@ -60,50 +70,111 @@
       }
 
       return null;
-    }, content.config.waitForPostClickStateMs);
+    }, content.getSettingValue("waitForPostClickStateMs"));
 
     if (!firstState) {
       console.warn(
         "No confirm dialog and no visible deletion state after click for:",
         description
       );
-      content.setCleanerMessage(`No deletion state after click for: ${description}`);
-      return false;
+      return {
+        success: false,
+        reason: "no confirmation dialog or delete status appeared after clicking",
+      };
     }
 
     if (firstState.type === "failure") {
       console.warn("Delete failed for:", description, `(${firstState.message})`);
-      content.setCleanerMessage(`Delete failed for: ${description}`);
-      return false;
+      return { success: false, reason: firstState.message || "delete failed" };
     }
 
     if (firstState.type === "confirm") {
-      if (!(await content.pauseAwareSleep(content.config.beforeConfirmClickMs))) {
-        return false;
+      if (!(await content.pauseAwareSleep(content.getSettingValue("beforeConfirmClickMs")))) {
+        return { success: false, reason: "stopped" };
       }
 
       if (!(await content.clickElement(firstState.confirmButton))) {
         console.warn("Could not click confirm button for:", description);
-        content.setCleanerMessage(`Could not confirm delete for: ${description}`);
-        return false;
+        return { success: false, reason: "could not click the confirmation button" };
       }
 
-      if (!(await content.pauseAwareSleep(content.config.afterConfirmClickMs))) {
-        return false;
+      if (!(await content.pauseAwareSleep(content.getSettingValue("afterConfirmClickMs")))) {
+        return { success: false, reason: "stopped" };
       }
     }
 
     const outcome = await content.waitForDeleteOutcome(itemContainer);
     if (!outcome.success) {
       console.warn(`Delete not confirmed for: ${description} (${outcome.reason})`);
-      content.setCleanerMessage(`Delete not confirmed for: ${description}`);
-      return false;
+      return { success: false, reason: outcome.reason };
     }
 
     console.log(`Confirmed deletion: ${description}`);
     content.setCleanerMessage(`Confirmed deletion: ${description}`);
     await content.waitForStatusIdle();
-    return true;
+    content.setCleanerError("");
+    return { success: true, description };
+  };
+
+  content.deleteOneItem = async (deleteButton) => {
+    const state = content.getState();
+    const description = content.describeItem(deleteButton);
+    const maxAttempts = content.getSettingValue("retryLimit") + 1;
+    let currentButton = deleteButton;
+    let lastFailureReason = "unknown error";
+
+    for (let attemptNumber = 1; attemptNumber <= maxAttempts; attemptNumber += 1) {
+      if (state.stopRequested) {
+        return { success: false, reason: "stopped" };
+      }
+
+      state.attempted += 1;
+      const deleteResult = await content.runSingleDeleteAttempt(currentButton, description);
+      if (deleteResult.success) {
+        state.retryAttempt = 0;
+        state.retryDelayMs = 0;
+        return deleteResult;
+      }
+
+      lastFailureReason = deleteResult.reason || "unknown error";
+      content.setCleanerError(lastFailureReason);
+
+      if (lastFailureReason === "stopped") {
+        return { success: false, reason: lastFailureReason };
+      }
+
+      if (attemptNumber >= maxAttempts) {
+        break;
+      }
+
+      const nextAttemptNumber = attemptNumber + 1;
+      const retryDelayMs = content.getRetryDelayMs(attemptNumber);
+      state.retryAttempt = nextAttemptNumber;
+      state.retryDelayMs = retryDelayMs;
+
+      content.setCleanerMessage(
+        `Retrying ${description} (${nextAttemptNumber}/${maxAttempts}) in ${content.formatDurationMs(
+          retryDelayMs
+        )}: ${lastFailureReason}`
+      );
+
+      await content.waitForStatusIdle();
+      currentButton = content.findRetryDeleteButton(currentButton, description);
+
+      if (!currentButton) {
+        lastFailureReason = "the delete button disappeared before retrying";
+        content.setCleanerError(lastFailureReason);
+        break;
+      }
+
+      if (!(await content.pauseAwareSleep(retryDelayMs))) {
+        return { success: false, reason: "stopped" };
+      }
+    }
+
+    state.retryAttempt = 0;
+    state.retryDelayMs = 0;
+    return { success: false, reason: lastFailureReason };
   };
 
   content.runCleaner = async () => {
@@ -111,6 +182,7 @@
     let idleRounds = 0;
     let failureStreak = 0;
 
+    state.starting = false;
     await content.requestKeepAwake();
     content.setCleanerMessage("Cleaner started.");
     console.log("YouTube Activity Cleaner started from the extension.");
@@ -119,16 +191,16 @@
       const deleteButton = content.getVisibleDeleteButtons()[0];
 
       if (deleteButton) {
-        state.attempted += 1;
-        const success = await content.deleteOneItem(deleteButton);
+        const deleteResult = await content.deleteOneItem(deleteButton);
 
-        if (success) {
+        if (deleteResult.success) {
           state.deleted += 1;
           idleRounds = 0;
           failureStreak = 0;
+          content.setCleanerError("");
           content.setCleanerMessage(`Deleted comments: ${state.deleted}`);
 
-          if (!(await content.pauseAwareSleep(content.config.betweenItemsMs))) {
+          if (!(await content.pauseAwareSleep(content.getSettingValue("betweenItemsMs")))) {
             break;
           }
 
@@ -137,17 +209,20 @@
 
         state.failed += 1;
         failureStreak += 1;
+        content.setCleanerError(deleteResult.reason);
         content.setCleanerMessage(
-          `Failed attempts in a row: ${failureStreak}. Total failed: ${state.failed}`
+          `Failed attempt: ${deleteResult.reason}. Consecutive failures: ${failureStreak}. Total failed: ${state.failed}`
         );
 
-        if (failureStreak >= content.config.failureStreakLimit) {
-          content.setCleanerMessage("Stopped after several unconfirmed deletions in a row.");
+        if (failureStreak >= content.getSettingValue("failureStreakLimit")) {
+          content.setCleanerMessage(
+            `Stopped after ${failureStreak} failures in a row. Last issue: ${deleteResult.reason}`
+          );
           break;
         }
 
         await content.waitForStatusIdle();
-        if (!(await content.pauseAwareSleep(content.config.scrollPauseMs))) {
+        if (!(await content.pauseAwareSleep(content.getSettingValue("scrollPauseMs")))) {
           break;
         }
 
@@ -159,7 +234,7 @@
         content.setCleanerMessage("Loading more activity items...");
         await content.clickElement(loadMoreButton);
 
-        if (!(await content.pauseAwareSleep(content.config.scrollPauseMs))) {
+        if (!(await content.pauseAwareSleep(content.getSettingValue("scrollPauseMs")))) {
           break;
         }
 
@@ -170,7 +245,7 @@
       const scrollSnapshot = content.captureScrollSnapshot();
       content.scrollPageStep();
 
-      if (!(await content.pauseAwareSleep(content.config.scrollPauseMs))) {
+      if (!(await content.pauseAwareSleep(content.getSettingValue("scrollPauseMs")))) {
         break;
       }
 
@@ -180,12 +255,13 @@
         idleRounds = 0;
       }
 
-      if (idleRounds >= content.config.idleRoundsLimit) {
+      if (idleRounds >= content.getSettingValue("idleRoundsLimit")) {
         content.setCleanerMessage("No more visible delete buttons were found.");
         break;
       }
     }
 
+    state.starting = false;
     state.running = false;
     state.paused = false;
     await content.releaseKeepAwake();
@@ -200,10 +276,10 @@
     console.log("YouTube Activity Cleaner finished.", content.getCleanerStatus());
   };
 
-  content.startCleaner = () => {
+  content.startCleaner = async () => {
     const state = content.getState();
 
-    if (state.running) {
+    if (state.running || state.starting) {
       return content.getCleanerStatus();
     }
 
@@ -212,20 +288,43 @@
       return content.getCleanerStatus();
     }
 
-    state.running = true;
+    state.starting = true;
+    state.running = false;
     state.stopRequested = false;
     state.paused = false;
     state.attempted = 0;
     state.deleted = 0;
     state.failed = 0;
     state.lastItem = "";
-    content.setCleanerMessage("Starting cleaner...");
+    state.lastError = "";
+    state.retryAttempt = 0;
+    state.retryDelayMs = 0;
+    content.setCleanerMessage("Loading saved settings...");
+
+    const settings = await getSettings();
+    content.setCleanerSettings(settings);
+
+    if (state.stopRequested) {
+      state.starting = false;
+      content.setCleanerMessage("Stopped by the user.");
+      return content.getCleanerStatus();
+    }
+
+    state.starting = false;
+    state.running = true;
+    content.setCleanerMessage(
+      `Starting cleaner with ${settings.retryLimit} retries and ${content.formatDurationMs(
+        settings.betweenItemsMs
+      )} pacing...`
+    );
 
     content.runCleaner().catch((error) => {
+      state.starting = false;
       state.running = false;
       state.paused = false;
       state.stopRequested = false;
       state.failed += 1;
+      content.setCleanerError(error.message);
       content.setCleanerMessage(`Cleaner stopped because of an error: ${error.message}`);
       content.releaseKeepAwake();
       console.error("YouTube Activity Cleaner stopped because of an error:", error);
@@ -238,7 +337,11 @@
     const state = content.getState();
 
     state.stopRequested = true;
-    content.setCleanerMessage("Stopping after the current step...");
+    content.setCleanerMessage(
+      state.starting
+        ? "Stopping before the cleaner starts..."
+        : "Stopping after the current step..."
+    );
     return content.getCleanerStatus();
   };
 })();
