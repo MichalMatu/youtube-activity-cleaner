@@ -1,93 +1,116 @@
 # YouTube Activity Cleaner
 
-This repository contains:
+Delete your YouTube comments from Google My Activity.
 
-- a browser-console script for removing your YouTube comments from Google My Activity
-- a simple Chrome extension in [`extension/`](extension/) that starts and stops the cleaner from a popup
+You can use:
 
-## Chrome Extension
+- the Chrome extension in [`extension/`](extension/) for the easiest flow
+- the browser-console script in [yt-comment-cleaner.js](yt-comment-cleaner.js) if you do not want to install the extension
 
-If you do not want to paste code into the console every time, you can load the extension from the [`extension/`](extension/) folder.
+## Recommended: Chrome Extension
 
-### Load it in Chrome
+This is the easiest way to run the cleaner.
+
+### Install
 
 1. Open `chrome://extensions`
-2. Enable `Developer mode`
+2. Turn on `Developer mode`
 3. Click `Load unpacked`
-4. Select the [`extension/`](extension/) folder from this repository
-5. Open the `Your YouTube comments` page in Google My Activity
-6. Click the extension icon
-7. Press `Start`
+4. Select [`extension/`](extension/)
+5. Make sure `YouTube Activity Cleaner` appears in the list
 
-### Important note
+<p align="center">
+  <img src="screenshots/05-chrome-extensions-page-installed-cleaner.png" alt="Chrome extensions page with Developer mode enabled and YouTube Activity Cleaner installed" width="900">
+</p>
 
-The extension uses the same page automation approach as the console script, so the Google My Activity tab should stay visible while it is working. Chrome throttles hidden tabs.
+### Open the popup
 
-## Quick Flow
+If the extension icon is not pinned, click the Chrome `Extensions` button and open `YouTube Activity Cleaner`.
 
-1. Open `YouTube -> History`
-2. Click `Manage all history`
-3. Find and open the `Comments` section
-4. Open browser Developer Tools
-5. Copy `yt-comment-cleaner.js`
-6. Paste it into the browser console and press Enter
-7. Stop it later with `stopYtCommentCleaner()`
+<p align="center">
+  <img src="screenshots/06-chrome-toolbar-extensions-button.png" alt="Chrome toolbar Extensions button" width="60">
+  <img src="screenshots/07-chrome-extensions-menu-manage-extensions.png" alt="Chrome extensions menu with Manage Extensions" width="360">
+</p>
 
-If you prefer, you can use the extension instead of the console script.
+### Run the cleaner
+
+1. Open the extension popup
+2. If needed, click `Open YouTube comments page`
+3. Reopen the popup on that page
+4. Wait for `Ready on the YouTube comments page.`
+5. Click `Start`
+6. Keep that Google My Activity tab visible while the cleaner is working
+7. Click `Stop` to stop the current run
+
+Live counters:
+
+- `Deleted`
+- `Attempts`
+- `Failed`
+
+The popup also includes a `Buy me a coffee` button if you want to support the project.
+
+<p align="center">
+  <img src="screenshots/08-extension-popup-youtube-activity-cleaner.png" alt="Extension popup with Start, Stop, and Open YouTube comments page buttons" width="420">
+</p>
+
+### Important
+
+Keep the Google My Activity tab visible while the cleaner runs. Chrome throttles hidden tabs.
+
+### Support
+
+If this tool saves you time, you can support the project here:
+
+`https://buymeacoffee.com/michalmatuh`
+
+## Console Method
+
+Use this if you do not want to install the extension.
+
+### Quick Flow
+
+1. Open `YouTube -> History -> Manage all history`
+2. Open `Comments`
+3. Open the browser `Console`
+4. Paste [yt-comment-cleaner.js](yt-comment-cleaner.js)
+5. Press Enter
+6. Stop later with `stopYtCommentCleaner()`
 
 ## Step-By-Step Guide
 
-### 1. Open the History page on YouTube
+### 1. Open the comments page
 
-Open YouTube and use the left sidebar to open `History`.
-
-### 2. Click `Manage all history`
-
-On the History page, click `Manage all history`.
+Open YouTube `History`, then click `Manage all history`.
 
 <p align="center">
   <img src="screenshots/01-youtube-history-sidebar.png" alt="Open YouTube History" width="150">
   <img src="screenshots/02-youtube-history-manage-all-history.png" alt="Open Manage all history" width="190">
 </p>
 
-### 3. Find the `Comments` section
+Then open the `Comments` section in Google My Activity.
 
-After Google My Activity opens, find the `Comments` section and open it.
-
-If you want, you can also open the comments page directly:
+Shortcut:
 
 `https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments`
 
-This is the page where the script should be run:
-
 <img src="screenshots/03-google-my-activity-comments-page.png" alt="Google My Activity comments page" width="900">
 
-### 4. Open Developer Tools in your browser
+### 2. Open the browser console
 
 Open Developer Tools and switch to the `Console` tab.
 
-Common shortcuts:
+Shortcuts:
 
-- macOS, Chrome / Edge / Brave: `Option + Command + J`
-- macOS, alternative DevTools shortcut: `Option + Command + I`
-- Windows / Linux, Chrome / Edge / Brave: `Ctrl + Shift + J`
-- Windows / Linux, alternative DevTools shortcut: `F12`
+- macOS: `Option + Command + J`
+- Windows / Linux: `Ctrl + Shift + J`
+- Alternative: `F12`, then open `Console`
 
-If shortcuts do not work, try one of these methods:
+If that does not work, right-click the page and choose `Inspect`.
 
-- right-click anywhere on the page and choose `Inspect`
-- open the browser menu and find `Developer Tools`
-
-### 5. Copy the script
+### 3. Copy the script
 
 Open [yt-comment-cleaner.js](yt-comment-cleaner.js) and copy the whole file.
-
-The easiest way:
-
-- open the file
-- if you are on GitHub, use the file view and copy the full contents from there
-- select all
-- copy everything
 
 Keyboard shortcuts:
 
@@ -405,11 +428,9 @@ Keyboard shortcuts:
 
 <br>
 
-### 6. Paste the script into the console
+### 4. Paste and run
 
-Click inside the browser console, paste the full script, and press Enter.
-
-Paste it into the empty console input area shown below:
+Click inside the console, paste the full script, and press Enter.
 
 <img src="screenshots/04-browser-console-paste-here.png" alt="Paste the script into the browser console" width="900">
 
@@ -421,16 +442,11 @@ allow pasting
 
 and press Enter first. Then paste the script again.
 
-### 7. Let the script run
+### 5. Let it run
 
-The script will:
+The script deletes visible comments, waits for each item to disappear, and scrolls automatically.
 
-- look for visible delete buttons
-- handle both flows: direct removal after clicking `X`, or removal with a confirmation dialog
-- wait until each item disappears before moving to the next one
-- scroll automatically to continue processing more comments
-
-While it is running, the console will print progress like:
+While it runs, the console prints progress like:
 
 ```js
 Deleted comments: 1
@@ -438,15 +454,15 @@ Deleted comments: 2
 Deleted comments: 3
 ```
 
-When it finishes, it will print a summary:
+When it finishes, it prints:
 
 ```js
 Finished. Deleted: X, attempts: Y, failed: Z
 ```
 
-### 8. Stop the script
+### 6. Stop the script
 
-If you want to stop it while it is running, paste this into the console:
+If you want to stop it while it is running, run:
 
 ```js
 stopYtCommentCleaner()
@@ -458,4 +474,4 @@ stopYtCommentCleaner()
 - Google can change the page layout at any time, which may break selectors.
 - It is a good idea to test the script on a few comments first.
 - Google may take some time to fully reflect deletions after they are triggered.
-- This repository currently focuses on comment removal. Like removal is not implemented yet.
+- Only comment removal is implemented right now.

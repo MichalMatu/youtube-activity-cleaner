@@ -128,6 +128,13 @@ button.secondary {
   background: #1f6feb;
 }
 
+button.support {
+  width: 100%;
+  margin-top: 10px;
+  background: #f59e0b;
+  color: #111827;
+}
+
 .footnote {
   margin-top: 12px;
   color: #9ca3af;

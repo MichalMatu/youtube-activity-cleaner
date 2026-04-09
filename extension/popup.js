@@ -10,6 +10,8 @@ const failedCountElement = document.querySelector("#failed-count");
 const startButton = document.querySelector("#start-button");
 const stopButton = document.querySelector("#stop-button");
 const openPageButton = document.querySelector("#open-page-button");
+const supportButton = document.querySelector("#support-button");
+const SUPPORT_URL = "https://buymeacoffee.com/michalmatuh";
 
 const getActiveTab = async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -113,6 +115,10 @@ stopButton.addEventListener("click", async () => {
 
 openPageButton.addEventListener("click", async () => {
   await chrome.tabs.create({ url: COMMENTS_PAGE_URL });
+});
+
+supportButton.addEventListener("click", async () => {
+  await chrome.tabs.create({ url: SUPPORT_URL });
 });
 
 refreshStatus();
