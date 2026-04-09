@@ -6,16 +6,28 @@
   "permissions": ["tabs", "power"],
   "host_permissions": ["https://myactivity.google.com/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background/service-worker.js"
   },
   "action": {
     "default_title": "YouTube Activity Cleaner",
-    "default_popup": "popup.html"
+    "default_popup": "popup/popup.html"
   },
   "content_scripts": [
     {
       "matches": ["https://myactivity.google.com/*"],
-      "js": ["content.js"],
+      "js": [
+        "shared/browser-api.js",
+        "shared/messages.js",
+        "shared/constants.js",
+        "content/cleaner/config.js",
+        "content/cleaner/selectors.js",
+        "content/cleaner/state.js",
+        "content/cleaner/scrolling.js",
+        "content/cleaner/dom.js",
+        "content/cleaner/status.js",
+        "content/cleaner/engine.js",
+        "content/index.js"
+      ],
       "run_at": "document_idle"
     }
   ]
