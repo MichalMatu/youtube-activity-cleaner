@@ -11,6 +11,14 @@ You can use:
 
 This is the easiest way to run the cleaner.
 
+### Local tests
+
+Run the lightweight unit tests with:
+
+```bash
+npm test
+```
+
 ### Install
 
 1. Open `chrome://extensions`
@@ -53,6 +61,7 @@ Live counters:
 
 Saved popup settings:
 
+- run profile: `Fast` or `Safe`
 - delay between comments
 - wait after scrolling/loading more items
 - retry count and retry backoff

@@ -3,15 +3,31 @@
     globalThis.YtActivityCleanerContent || {});
 
   content.config = Object.freeze({
-    beforeClickMs: 650,
-    beforeConfirmClickMs: 1100,
-    afterConfirmClickMs: 500,
     scrollStepPx: 900,
-    waitForRemovalMs: 25000,
-    waitForPostClickStateMs: 9000,
-    waitForStatusIdleMs: 12000,
-    statusQuietMs: 1200,
-    pollMs: 250,
     idleRoundsLimit: 7,
+    timingProfiles: Object.freeze({
+      fast: Object.freeze({
+        beforeClickMs: 120,
+        beforeConfirmClickMs: 220,
+        afterConfirmClickMs: 120,
+        waitForRemovalMs: 7000,
+        waitForPostClickStateMs: 2500,
+        waitForBusyStateMs: 900,
+        busyQuietMs: 150,
+        pollMs: 100,
+        allowRemovalWithoutSuccess: true,
+      }),
+      safe: Object.freeze({
+        beforeClickMs: 320,
+        beforeConfirmClickMs: 520,
+        afterConfirmClickMs: 220,
+        waitForRemovalMs: 12000,
+        waitForPostClickStateMs: 4500,
+        waitForBusyStateMs: 2200,
+        busyQuietMs: 300,
+        pollMs: 150,
+        allowRemovalWithoutSuccess: false,
+      }),
+    }),
   });
 })();

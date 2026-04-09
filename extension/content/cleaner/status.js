@@ -2,23 +2,6 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
 
-  content.getStatusMessages = () => {
-    const seen = new Set();
-
-    return content
-      .getVisibleMatches(content.selectors.status)
-      .map((element) => content.normalizeText(element.innerText || element.textContent))
-      .filter((text) => text && text.length <= 120)
-      .filter((text) => {
-        if (seen.has(text)) {
-          return false;
-        }
-
-        seen.add(text);
-        return true;
-      });
-  };
-
   content.matchesPendingStatus = (text) =>
     /deleting now|deleting|removing|usuwanie|trwa usuwanie/.test(text);
 
@@ -32,9 +15,35 @@
       text
     );
 
+  content.isCleanerStatusText = (text) =>
+    content.matchesPendingStatus(text) ||
+    content.matchesSuccessStatus(text) ||
+    content.matchesFailureStatus(text);
+
+  content.getStatusMessages = () => {
+    const seen = new Set();
+
+    return content
+      .getVisibleMatches(content.selectors.status)
+      .map((element) => content.normalizeText(element.innerText || element.textContent))
+      .filter((text) => text && text.length <= 120)
+      .filter(content.isCleanerStatusText)
+      .filter((text) => {
+        if (seen.has(text)) {
+          return false;
+        }
+
+        seen.add(text);
+        return true;
+      });
+  };
+
+  content.getBusyStatusMessages = () =>
+    content.getStatusMessages().filter(content.matchesPendingStatus);
+
   content.waitForStatusIdle = async () => {
     let quietSince = null;
-    let deadline = Date.now() + content.getSettingValue("waitForStatusIdleMs");
+    let deadline = Date.now() + content.getSettingValue("waitForBusyStateMs");
 
     while (Date.now() < deadline) {
       if (content.getState().stopRequested) {
@@ -51,13 +60,13 @@
         deadline += Date.now() - pausedAt;
       }
 
-      const messages = content.getStatusMessages();
-      if (!messages.length) {
+      const busyMessages = content.getBusyStatusMessages();
+      if (!busyMessages.length) {
         if (!quietSince) {
           quietSince = Date.now();
         }
 
-        if (Date.now() - quietSince >= content.getSettingValue("statusQuietMs")) {
+        if (Date.now() - quietSince >= content.getSettingValue("busyQuietMs")) {
           return true;
         }
       } else {
@@ -70,12 +79,17 @@
     return false;
   };
 
-  content.waitForDeleteOutcome = async (itemContainer) => {
+  content.waitForDeleteOutcome = async (itemContainer, options = {}) => {
     let sawPending = false;
     let sawSuccess = false;
     let sawRemoval = false;
     let lastSuccessMessage = "";
     let deadline = Date.now() + content.getSettingValue("waitForRemovalMs");
+    const allowRemovalWithoutSuccess =
+      content.getSettingValue("allowRemovalWithoutSuccess") &&
+      (options.firstStateType === "confirm" ||
+        options.firstStateType === "status" ||
+        options.firstStateType === "removed_without_confirm");
 
     while (Date.now() < deadline) {
       if (content.getState().stopRequested) {
@@ -116,6 +130,13 @@
         return {
           success: true,
           reason: lastSuccessMessage || messages.join(" | ") || "confirmed by UI",
+        };
+      }
+
+      if (allowRemovalWithoutSuccess && sawRemoval && !failureMessage) {
+        return {
+          success: true,
+          reason: lastSuccessMessage || "item disappeared after the delete request",
         };
       }
 

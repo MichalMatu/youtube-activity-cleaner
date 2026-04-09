@@ -103,7 +103,9 @@
       }
     }
 
-    const outcome = await content.waitForDeleteOutcome(itemContainer);
+    const outcome = await content.waitForDeleteOutcome(itemContainer, {
+      firstStateType: firstState.type,
+    });
     if (!outcome.success) {
       console.warn(`Delete not confirmed for: ${description} (${outcome.reason})`);
       return { success: false, reason: outcome.reason };
@@ -313,7 +315,7 @@
     state.starting = false;
     state.running = true;
     content.setCleanerMessage(
-      `Starting cleaner with ${settings.retryLimit} retries and ${content.formatDurationMs(
+      `Starting ${settings.speedProfile} cleaner with ${settings.retryLimit} retries and ${content.formatDurationMs(
         settings.betweenItemsMs
       )} pacing...`
     );

@@ -57,11 +57,31 @@
     return state.settings;
   };
 
+  content.getTimingProfileName = () => {
+    const timingProfiles = content.config.timingProfiles || {};
+    const profileName = state.settings.speedProfile;
+
+    if (Object.prototype.hasOwnProperty.call(timingProfiles, profileName)) {
+      return profileName;
+    }
+
+    return "fast";
+  };
+
+  content.getTimingValue = (key) => {
+    const timingProfile = content.config.timingProfiles?.[content.getTimingProfileName()];
+    if (timingProfile && Object.prototype.hasOwnProperty.call(timingProfile, key)) {
+      return timingProfile[key];
+    }
+
+    return content.config[key];
+  };
+
   content.getSettingValue = (key) => {
     if (Object.prototype.hasOwnProperty.call(state.settings, key)) {
       return state.settings[key];
     }
 
-    return content.config[key];
+    return content.getTimingValue(key);
   };
 })();

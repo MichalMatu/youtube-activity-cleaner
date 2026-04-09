@@ -4,12 +4,24 @@
   const { ext } = shared;
 
   const SETTINGS_STORAGE_KEY = "cleanerSettings";
-
-  const defaultSettings = Object.freeze({
+  const speedProfiles = Object.freeze({
+    fast: Object.freeze({ label: "Fast" }),
+    safe: Object.freeze({ label: "Safe" }),
+  });
+  const legacyDefaults = Object.freeze({
     betweenItemsMs: 3200,
     scrollPauseMs: 2200,
     retryLimit: 2,
     retryBackoffMs: 1800,
+    failureStreakLimit: 4,
+  });
+
+  const defaultSettings = Object.freeze({
+    speedProfile: "fast",
+    betweenItemsMs: 1200,
+    scrollPauseMs: 1200,
+    retryLimit: 2,
+    retryBackoffMs: 1200,
     failureStreakLimit: 4,
   });
 
@@ -25,6 +37,11 @@
     }),
   });
 
+  const sanitizeSpeedProfile = (value) =>
+    Object.prototype.hasOwnProperty.call(speedProfiles, value)
+      ? value
+      : defaultSettings.speedProfile;
+
   const clampInteger = (value, config) => {
     const numericValue = Number(value);
     if (!Number.isFinite(numericValue)) {
@@ -34,13 +51,32 @@
     return Math.min(config.max, Math.max(config.min, Math.round(numericValue)));
   };
 
+  const migrateLegacyNumericSetting = (settings, key) => {
+    if (settings?.speedProfile !== undefined) {
+      return settings?.[key];
+    }
+
+    const numericValue = Number(settings?.[key]);
+    return numericValue === legacyDefaults[key] ? defaultSettings[key] : settings?.[key];
+  };
+
   const sanitizeSettings = (settings) => ({
-    betweenItemsMs: clampInteger(settings?.betweenItemsMs, limits.betweenItemsMs),
-    scrollPauseMs: clampInteger(settings?.scrollPauseMs, limits.scrollPauseMs),
-    retryLimit: clampInteger(settings?.retryLimit, limits.retryLimit),
-    retryBackoffMs: clampInteger(settings?.retryBackoffMs, limits.retryBackoffMs),
+    speedProfile: sanitizeSpeedProfile(settings?.speedProfile),
+    betweenItemsMs: clampInteger(
+      migrateLegacyNumericSetting(settings, "betweenItemsMs"),
+      limits.betweenItemsMs
+    ),
+    scrollPauseMs: clampInteger(
+      migrateLegacyNumericSetting(settings, "scrollPauseMs"),
+      limits.scrollPauseMs
+    ),
+    retryLimit: clampInteger(migrateLegacyNumericSetting(settings, "retryLimit"), limits.retryLimit),
+    retryBackoffMs: clampInteger(
+      migrateLegacyNumericSetting(settings, "retryBackoffMs"),
+      limits.retryBackoffMs
+    ),
     failureStreakLimit: clampInteger(
-      settings?.failureStreakLimit,
+      migrateLegacyNumericSetting(settings, "failureStreakLimit"),
       limits.failureStreakLimit
     ),
   });
@@ -71,6 +107,7 @@
     storageKey: SETTINGS_STORAGE_KEY,
     defaults: defaultSettings,
     limits,
+    profiles: speedProfiles,
   });
   shared.sanitizeSettings = sanitizeSettings;
   shared.getSettings = getSettings;

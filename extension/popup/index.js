@@ -5,6 +5,7 @@
   const {
     ext,
     Messages,
+    Settings,
     getSettings,
     saveSettings,
     resetSettings,
@@ -20,8 +21,12 @@
 
   popup.getSettingsPreviewText = (settings) => {
     const normalizedSettings = sanitizeSettings(settings);
+    const profileLabel =
+      Settings.profiles?.[normalizedSettings.speedProfile]?.label || normalizedSettings.speedProfile;
 
-    return `${popup.formatSecondsInputValue(normalizedSettings.betweenItemsMs)}s pace • ${normalizedSettings.retryLimit} retries • stop after ${normalizedSettings.failureStreakLimit}`;
+    return `${profileLabel} mode • ${popup.formatSecondsInputValue(
+      normalizedSettings.betweenItemsMs
+    )}s pace • ${normalizedSettings.retryLimit} retries`;
   };
 
   popup.normalizeInputValue = (value) => {
@@ -37,6 +42,7 @@
   };
 
   popup.getSettingsFromForm = () => ({
+    speedProfile: popup.elements.speedProfileSelect.value,
     betweenItemsMs: popup.parseSecondsInput(popup.elements.betweenItemsSecondsInput.value),
     scrollPauseMs: popup.parseSecondsInput(popup.elements.scrollPauseSecondsInput.value),
     retryLimit: popup.normalizeInputValue(popup.elements.retryLimitInput.value),
@@ -47,6 +53,7 @@
   });
 
   popup.applySettingsToForm = (settings) => {
+    popup.elements.speedProfileSelect.value = settings.speedProfile;
     popup.elements.betweenItemsSecondsInput.value = popup.formatSecondsInputValue(
       settings.betweenItemsMs
     );
@@ -312,6 +319,7 @@
   });
 
   [
+    popup.elements.speedProfileSelect,
     popup.elements.betweenItemsSecondsInput,
     popup.elements.scrollPauseSecondsInput,
     popup.elements.retryLimitInput,

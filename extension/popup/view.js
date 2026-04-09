@@ -19,6 +19,7 @@
     supportButton: document.querySelector("#support-button"),
     settingsForm: document.querySelector("#settings-form"),
     resetSettingsButton: document.querySelector("#reset-settings-button"),
+    speedProfileSelect: document.querySelector("#speed-profile"),
     betweenItemsSecondsInput: document.querySelector("#between-items-seconds"),
     scrollPauseSecondsInput: document.querySelector("#scroll-pause-seconds"),
     retryLimitInput: document.querySelector("#retry-limit"),
