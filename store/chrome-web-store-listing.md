@@ -54,6 +54,12 @@ Important:
 - Screenshot 2: [screenshot-02-fast-mode-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-02-fast-mode-1280x800.png)
 - Screenshot 3: [screenshot-03-settings-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-03-settings-1280x800.png)
 
+TODO before the next listing refresh:
+
+- Replace the generated/mock screenshots with real captures from the live extension popup on the Google My Activity comments page
+- Capture one clear running-state screenshot with the popup open and progress counters visible
+- Re-export the final chosen screenshots to the Chrome Web Store required size without browser clutter
+
 ## Manual Items Still To Decide
 
 - Final public pricing model: free, donation, or paid service around the extension

@@ -2,6 +2,10 @@
 
 Delete your YouTube comments from Google My Activity.
 
+Project site:
+
+`https://michalmatu.github.io/youtube-activity-cleaner/`
+
 You can use:
 
 - the Chrome extension in [`extension/`](extension/) for the easiest flow
@@ -96,6 +100,10 @@ This repo now includes:
 - GitHub Pages-ready site files in [`docs/`](docs/)
 - Store listing drafts and reviewer notes in [`store/`](store/)
 - Generated icons and promotional assets in [`store/assets/`](store/assets/)
+
+Store asset TODO:
+
+- replace generated/mock listing screenshots with final real captures from the live extension popup on `Google My Activity -> Your YouTube comments`
 
 Recommended next step before publishing:
 

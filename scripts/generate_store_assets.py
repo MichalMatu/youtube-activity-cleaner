@@ -86,6 +86,26 @@ def add_noise_dots(image: Image.Image, opacity: int = 32, step: int = 28) -> Non
       draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=(255, 255, 255, opacity))
 
 
+def wrap_text(text: str, width: int) -> str:
+  words = text.split()
+  if not words:
+    return ""
+
+  lines: list[str] = []
+  current = words[0]
+
+  for word in words[1:]:
+    candidate = f"{current} {word}"
+    if len(candidate) <= width:
+      current = candidate
+    else:
+      lines.append(current)
+      current = word
+
+  lines.append(current)
+  return "\n".join(lines)
+
+
 def draw_brand_icon(size: int) -> Image.Image:
   image = draw_vertical_gradient((size, size), "#b91c1c", "#f97316")
   draw = ImageDraw.Draw(image)
@@ -172,7 +192,7 @@ def draw_popup_panel(
   expanded_settings: bool,
 ) -> None:
   draw = ImageDraw.Draw(image)
-  panel_box = (798, 92, 1186, 708)
+  panel_box = (790, 56 if expanded_settings else 92, 1192, 778 if expanded_settings else 708)
   shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
   shadow_draw = ImageDraw.Draw(shadow)
   shadow_draw.rounded_rectangle(panel_box, radius=30, fill=(0, 0, 0, 180))
@@ -187,14 +207,32 @@ def draw_popup_panel(
   draw.text((x0 + 28, y0 + 56), "YouTube Activity Cleaner", font=load_font(28, bold=True), fill=WHITE)
   draw.text((x0 + 28, y0 + 98), "Clean comments from the Google My Activity comments page.", font=load_font(16), fill=SLATE_300)
 
-  section_box = (x0 + 22, y0 + 142, x1 - 22, y0 + 270)
+  section_box = (x0 + 22, y0 + 136, x1 - 22, y0 + 262)
   draw.rounded_rectangle(section_box, radius=18, fill=SLATE_800)
   draw.text((section_box[0] + 18, section_box[1] + 16), "Cleaner tab", font=load_font(15, bold=True), fill=SLATE_300)
-  draw.text((section_box[0] + 18, section_box[1] + 42), title, font=load_font(22, bold=True), fill=WHITE)
-  draw.text((section_box[0] + 18, section_box[1] + 74), subtitle, font=load_font(15), fill="#dbe4f0")
-  draw.text((section_box[0] + 18, section_box[1] + 100), run_message, font=load_font(15), fill="#fcd34d")
+  draw.multiline_text(
+    (section_box[0] + 18, section_box[1] + 40),
+    wrap_text(title, 28),
+    font=load_font(20, bold=True),
+    fill=WHITE,
+    spacing=4,
+  )
+  draw.multiline_text(
+    (section_box[0] + 18, section_box[1] + 92),
+    wrap_text(subtitle, 34),
+    font=load_font(14),
+    fill="#dbe4f0",
+    spacing=4,
+  )
+  draw.multiline_text(
+    (section_box[0] + 18, section_box[1] + 116),
+    wrap_text(run_message, 34),
+    font=load_font(14),
+    fill="#fcd34d",
+    spacing=4,
+  )
 
-  stats_box = (x0 + 22, y0 + 286, x1 - 22, y0 + 420)
+  stats_box = (x0 + 22, y0 + 264, x1 - 22, y0 + 384)
   draw.rounded_rectangle(stats_box, radius=18, fill=SLATE_800)
   draw.text((stats_box[0] + 18, stats_box[1] + 16), "Cleaner status", font=load_font(15, bold=True), fill=SLATE_300)
 
@@ -212,14 +250,25 @@ def draw_popup_panel(
     draw.text((box[0] + 16, box[1] + 12), label, font=load_font(14), fill=SLATE_500)
     draw.text((box[0] + 16, box[1] + 30), value, font=load_font(24, bold=True), fill=WHITE)
 
-  draw.text((stats_box[0] + 18, stats_box[1] + 112), debug, font=load_font(14), fill="#fde68a")
+  draw.multiline_text(
+    (stats_box[0] + 18, stats_box[1] + 112),
+    wrap_text(debug, 42),
+    font=load_font(13),
+    fill="#fde68a",
+    spacing=4,
+  )
 
-  settings_box = (x0 + 22, y0 + 438, x1 - 22, y0 + 584 if expanded_settings else y0 + 520)
+  settings_box = (
+    x0 + 22,
+    y0 + 402,
+    x1 - 22,
+    y0 + 622 if expanded_settings else y0 + 492,
+  )
   draw.rounded_rectangle(settings_box, radius=18, fill=SLATE_800)
   draw.text((settings_box[0] + 18, settings_box[1] + 16), "Settings", font=load_font(15, bold=True), fill=SLATE_300)
   draw.text((settings_box[0] + 18, settings_box[1] + 44), settings_preview, font=load_font(14), fill="#dbe4f0")
 
-  mode_box = (settings_box[0] + 18, settings_box[1] + 72, settings_box[0] + 120, settings_box[1] + 108)
+  mode_box = (settings_box[0] + 18, settings_box[1] + 74, settings_box[0] + 120, settings_box[1] + 108)
   draw_chip(draw, mode_box, settings_mode, RED if settings_mode == "Fast" else SLATE_700)
 
   if expanded_settings:
@@ -231,11 +280,11 @@ def draw_popup_panel(
       "Stop after failures in a row: 4 times",
     ]
     for index, field in enumerate(fields):
-      top = settings_box[1] + 120 + index * 26
-      draw.text((settings_box[0] + 18, top), field, font=load_font(14), fill=WHITE)
+      top = settings_box[1] + 122 + index * 23
+      draw.text((settings_box[0] + 18, top), field, font=load_font(13), fill=WHITE)
 
-  start_box = (x0 + 22, y1 - 88, x0 + 180, y1 - 34)
-  stop_box = (x0 + 192, y1 - 88, x0 + 338, y1 - 34)
+  start_box = (x0 + 22, y1 - 74, x0 + 180, y1 - 22)
+  stop_box = (x0 + 192, y1 - 74, x0 + 338, y1 - 22)
   draw.rounded_rectangle(start_box, radius=18, fill=RED)
   draw.rounded_rectangle(stop_box, radius=18, fill=SLATE_700)
   draw.text((start_box[0] + 56, start_box[1] + 15), "Start", font=load_font(20, bold=True), fill=WHITE)
@@ -246,11 +295,11 @@ def draw_store_screenshot(path: Path, heading: str, body: str, popup_variant: di
   image = fit_background((1280, 800))
   draw = ImageDraw.Draw(image)
 
-  draw.rounded_rectangle((58, 72, 706, 304), radius=28, fill=(15, 23, 42, 224))
-  draw.multiline_text((88, 108), heading, font=load_font(42, bold=True), fill=WHITE, spacing=8)
-  draw.multiline_text((88, 220), body, font=load_font(20), fill="#dbe4f0", spacing=6)
-  draw_chip(draw, (88, 256, 250, 302), "MV3 extension", fill=RED)
-  draw_chip(draw, (264, 256, 384, 302), "Local-only", fill=SLATE_700)
+  draw.rounded_rectangle((58, 72, 720, 360), radius=28, fill=(15, 23, 42, 228))
+  draw_chip(draw, (88, 102, 250, 148), "MV3 extension", fill=RED)
+  draw_chip(draw, (264, 102, 414, 148), "Local-only", fill=SLATE_700)
+  draw.multiline_text((88, 176), heading, font=load_font(38, bold=True), fill=WHITE, spacing=6)
+  draw.multiline_text((88, 280), body, font=load_font(20), fill="#dbe4f0", spacing=8)
 
   draw_popup_panel(image, **popup_variant)
   image.save(path)
@@ -260,19 +309,79 @@ def draw_promo_tile(path: Path, size: tuple[int, int], title: str, subtitle: str
   image = draw_vertical_gradient(size, "#0f172a", "#1f2937")
   add_noise_dots(image, opacity=26, step=36)
   draw = ImageDraw.Draw(image)
-  icon = draw_brand_icon(220).resize((148, 148), Image.Resampling.LANCZOS)
-  image.alpha_composite(icon, (48, size[1] // 2 - 74))
+  if size[0] <= 500:
+    glow = Image.new("RGBA", size, (0, 0, 0, 0))
+    glow_draw = ImageDraw.Draw(glow)
+    glow_draw.ellipse((18, 40, 170, 220), fill=(239, 68, 68, 72))
+    glow_draw.ellipse((230, 160, 420, 300), fill=(249, 115, 22, 54))
+    glow = glow.filter(ImageFilter.GaussianBlur(radius=38))
+    image.alpha_composite(glow)
 
-  draw.text((228, 72), title, font=load_font(44 if size[0] > 500 else 32, bold=True), fill=WHITE)
-  draw.text((228, 138), subtitle, font=load_font(20 if size[0] > 500 else 16), fill="#dbe4f0")
+    icon = draw_brand_icon(220).resize((96, 96), Image.Resampling.LANCZOS)
+    image.alpha_composite(icon, (34, 92))
 
-  if show_badges:
-    draw_chip(draw, (228, 190, 390, 236), "Fast mode", fill=RED)
-    draw_chip(draw, (402, 190, 604, 236), "Chrome Web Store", fill=SLATE_700)
+    draw.text((150, 72), wrap_text(title, 16), font=load_font(28, bold=True), fill=WHITE, spacing=2)
+    draw.multiline_text(
+      (150, 148),
+      wrap_text(subtitle, 24),
+      font=load_font(16),
+      fill="#dbe4f0",
+      spacing=4,
+    )
 
-  draw.rounded_rectangle((size[0] - 240, 44, size[0] - 42, size[1] - 44), radius=30, fill=(255, 255, 255, 18))
-  draw.text((size[0] - 214, 74), "Deletes comments\nfrom Google My Activity", font=load_font(20, bold=True), fill=WHITE, spacing=6)
-  draw.text((size[0] - 214, 168), "No account login,\nserver sync or cloud storage.", font=load_font(16), fill="#dbe4f0", spacing=6)
+    if show_badges:
+      draw_chip(draw, (150, 204, 266, 240), "Fast", fill=RED)
+      draw_chip(draw, (278, 204, 404, 240), "Local-only", fill=SLATE_700)
+  else:
+    glow = Image.new("RGBA", size, (0, 0, 0, 0))
+    glow_draw = ImageDraw.Draw(glow)
+    glow_draw.ellipse((30, 90, 420, 470), fill=(239, 68, 68, 70))
+    glow_draw.ellipse((960, 40, 1380, 500), fill=(249, 115, 22, 44))
+    glow = glow.filter(ImageFilter.GaussianBlur(radius=58))
+    image.alpha_composite(glow)
+
+    icon = draw_brand_icon(220).resize((148, 148), Image.Resampling.LANCZOS)
+    image.alpha_composite(icon, (76, 192))
+
+    draw.multiline_text((268, 112), wrap_text(title, 20), font=load_font(54, bold=True), fill=WHITE, spacing=4)
+    draw.text((270, 214), subtitle, font=load_font(27), fill="#dbe4f0")
+
+    if show_badges:
+      draw_chip(draw, (270, 278, 432, 324), "Fast mode", fill=RED)
+      draw_chip(draw, (444, 278, 664, 324), "Chrome Web Store", fill=SLATE_700)
+
+    preview_box = (1024, 84, 1328, 476)
+    shadow = Image.new("RGBA", size, (0, 0, 0, 0))
+    shadow_draw = ImageDraw.Draw(shadow)
+    shadow_draw.rounded_rectangle(preview_box, radius=30, fill=(0, 0, 0, 170))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(radius=24))
+    image.alpha_composite(shadow)
+
+    draw.rounded_rectangle(preview_box, radius=30, fill=(17, 24, 39, 236), outline="#334155", width=2)
+    draw.text((preview_box[0] + 22, preview_box[1] + 24), "YouTube Activity Cleaner", font=load_font(26, bold=True), fill=WHITE)
+    draw.text((preview_box[0] + 22, preview_box[1] + 62), "Fast mode", font=load_font(18, bold=True), fill="#fca5a5")
+
+    stat_boxes = [
+      (preview_box[0] + 22, preview_box[1] + 112, "Deleted", "214"),
+      (preview_box[0] + 128, preview_box[1] + 112, "Attempts", "221"),
+      (preview_box[0] + 234, preview_box[1] + 112, "Failed", "7"),
+    ]
+    for left, top, label, value in stat_boxes:
+      box = (left, top, left + 92, top + 82)
+      draw.rounded_rectangle(box, radius=16, fill=SLATE_950)
+      draw.text((box[0] + 14, box[1] + 12), label, font=load_font(13), fill=SLATE_500)
+      draw.text((box[0] + 14, box[1] + 34), value, font=load_font(24, bold=True), fill=WHITE)
+
+    draw.text(
+      (preview_box[0] + 22, preview_box[1] + 228),
+      "Delete your own YouTube comments from\nGoogle My Activity with saved local settings.",
+      font=load_font(18),
+      fill="#dbe4f0",
+      spacing=6,
+    )
+    button = (preview_box[0] + 22, preview_box[1] + 304, preview_box[0] + 156, preview_box[1] + 352)
+    draw.rounded_rectangle(button, radius=18, fill=RED)
+    draw.text((button[0] + 42, button[1] + 12), "Start", font=load_font(20, bold=True), fill=WHITE)
 
   image.save(path)
 
@@ -293,13 +402,13 @@ def generate_store_images() -> None:
     STORE_ASSETS_DIR / "small-promo-tile-440x280.png",
     (440, 280),
     "YouTube Activity Cleaner",
-    "Bulk-clean YouTube comments from Google My Activity.",
+    "Delete old YouTube comments from Google My Activity.",
   )
   draw_promo_tile(
     STORE_ASSETS_DIR / "marquee-promo-tile-1400x560.png",
     (1400, 560),
     "YouTube Activity Cleaner",
-    "Fast, local-first cleanup for the Google My Activity comments page.",
+    "Fast local cleanup for the Google My Activity comments page.",
   )
 
   draw_store_screenshot(
@@ -307,13 +416,13 @@ def generate_store_images() -> None:
     "Clean old YouTube\ncomments faster",
     "Open the Google My Activity comments page,\nclick Start and let the cleaner repeat the delete flow.",
     {
-      "title": "Ready on the YouTube comments page.",
-      "subtitle": "Using the current tab for cleaner commands.",
-      "run_message": "Fast mode • 1.2s pace • 2 retries",
+      "title": "Ready on the comments page.",
+      "subtitle": "Current tab connected.",
+      "run_message": "Fast mode",
       "deleted": "0",
       "attempts": "0",
       "failed": "0",
-      "debug": "Keep-awake will be enabled automatically while cleaning is running.",
+      "debug": "Keep-awake turns on during cleanup.",
       "settings_preview": "Fast mode • 1.2s pace • 2 retries",
       "settings_mode": "Fast",
       "expanded_settings": False,
@@ -324,9 +433,9 @@ def generate_store_images() -> None:
     "Watch progress,\nretries and failures",
     "Use the popup to track counters, retry timing\nand the latest status while cleanup runs.",
     {
-      "title": "Connected to a cleaner tab in another tab.",
-      "subtitle": "Using: Your YouTube comments - Google My Activity",
-      "run_message": "Deleted comments: 214",
+      "title": "Cleaner tab connected.",
+      "subtitle": "Your YouTube comments page.",
+      "run_message": "Deleted: 214",
       "deleted": "214",
       "attempts": "221",
       "failed": "7",
@@ -339,11 +448,11 @@ def generate_store_images() -> None:
   draw_store_screenshot(
     STORE_ASSETS_DIR / "screenshot-03-settings-1280x800.png",
     "Tune speed,\nretries and pacing",
-    "Pick Fast or Safe mode and save your preferred\nsettings in Chrome before each run.",
+    "Pick Fast or Safe mode and save preferred\nsettings in Chrome before each run.",
     {
-      "title": "Ready to start on the current tab.",
-      "subtitle": "Start will attach the cleaner to this tab.",
-      "run_message": "Settings loaded from Chrome storage.",
+      "title": "Ready to start.",
+      "subtitle": "This tab becomes the cleaner tab.",
+      "run_message": "Saved settings loaded",
       "deleted": "0",
       "attempts": "0",
       "failed": "0",
