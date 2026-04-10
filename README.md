@@ -95,6 +95,22 @@ The extension enables Chrome keep-awake mode while it runs, which helps prevent 
 
 The current beta is best tested with the Google My Activity interface in `English` and `Polish`. Other interface languages may still work, but selector and status-text coverage is not as complete yet.
 
+### Current V2 Status
+
+The `v2` branch is currently in a `late beta / release prep` stage.
+
+- core cleaner flow: done
+- popup controls, counters, and settings: done
+- localized popup UI: done for `English` and `Polish`
+- automated lightweight tests: done
+- manual smoke test on the live Google My Activity page: still recommended before release
+- Chrome Web Store screenshots and release decisions: still open
+
+Planning docs for the next steps:
+
+- [`store/v2-launch-plan.md`](store/v2-launch-plan.md)
+- [`store/manual-smoke-test.md`](store/manual-smoke-test.md)
+
 ## Chrome Web Store Prep
 
 This repo now includes:
@@ -109,10 +125,11 @@ Store asset TODO:
 
 Recommended next step before publishing:
 
-1. Enable GitHub Pages from the `docs/` directory
-2. Review the draft listing copy in [`store/chrome-web-store-listing.md`](store/chrome-web-store-listing.md)
-3. Run `npm run package`
-4. Upload the ZIP from `dist/` to the Chrome Web Store dashboard
+1. Run the manual checklist in [`store/manual-smoke-test.md`](store/manual-smoke-test.md)
+2. Enable GitHub Pages from the `docs/` directory
+3. Review the draft listing copy in [`store/chrome-web-store-listing.md`](store/chrome-web-store-listing.md)
+4. Run `npm run package`
+5. Upload the ZIP from `dist/` to the Chrome Web Store dashboard
 
 ### Support
 

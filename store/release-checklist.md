@@ -16,6 +16,7 @@ Prepared on April 10, 2026.
 
 ## Before First Upload
 
+- [ ] Run the manual smoke test checklist for `English` and `Polish`
 - [ ] Enable GitHub Pages from the `docs/` directory
 - [ ] Verify the final public URLs in the store listing
 - [ ] Review screenshots and promo assets one last time
