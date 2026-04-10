@@ -283,7 +283,7 @@ def generate_icons() -> None:
     icon = master_icon.resize((size, size), Image.Resampling.LANCZOS)
     icon.save(EXTENSION_ASSETS_DIR / f"icon-{size}.png")
 
-  store_icon = master_icon.resize((128, 128), Image.Resampling.LANCZOS)
+  store_icon = master_icon.resize((128, 128), Image.Resampling.LANCZOS).convert("RGB")
   store_icon.save(STORE_ASSETS_DIR / "store-icon-128.png")
   store_icon.save(DOCS_ASSETS_DIR / "icon-128.png")
 
@@ -357,6 +357,13 @@ def generate_store_images() -> None:
   Image.open(STORE_ASSETS_DIR / "screenshot-01-ready-overview-1280x800.png").save(
     DOCS_ASSETS_DIR / "hero-preview.png"
   )
+
+  for path in STORE_ASSETS_DIR.glob("*.png"):
+    image = Image.open(path).convert("RGB")
+    image.save(path)
+
+  hero_preview = Image.open(DOCS_ASSETS_DIR / "hero-preview.png").convert("RGB")
+  hero_preview.save(DOCS_ASSETS_DIR / "hero-preview.png")
 
 
 def main() -> None:
