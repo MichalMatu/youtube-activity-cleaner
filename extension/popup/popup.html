@@ -3,76 +3,103 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>YouTube Activity Cleaner</title>
+    <title data-i18n="popupTitle">YouTube Activity Cleaner</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <main class="popup">
-      <p class="eyebrow">Chrome extension</p>
-      <h1>YouTube Activity Cleaner</h1>
-      <p class="lead">Clean comments from the Google My Activity comments page.</p>
+      <p class="eyebrow" data-i18n="popupEyebrow">Chrome extension</p>
+      <h1 data-i18n="popupTitle">YouTube Activity Cleaner</h1>
+      <p class="lead" data-i18n="popupLead">
+        Clean comments from the Google My Activity comments page.
+      </p>
 
       <section class="panel">
-        <p class="label">Cleaner tab</p>
-        <p id="page-state" class="status-text">Checking page...</p>
-        <p id="tab-state" class="hint">Looking for the best tab to control...</p>
-        <p id="run-state" class="hint">Open the comments page to continue.</p>
+        <p class="label" data-i18n="popupCleanerTabLabel">Cleaner tab</p>
+        <p id="page-state" class="status-text" data-i18n="popupCheckingPage">Checking page...</p>
+        <p id="tab-state" class="hint" data-i18n="popupLookingForBestTab">
+          Looking for the best tab to control...
+        </p>
+        <p id="run-state" class="hint" data-i18n="popupOpenCommentsPageToContinue">
+          Open the comments page to continue.
+        </p>
       </section>
 
       <section class="panel">
-        <p class="label">Cleaner status</p>
+        <p class="label" data-i18n="popupCleanerStatusLabel">Cleaner status</p>
         <dl class="stats">
           <div>
-            <dt>Deleted</dt>
+            <dt data-i18n="popupDeletedLabel">Deleted</dt>
             <dd id="deleted-count">0</dd>
           </div>
           <div>
-            <dt>Attempts</dt>
+            <dt data-i18n="popupAttemptsLabel">Attempts</dt>
             <dd id="attempted-count">0</dd>
           </div>
           <div>
-            <dt>Failed</dt>
+            <dt data-i18n="popupFailedLabel">Failed</dt>
             <dd id="failed-count">0</dd>
           </div>
         </dl>
-        <p id="power-state" class="hint power-hint">
+        <p id="power-state" class="hint power-hint" data-i18n="popupKeepAwakeAuto">
           Keep-awake will be enabled automatically while cleaning is running.
         </p>
-        <p id="debug-state" class="hint debug-hint">No active retries or errors.</p>
+        <p id="debug-state" class="hint debug-hint" data-i18n="popupNoRetriesOrErrors">
+          No active retries or errors.
+        </p>
       </section>
 
       <details id="settings-panel" class="panel settings-panel">
         <summary class="settings-summary">
           <div>
-            <p class="label">Settings</p>
-            <p id="settings-preview" class="settings-preview">Loading saved settings...</p>
+            <p class="label" data-i18n="popupSettingsLabel">Settings</p>
+            <p
+              id="settings-preview"
+              class="settings-preview"
+              data-i18n="popupLoadingSavedSettings"
+            >
+              Loading saved settings...
+            </p>
           </div>
           <span class="settings-chevron" aria-hidden="true"></span>
         </summary>
 
         <div class="settings-body">
           <div class="settings-toolbar">
-            <p id="settings-state" class="hint settings-hint">
+            <p
+              id="settings-state"
+              class="hint settings-hint"
+              data-i18n="popupSettingsSavedHint"
+            >
               Settings are saved locally in Chrome and used on the next run.
             </p>
-            <button id="reset-settings-button" class="ghost-button" type="button">Reset</button>
+            <button
+              id="reset-settings-button"
+              class="ghost-button"
+              type="button"
+              data-i18n="popupResetButton"
+            >
+              Reset
+            </button>
           </div>
 
           <form id="settings-form" class="settings-form">
             <label class="field">
-              <span>Run profile</span>
+              <span data-i18n="popupRunProfileLabel">Run profile</span>
               <div class="field-input">
                 <select id="speed-profile" name="speedProfile">
-                  <option value="fast">Fast</option>
-                  <option value="safe">Safe</option>
+                  <option value="fast" data-i18n="popupProfileFastLabel">Fast</option>
+                  <option value="safe" data-i18n="popupProfileSafeLabel">Safe</option>
                 </select>
-                <span class="suffix">mode</span>
+                <span class="suffix" data-i18n="popupProfileModeSuffix">mode</span>
               </div>
-              <span class="field-note">Fast is recommended. Safe waits longer for Google UI.</span>
+              <span class="field-note" data-i18n="popupFastRecommendedNote">
+                Fast is recommended. Safe waits longer for Google UI.
+              </span>
             </label>
 
             <label class="field">
-              <span>Delay between comments</span>
+              <span data-i18n="popupDelayBetweenCommentsLabel">Delay between comments</span>
               <div class="field-input">
                 <input
                   id="between-items-seconds"
@@ -83,12 +110,12 @@
                   step="0.1"
                   inputmode="decimal"
                 />
-                <span class="suffix">sec</span>
+                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
               </div>
             </label>
 
             <label class="field">
-              <span>Wait after scroll/load</span>
+              <span data-i18n="popupWaitAfterScrollLoadLabel">Wait after scroll/load</span>
               <div class="field-input">
                 <input
                   id="scroll-pause-seconds"
@@ -99,12 +126,12 @@
                   step="0.1"
                   inputmode="decimal"
                 />
-                <span class="suffix">sec</span>
+                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
               </div>
             </label>
 
             <label class="field">
-              <span>Retry failed delete</span>
+              <span data-i18n="popupRetryFailedDeleteLabel">Retry failed delete</span>
               <div class="field-input">
                 <input
                   id="retry-limit"
@@ -115,12 +142,12 @@
                   step="1"
                   inputmode="numeric"
                 />
-                <span class="suffix">times</span>
+                <span class="suffix" data-i18n="popupTimesSuffix">times</span>
               </div>
             </label>
 
             <label class="field">
-              <span>Retry backoff</span>
+              <span data-i18n="popupRetryBackoffLabel">Retry backoff</span>
               <div class="field-input">
                 <input
                   id="retry-backoff-seconds"
@@ -131,12 +158,12 @@
                   step="0.1"
                   inputmode="decimal"
                 />
-                <span class="suffix">sec</span>
+                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
               </div>
             </label>
 
             <label class="field">
-              <span>Stop after failures in a row</span>
+              <span data-i18n="popupStopAfterFailuresLabel">Stop after failures in a row</span>
               <div class="field-input">
                 <input
                   id="failure-streak-limit"
@@ -147,11 +174,16 @@
                   step="1"
                   inputmode="numeric"
                 />
-                <span class="suffix">times</span>
+                <span class="suffix" data-i18n="popupTimesSuffix">times</span>
               </div>
             </label>
 
-            <button id="save-settings-button" class="secondary compact-button" type="submit">
+            <button
+              id="save-settings-button"
+              class="secondary compact-button"
+              type="submit"
+              data-i18n="popupSaveSettingsButton"
+            >
               Save settings
             </button>
           </form>
@@ -159,25 +191,61 @@
       </details>
 
       <div class="actions">
-        <button id="start-button" class="primary compact-button" type="button">Start</button>
-        <button id="stop-button" class="compact-button" type="button">Stop</button>
+        <button
+          id="start-button"
+          class="primary compact-button"
+          type="button"
+          data-i18n="popupStartButton"
+        >
+          Start
+        </button>
+        <button
+          id="stop-button"
+          class="compact-button"
+          type="button"
+          data-i18n="popupStopButton"
+        >
+          Stop
+        </button>
       </div>
 
-      <button id="open-page-button" class="secondary compact-button" type="button">
+      <button
+        id="open-page-button"
+        class="secondary compact-button"
+        type="button"
+        data-i18n="popupOpenCommentsPageButton"
+      >
         Open YouTube comments page
       </button>
 
-      <button id="support-button" class="support compact-button" type="button">
-        Buy me a coffee
-      </button>
+      <div class="extra-actions">
+        <button
+          id="support-button"
+          class="help-link compact-button"
+          type="button"
+          data-i18n="popupHelpSupportButton"
+        >
+          Help & support
+        </button>
 
-      <p class="footnote">
+        <button
+          id="donate-button"
+          class="support compact-button"
+          type="button"
+          data-i18n="popupDonateButton"
+        >
+          Buy me a coffee
+        </button>
+      </div>
+
+      <p class="footnote" data-i18n="popupFootnote">
         Screen sleep prevention helps avoid interruptions, but the Google My Activity tab
         should still stay visible while the cleaner is working.
       </p>
     </main>
 
     <script src="../shared/browser-api.js"></script>
+    <script src="../shared/i18n.js"></script>
     <script src="../shared/messages.js"></script>
     <script src="../shared/constants.js"></script>
     <script src="../shared/settings.js"></script>

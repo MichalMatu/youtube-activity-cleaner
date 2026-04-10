@@ -256,6 +256,19 @@ button.secondary {
   background: #1f6feb;
 }
 
+.extra-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button.help-link {
+  background: #121418;
+  border: 1px solid #313844;
+  color: #e5e7eb;
+}
+
 button.ghost-button {
   padding: 6px 8px;
   background: #121418;
@@ -264,8 +277,6 @@ button.ghost-button {
 }
 
 button.support {
-  width: 100%;
-  margin-top: 8px;
   background: #f59e0b;
   color: #111827;
 }

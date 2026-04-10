@@ -3,6 +3,7 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
   const { ext, Messages, getSettings } = shared;
+  const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
 
   content.formatDurationMs = (ms) => {
     const seconds = ms / 1000;
@@ -14,7 +15,10 @@
     try {
       await ext.runtime.sendMessage({ type: Messages.REQUEST_KEEP_AWAKE });
     } catch (error) {
-      console.warn("Could not enable keep-awake mode.", error);
+      console.warn(
+        t("logCouldNotEnableKeepAwake", undefined, "Could not enable keep-awake mode."),
+        error
+      );
     }
   };
 
@@ -22,7 +26,10 @@
     try {
       await ext.runtime.sendMessage({ type: Messages.RELEASE_KEEP_AWAKE });
     } catch (error) {
-      console.warn("Could not release keep-awake mode.", error);
+      console.warn(
+        t("logCouldNotReleaseKeepAwake", undefined, "Could not release keep-awake mode."),
+        error
+      );
     }
   };
 
@@ -34,7 +41,13 @@
     const itemContainer = content.getItemContainer(deleteButton);
 
     state.lastItem = description;
-    content.setCleanerMessage(`Preparing to delete: ${description}`);
+    content.setCleanerMessage(
+      t(
+        "contentPreparingToDelete",
+        description,
+        `Preparing to delete: ${description}`
+      )
+    );
     content.setCleanerError("");
     state.retryAttempt = 0;
     state.retryDelayMs = 0;
@@ -112,7 +125,13 @@
     }
 
     console.log(`Confirmed deletion: ${description}`);
-    content.setCleanerMessage(`Confirmed deletion: ${description}`);
+    content.setCleanerMessage(
+      t(
+        "contentConfirmedDeletion",
+        description,
+        `Confirmed deletion: ${description}`
+      )
+    );
     await content.waitForStatusIdle();
     content.setCleanerError("");
     return { success: true, description };
@@ -155,9 +174,19 @@
       state.retryDelayMs = retryDelayMs;
 
       content.setCleanerMessage(
-        `Retrying ${description} (${nextAttemptNumber}/${maxAttempts}) in ${content.formatDurationMs(
-          retryDelayMs
-        )}: ${lastFailureReason}`
+        t(
+          "contentRetryingDelete",
+          [
+            description,
+            nextAttemptNumber,
+            maxAttempts,
+            content.formatDurationMs(retryDelayMs),
+            lastFailureReason,
+          ],
+          `Retrying ${description} (${nextAttemptNumber}/${maxAttempts}) in ${content.formatDurationMs(
+            retryDelayMs
+          )}: ${lastFailureReason}`
+        )
       );
 
       await content.waitForStatusIdle();
@@ -186,8 +215,14 @@
 
     state.starting = false;
     await content.requestKeepAwake();
-    content.setCleanerMessage("Cleaner started.");
-    console.log("YouTube Activity Cleaner started from the extension.");
+    content.setCleanerMessage(t("contentCleanerStarted", undefined, "Cleaner started."));
+    console.log(
+      t(
+        "logCleanerStartedFromExtension",
+        undefined,
+        "YouTube Activity Cleaner started from the extension."
+      )
+    );
 
     while (!state.stopRequested) {
       const deleteButton = content.getVisibleDeleteButtons()[0];
@@ -200,7 +235,13 @@
           idleRounds = 0;
           failureStreak = 0;
           content.setCleanerError("");
-          content.setCleanerMessage(`Deleted comments: ${state.deleted}`);
+          content.setCleanerMessage(
+            t(
+              "contentDeletedComments",
+              state.deleted,
+              `Deleted comments: ${state.deleted}`
+            )
+          );
 
           if (!(await content.pauseAwareSleep(content.getSettingValue("betweenItemsMs")))) {
             break;
@@ -213,12 +254,20 @@
         failureStreak += 1;
         content.setCleanerError(deleteResult.reason);
         content.setCleanerMessage(
-          `Failed attempt: ${deleteResult.reason}. Consecutive failures: ${failureStreak}. Total failed: ${state.failed}`
+          t(
+            "contentFailedAttempt",
+            [deleteResult.reason, failureStreak, state.failed],
+            `Failed attempt: ${deleteResult.reason}. Consecutive failures: ${failureStreak}. Total failed: ${state.failed}`
+          )
         );
 
         if (failureStreak >= content.getSettingValue("failureStreakLimit")) {
           content.setCleanerMessage(
-            `Stopped after ${failureStreak} failures in a row. Last issue: ${deleteResult.reason}`
+            t(
+              "contentStoppedAfterFailures",
+              [failureStreak, deleteResult.reason],
+              `Stopped after ${failureStreak} failures in a row. Last issue: ${deleteResult.reason}`
+            )
           );
           break;
         }
@@ -233,7 +282,9 @@
 
       const loadMoreButton = content.getLoadMoreButton();
       if (loadMoreButton) {
-        content.setCleanerMessage("Loading more activity items...");
+        content.setCleanerMessage(
+          t("contentLoadingMoreItems", undefined, "Loading more activity items...")
+        );
         await content.clickElement(loadMoreButton);
 
         if (!(await content.pauseAwareSleep(content.getSettingValue("scrollPauseMs")))) {
@@ -258,7 +309,13 @@
       }
 
       if (idleRounds >= content.getSettingValue("idleRoundsLimit")) {
-        content.setCleanerMessage("No more visible delete buttons were found.");
+        content.setCleanerMessage(
+          t(
+            "contentNoMoreDeleteButtons",
+            undefined,
+            "No more visible delete buttons were found."
+          )
+        );
         break;
       }
     }
@@ -269,13 +326,18 @@
     await content.releaseKeepAwake();
 
     if (state.stopRequested) {
-      content.setCleanerMessage("Stopped by the user.");
+      content.setCleanerMessage(
+        t("contentStoppedByUser", undefined, "Stopped by the user.")
+      );
     } else if (!state.lastMessage) {
-      content.setCleanerMessage("Finished.");
+      content.setCleanerMessage(t("contentFinished", undefined, "Finished."));
     }
 
     state.stopRequested = false;
-    console.log("YouTube Activity Cleaner finished.", content.getCleanerStatus());
+    console.log(
+      t("logCleanerFinished", undefined, "YouTube Activity Cleaner finished."),
+      content.getCleanerStatus()
+    );
   };
 
   content.startCleaner = async () => {
@@ -286,7 +348,13 @@
     }
 
     if (!content.isSupportedPage()) {
-      content.setCleanerMessage("Open the Your YouTube comments page in Google My Activity first.");
+      content.setCleanerMessage(
+        t(
+          "contentOpenCommentsPageFirst",
+          undefined,
+          "Open the Your YouTube comments page in Google My Activity first."
+        )
+      );
       return content.getCleanerStatus();
     }
 
@@ -301,23 +369,37 @@
     state.lastError = "";
     state.retryAttempt = 0;
     state.retryDelayMs = 0;
-    content.setCleanerMessage("Loading saved settings...");
+    content.setCleanerMessage(
+      t("contentLoadingSavedSettings", undefined, "Loading saved settings...")
+    );
 
     const settings = await getSettings();
     content.setCleanerSettings(settings);
 
     if (state.stopRequested) {
       state.starting = false;
-      content.setCleanerMessage("Stopped by the user.");
+      content.setCleanerMessage(
+        t("contentStoppedByUser", undefined, "Stopped by the user.")
+      );
       return content.getCleanerStatus();
     }
 
     state.starting = false;
     state.running = true;
+    const speedProfileLabel =
+      shared.Settings?.profiles?.[settings.speedProfile]?.label || settings.speedProfile;
     content.setCleanerMessage(
-      `Starting ${settings.speedProfile} cleaner with ${settings.retryLimit} retries and ${content.formatDurationMs(
-        settings.betweenItemsMs
-      )} pacing...`
+      t(
+        "contentStartingCleaner",
+        [
+          speedProfileLabel,
+          settings.retryLimit,
+          content.formatDurationMs(settings.betweenItemsMs),
+        ],
+        `Starting ${speedProfileLabel} cleaner with ${settings.retryLimit} retries and ${content.formatDurationMs(
+          settings.betweenItemsMs
+        )} pacing...`
+      )
     );
 
     content.runCleaner().catch((error) => {
@@ -327,9 +409,22 @@
       state.stopRequested = false;
       state.failed += 1;
       content.setCleanerError(error.message);
-      content.setCleanerMessage(`Cleaner stopped because of an error: ${error.message}`);
+      content.setCleanerMessage(
+        t(
+          "contentCleanerStoppedError",
+          error.message,
+          `Cleaner stopped because of an error: ${error.message}`
+        )
+      );
       content.releaseKeepAwake();
-      console.error("YouTube Activity Cleaner stopped because of an error:", error);
+      console.error(
+        t(
+          "logCleanerStoppedBecauseOfError",
+          undefined,
+          "YouTube Activity Cleaner stopped because of an error:"
+        ),
+        error
+      );
     });
 
     return content.getCleanerStatus();
@@ -341,8 +436,16 @@
     state.stopRequested = true;
     content.setCleanerMessage(
       state.starting
-        ? "Stopping before the cleaner starts..."
-        : "Stopping after the current step..."
+        ? t(
+            "contentStoppingBeforeStart",
+            undefined,
+            "Stopping before the cleaner starts..."
+          )
+        : t(
+            "contentStoppingAfterCurrentStep",
+            undefined,
+            "Stopping after the current step..."
+          )
     );
     return content.getCleanerStatus();
   };

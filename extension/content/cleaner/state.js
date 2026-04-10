@@ -3,6 +3,7 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
   const { Constants, Settings, sanitizeSettings } = shared;
+  const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
 
   const state = (content.state = content.state || {
     starting: false,
@@ -12,7 +13,7 @@
     attempted: 0,
     deleted: 0,
     failed: 0,
-    lastMessage: "Idle.",
+    lastMessage: t("contentIdleMessage", undefined, "Idle."),
     lastItem: "",
     lastError: "",
     retryAttempt: 0,

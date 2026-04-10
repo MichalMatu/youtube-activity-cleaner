@@ -87,11 +87,13 @@ Saved popup settings:
 
 These settings are stored locally in Chrome and reused on the next run.
 
-The popup also includes a `Buy me a coffee` button if you want to support the project.
+The popup also includes a `Help & support` button and an optional `Buy me a coffee` button.
 
 ### Important
 
 The extension enables Chrome keep-awake mode while it runs, which helps prevent display sleep and screen saver interruptions. The Google My Activity tab should still stay visible while the cleaner runs because Chrome throttles hidden tabs.
+
+The current beta is best tested with the Google My Activity interface in `English` and `Polish`. Other interface languages may still work, but selector and status-text coverage is not as complete yet.
 
 ## Chrome Web Store Prep
 
@@ -114,7 +116,11 @@ Recommended next step before publishing:
 
 ### Support
 
-If this tool saves you time, you can support the project here:
+Help and troubleshooting:
+
+`https://michalmatu.github.io/youtube-activity-cleaner/support.html`
+
+Optional support for the project:
 
 `https://buymeacoffee.com/michalmatuh`
 

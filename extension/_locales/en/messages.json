@@ -1,0 +1,320 @@
+{
+  "extName": {
+    "message": "YouTube Activity Cleaner"
+  },
+  "extDescription": {
+    "message": "Run the YouTube comment cleaner on the Google My Activity comments page."
+  },
+  "popupTitle": {
+    "message": "YouTube Activity Cleaner"
+  },
+  "popupEyebrow": {
+    "message": "Chrome extension"
+  },
+  "popupLead": {
+    "message": "Clean comments from the Google My Activity comments page."
+  },
+  "popupCleanerTabLabel": {
+    "message": "Cleaner tab"
+  },
+  "popupCheckingPage": {
+    "message": "Checking page..."
+  },
+  "popupLookingForBestTab": {
+    "message": "Looking for the best tab to control..."
+  },
+  "popupOpenCommentsPageToContinue": {
+    "message": "Open the comments page to continue."
+  },
+  "popupCleanerStatusLabel": {
+    "message": "Cleaner status"
+  },
+  "popupDeletedLabel": {
+    "message": "Deleted"
+  },
+  "popupAttemptsLabel": {
+    "message": "Attempts"
+  },
+  "popupFailedLabel": {
+    "message": "Failed"
+  },
+  "popupKeepAwakeAuto": {
+    "message": "Keep-awake will be enabled automatically while cleaning is running."
+  },
+  "popupKeepAwakeEnabled": {
+    "message": "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs."
+  },
+  "popupNoRetriesOrErrors": {
+    "message": "No active retries or errors."
+  },
+  "popupSettingsLabel": {
+    "message": "Settings"
+  },
+  "popupLoadingSavedSettings": {
+    "message": "Loading saved settings..."
+  },
+  "popupSettingsSavedHint": {
+    "message": "Settings are saved locally in Chrome and used on the next run."
+  },
+  "popupResetButton": {
+    "message": "Reset"
+  },
+  "popupRunProfileLabel": {
+    "message": "Run profile"
+  },
+  "popupProfileFastLabel": {
+    "message": "Fast"
+  },
+  "popupProfileSafeLabel": {
+    "message": "Safe"
+  },
+  "popupProfileModeSuffix": {
+    "message": "mode"
+  },
+  "popupFastRecommendedNote": {
+    "message": "Fast is recommended. Safe waits longer for Google UI."
+  },
+  "popupDelayBetweenCommentsLabel": {
+    "message": "Delay between comments"
+  },
+  "popupWaitAfterScrollLoadLabel": {
+    "message": "Wait after scroll/load"
+  },
+  "popupRetryFailedDeleteLabel": {
+    "message": "Retry failed delete"
+  },
+  "popupRetryBackoffLabel": {
+    "message": "Retry backoff"
+  },
+  "popupStopAfterFailuresLabel": {
+    "message": "Stop after failures in a row"
+  },
+  "popupSecondsSuffix": {
+    "message": "sec"
+  },
+  "popupTimesSuffix": {
+    "message": "times"
+  },
+  "popupSaveSettingsButton": {
+    "message": "Save settings"
+  },
+  "popupStartButton": {
+    "message": "Start"
+  },
+  "popupStopButton": {
+    "message": "Stop"
+  },
+  "popupOpenCommentsPageButton": {
+    "message": "Open YouTube comments page"
+  },
+  "popupHelpSupportButton": {
+    "message": "Help & support"
+  },
+  "popupDonateButton": {
+    "message": "Buy me a coffee"
+  },
+  "popupFootnote": {
+    "message": "Screen sleep prevention helps avoid interruptions, but the Google My Activity tab should still stay visible while the cleaner is working."
+  },
+  "popupPageReadyCurrent": {
+    "message": "Ready on the YouTube comments page."
+  },
+  "popupPageConnectedOtherTab": {
+    "message": "Connected to a cleaner tab in another tab."
+  },
+  "popupTabUsingCurrent": {
+    "message": "Using the current tab for cleaner commands."
+  },
+  "popupTabUsingTitle": {
+    "message": "Using: $1"
+  },
+  "popupFallbackTabTitle": {
+    "message": "YouTube comments tab"
+  },
+  "popupPageReadyStartCurrentTab": {
+    "message": "Ready to start on the current tab."
+  },
+  "popupTabStartAttachesCurrent": {
+    "message": "Start will attach the cleaner to this tab."
+  },
+  "popupPageOpenCommentsPrompt": {
+    "message": "Open Google My Activity -> Your YouTube comments."
+  },
+  "popupTabNoConnectedCleaner": {
+    "message": "No connected cleaner tab was found right now."
+  },
+  "popupRetryScheduled": {
+    "message": "Retry $1 scheduled in $2s."
+  },
+  "popupPausedHidden": {
+    "message": "Paused because the cleaner tab is not visible."
+  },
+  "popupLastIssue": {
+    "message": "Last issue: $1"
+  },
+  "popupMonitorNeedsVisible": {
+    "message": "You can monitor status here, but the cleaner tab still needs to stay visible."
+  },
+  "popupStartAvailableSupportedTab": {
+    "message": "Start is available on the current supported tab."
+  },
+  "popupOnlyWorksOnCommentsPage": {
+    "message": "This extension works only on the YouTube comments page."
+  },
+  "popupCleanerStartingCurrentPage": {
+    "message": "Cleaner is starting on the current page."
+  },
+  "popupCleanerRunningCurrentPage": {
+    "message": "Cleaner is running on the current page."
+  },
+  "popupCleanerIdle": {
+    "message": "Cleaner is idle."
+  },
+  "popupPageStillLoading": {
+    "message": "The comments page is still loading. Wait a moment and try again."
+  },
+  "popupReloadCleanerTabReconnect": {
+    "message": "Reload the cleaner tab once so the extension can reconnect to it."
+  },
+  "popupReloadCommentsPageConnect": {
+    "message": "Reload the comments page once so the extension can connect to it."
+  },
+  "popupNoTargetTabFound": {
+    "message": "No target tab found."
+  },
+  "popupCouldNotReadCleanerTabSession": {
+    "message": "Could not read the cleaner tab session."
+  },
+  "popupCouldNotRememberCleanerTab": {
+    "message": "Could not remember the cleaner tab."
+  },
+  "popupCouldNotClearCleanerTab": {
+    "message": "Could not clear the cleaner tab."
+  },
+  "popupNoActiveTabFound": {
+    "message": "No active tab found."
+  },
+  "popupReloadCommentsPageTryAgain": {
+    "message": "Reload the comments page and try again."
+  },
+  "popupOpenCommentsPageInCurrentTabFirst": {
+    "message": "Open the YouTube comments page in the current tab first."
+  },
+  "popupSettingsPreview": {
+    "message": "$1 mode • $2s pace • $3 retries"
+  },
+  "popupSettingsSavedStarting": {
+    "message": "Settings saved. Starting cleaner with the saved values."
+  },
+  "popupCouldNotStartCleaner": {
+    "message": "Could not start cleaner."
+  },
+  "popupCouldNotStartCleanerPrefix": {
+    "message": "Could not start cleaner: $1"
+  },
+  "popupNoCleanerTabConnected": {
+    "message": "No cleaner tab is connected right now."
+  },
+  "popupSettingsSavedLocally": {
+    "message": "Settings saved locally in Chrome."
+  },
+  "popupCouldNotSaveSettings": {
+    "message": "Could not save settings: $1"
+  },
+  "popupDefaultSettingsRestored": {
+    "message": "Default settings restored."
+  },
+  "popupCouldNotResetSettings": {
+    "message": "Could not reset settings: $1"
+  },
+  "popupUnsavedChanges": {
+    "message": "Unsaved changes. Save them or click Start to use them."
+  },
+  "popupSettingsLoaded": {
+    "message": "Settings loaded from Chrome storage."
+  },
+  "popupCouldNotLoadSettings": {
+    "message": "Could not load settings: $1"
+  },
+  "contentIdleMessage": {
+    "message": "Idle."
+  },
+  "contentTabActiveAgain": {
+    "message": "Tab active again. Continuing cleanup..."
+  },
+  "contentPausedBringToFront": {
+    "message": "Paused. Bring this tab to the front to continue."
+  },
+  "contentResumedAfterVisible": {
+    "message": "Resumed after the tab became visible."
+  },
+  "contentPreparingToDelete": {
+    "message": "Preparing to delete: $1"
+  },
+  "contentConfirmedDeletion": {
+    "message": "Confirmed deletion: $1"
+  },
+  "contentRetryingDelete": {
+    "message": "Retrying $1 ($2/$3) in $4: $5"
+  },
+  "contentCleanerStarted": {
+    "message": "Cleaner started."
+  },
+  "contentDeletedComments": {
+    "message": "Deleted comments: $1"
+  },
+  "contentFailedAttempt": {
+    "message": "Failed attempt: $1. Consecutive failures: $2. Total failed: $3"
+  },
+  "contentStoppedAfterFailures": {
+    "message": "Stopped after $1 failures in a row. Last issue: $2"
+  },
+  "contentLoadingMoreItems": {
+    "message": "Loading more activity items..."
+  },
+  "contentNoMoreDeleteButtons": {
+    "message": "No more visible delete buttons were found."
+  },
+  "contentStoppedByUser": {
+    "message": "Stopped by the user."
+  },
+  "contentFinished": {
+    "message": "Finished."
+  },
+  "contentOpenCommentsPageFirst": {
+    "message": "Open the Your YouTube comments page in Google My Activity first."
+  },
+  "contentLoadingSavedSettings": {
+    "message": "Loading saved settings..."
+  },
+  "contentStartingCleaner": {
+    "message": "Starting $1 cleaner with $2 retries and $3 pacing..."
+  },
+  "contentCleanerStoppedError": {
+    "message": "Cleaner stopped because of an error: $1"
+  },
+  "contentStoppingBeforeStart": {
+    "message": "Stopping before the cleaner starts..."
+  },
+  "contentStoppingAfterCurrentStep": {
+    "message": "Stopping after the current step..."
+  },
+  "logCouldNotLoadSettings": {
+    "message": "Could not load cleaner settings from storage."
+  },
+  "logCouldNotEnableKeepAwake": {
+    "message": "Could not enable keep-awake mode."
+  },
+  "logCouldNotReleaseKeepAwake": {
+    "message": "Could not release keep-awake mode."
+  },
+  "logCleanerStartedFromExtension": {
+    "message": "YouTube Activity Cleaner started from the extension."
+  },
+  "logCleanerFinished": {
+    "message": "YouTube Activity Cleaner finished."
+  },
+  "logCleanerStoppedBecauseOfError": {
+    "message": "YouTube Activity Cleaner stopped because of an error:"
+  }
+}

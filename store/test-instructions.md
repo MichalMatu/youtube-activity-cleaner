@@ -30,3 +30,4 @@ This extension automates the delete flow for the user's own YouTube comments on 
 - The extension works only on `myactivity.google.com` and does not run on arbitrary sites.
 - The Google My Activity tab should stay visible while the cleaner is active because Chrome throttles hidden tabs.
 - If the extension was reloaded while the target tab was already open, reload the Google My Activity page once so the content script reconnects.
+- The current beta is best tested with the Google My Activity interface in English and Polish. The provided `hl=en-GB` URL is the most reliable review path.

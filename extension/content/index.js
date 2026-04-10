@@ -2,6 +2,7 @@
   const shared = globalThis.YtActivityCleanerShared;
   const content = globalThis.YtActivityCleanerContent;
   const { ext, Messages } = shared;
+  const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
 
   document.addEventListener("visibilitychange", () => {
     const state = content.getState();
@@ -12,12 +13,20 @@
 
     if (document.visibilityState === "visible") {
       state.paused = false;
-      content.setCleanerMessage("Tab active again. Continuing cleanup...");
+      content.setCleanerMessage(
+        t("contentTabActiveAgain", undefined, "Tab active again. Continuing cleanup...")
+      );
       return;
     }
 
     state.paused = true;
-    content.setCleanerMessage("Paused. Bring this tab to the front to continue.");
+    content.setCleanerMessage(
+      t(
+        "contentPausedBringToFront",
+        undefined,
+        "Paused. Bring this tab to the front to continue."
+      )
+    );
   });
 
   ext.runtime.onMessage.addListener((message, _sender, sendResponse) => {

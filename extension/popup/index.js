@@ -12,6 +12,9 @@
     sanitizeSettings,
     isSupportedUrl,
   } = shared;
+  const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
+
+  shared.localizeDocument?.();
 
   popup.formatSecondsInputValue = (ms) => {
     const seconds = ms / 1000;
@@ -24,13 +27,21 @@
     const profileLabel =
       Settings.profiles?.[normalizedSettings.speedProfile]?.label || normalizedSettings.speedProfile;
 
-    return `${profileLabel} mode • ${popup.formatSecondsInputValue(
-      normalizedSettings.betweenItemsMs
-    )}s pace • ${normalizedSettings.retryLimit} retries`;
+    return t(
+      "popupSettingsPreview",
+      [
+        profileLabel,
+        popup.formatSecondsInputValue(normalizedSettings.betweenItemsMs),
+        normalizedSettings.retryLimit,
+      ],
+      `${profileLabel} mode • ${popup.formatSecondsInputValue(
+        normalizedSettings.betweenItemsMs
+      )}s pace • ${normalizedSettings.retryLimit} retries`
+    );
   };
 
   popup.normalizeInputValue = (value) => {
-    const normalizedValue = String(value).trim();
+    const normalizedValue = String(value).trim().replace(",", ".");
 
     return normalizedValue ? normalizedValue : Number.NaN;
   };
@@ -89,17 +100,29 @@
 
   popup.getDisconnectedPageMessage = (tab, isTrackedTab = false) => {
     if (tab?.status === "loading") {
-      return "The comments page is still loading. Wait a moment and try again.";
+      return t(
+        "popupPageStillLoading",
+        undefined,
+        "The comments page is still loading. Wait a moment and try again."
+      );
     }
 
     return isTrackedTab
-      ? "Reload the cleaner tab once so the extension can reconnect to it."
-      : "Reload the comments page once so the extension can connect to it.";
+      ? t(
+          "popupReloadCleanerTabReconnect",
+          undefined,
+          "Reload the cleaner tab once so the extension can reconnect to it."
+        )
+      : t(
+          "popupReloadCommentsPageConnect",
+          undefined,
+          "Reload the comments page once so the extension can connect to it."
+        );
   };
 
   popup.sendMessageToTab = async (tab, message) => {
     if (!tab?.id) {
-      throw new Error("No target tab found.");
+      throw new Error(t("popupNoTargetTabFound", undefined, "No target tab found."));
     }
 
     return {
@@ -111,7 +134,14 @@
   popup.getCleanerSession = async () => {
     const response = await ext.runtime.sendMessage({ type: Messages.GET_CLEANER_TAB });
     if (response?.ok === false) {
-      throw new Error(response.error || "Could not read the cleaner tab session.");
+      throw new Error(
+        response.error ||
+          t(
+            "popupCouldNotReadCleanerTabSession",
+            undefined,
+            "Could not read the cleaner tab session."
+          )
+      );
     }
 
     return response?.session || { tabId: null, hasCleanerTab: false };
@@ -123,7 +153,14 @@
       tabId,
     });
     if (response?.ok === false) {
-      throw new Error(response.error || "Could not remember the cleaner tab.");
+      throw new Error(
+        response.error ||
+          t(
+            "popupCouldNotRememberCleanerTab",
+            undefined,
+            "Could not remember the cleaner tab."
+          )
+      );
     }
 
     return response?.session || { tabId: null, hasCleanerTab: false };
@@ -132,7 +169,14 @@
   popup.clearCleanerTab = async () => {
     const response = await ext.runtime.sendMessage({ type: Messages.CLEAR_CLEANER_TAB });
     if (response?.ok === false) {
-      throw new Error(response.error || "Could not clear the cleaner tab.");
+      throw new Error(
+        response.error ||
+          t(
+            "popupCouldNotClearCleanerTab",
+            undefined,
+            "Could not clear the cleaner tab."
+          )
+      );
     }
 
     return response?.session || { tabId: null, hasCleanerTab: false };
@@ -183,7 +227,7 @@
   popup.refreshStatus = async () => {
     const context = await popup.resolveTargetContext();
     if (!context.activeTab) {
-      popup.renderError("No active tab found.", {
+      popup.renderError(t("popupNoActiveTabFound", undefined, "No active tab found."), {
         activeTab: null,
         targetTab: null,
         isTrackedTab: false,
@@ -222,7 +266,14 @@
         return;
       }
 
-      popup.renderError("Reload the comments page and try again.", context);
+      popup.renderError(
+        t(
+          "popupReloadCommentsPageTryAgain",
+          undefined,
+          "Reload the comments page and try again."
+        ),
+        context
+      );
       console.error(error);
     }
   };
@@ -231,16 +282,31 @@
     try {
       const context = await popup.resolveTargetContext();
       if (!context.activeTabSupported || !context.activeTab?.id) {
-        throw new Error("Open the YouTube comments page in the current tab first.");
+        throw new Error(
+          t(
+            "popupOpenCommentsPageInCurrentTabFirst",
+            undefined,
+            "Open the YouTube comments page in the current tab first."
+          )
+        );
       }
 
-      await popup.saveSettingsFromForm("Settings saved. Starting cleaner with the saved values.");
+      await popup.saveSettingsFromForm(
+        t(
+          "popupSettingsSavedStarting",
+          undefined,
+          "Settings saved. Starting cleaner with the saved values."
+        )
+      );
       await popup.setCleanerTab(context.activeTab.id);
       const { tab, response } = await popup.sendMessageToTab(context.activeTab, {
         type: Messages.START_CLEANER,
       });
       if (response?.ok === false) {
-        throw new Error(response.error || "Could not start cleaner.");
+        throw new Error(
+          response.error ||
+            t("popupCouldNotStartCleaner", undefined, "Could not start cleaner.")
+        );
       }
 
       popup.renderStatus(response?.status, {
@@ -263,7 +329,14 @@
       }
 
       popup.renderError(error.message, context);
-      popup.renderSettingsState(`Could not start cleaner: ${error.message}`, true);
+      popup.renderSettingsState(
+        t(
+          "popupCouldNotStartCleanerPrefix",
+          error.message,
+          `Could not start cleaner: ${error.message}`
+        ),
+        true
+      );
       console.error(error);
     }
   });
@@ -272,7 +345,13 @@
     try {
       const context = await popup.resolveTargetContext();
       if (!context.targetTab) {
-        throw new Error("No cleaner tab is connected right now.");
+        throw new Error(
+          t(
+            "popupNoCleanerTabConnected",
+            undefined,
+            "No cleaner tab is connected right now."
+          )
+        );
       }
 
       const { tab, response } = await popup.sendMessageToTab(context.targetTab, {
@@ -296,13 +375,26 @@
     await ext.tabs.create({ url: shared.Constants.SUPPORT_URL });
   });
 
+  popup.elements.donateButton.addEventListener("click", async () => {
+    await ext.tabs.create({ url: shared.Constants.DONATE_URL });
+  });
+
   popup.elements.settingsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     try {
-      await popup.saveSettingsFromForm("Settings saved locally in Chrome.");
+      await popup.saveSettingsFromForm(
+        t("popupSettingsSavedLocally", undefined, "Settings saved locally in Chrome.")
+      );
     } catch (error) {
-      popup.renderSettingsState(`Could not save settings: ${error.message}`, true);
+      popup.renderSettingsState(
+        t(
+          "popupCouldNotSaveSettings",
+          error.message,
+          `Could not save settings: ${error.message}`
+        ),
+        true
+      );
       console.error(error);
     }
   });
@@ -311,9 +403,18 @@
     try {
       const settings = await resetSettings();
       popup.applySettingsToForm(settings);
-      popup.renderSettingsState("Default settings restored.");
+      popup.renderSettingsState(
+        t("popupDefaultSettingsRestored", undefined, "Default settings restored.")
+      );
     } catch (error) {
-      popup.renderSettingsState(`Could not reset settings: ${error.message}`, true);
+      popup.renderSettingsState(
+        t(
+          "popupCouldNotResetSettings",
+          error.message,
+          `Could not reset settings: ${error.message}`
+        ),
+        true
+      );
       console.error(error);
     }
   });
@@ -328,17 +429,32 @@
   ].forEach((element) => {
     element.addEventListener("input", () => {
       popup.renderSettingsPreview(popup.getSettingsPreviewText(popup.getSettingsFromForm()));
-      popup.renderSettingsState("Unsaved changes. Save them or click Start to use them.");
+      popup.renderSettingsState(
+        t(
+          "popupUnsavedChanges",
+          undefined,
+          "Unsaved changes. Save them or click Start to use them."
+        )
+      );
     });
   });
 
   getSettings()
     .then((settings) => {
       popup.applySettingsToForm(settings);
-      popup.renderSettingsState("Settings loaded from Chrome storage.");
+      popup.renderSettingsState(
+        t("popupSettingsLoaded", undefined, "Settings loaded from Chrome storage.")
+      );
     })
     .catch((error) => {
-      popup.renderSettingsState(`Could not load settings: ${error.message}`, true);
+      popup.renderSettingsState(
+        t(
+          "popupCouldNotLoadSettings",
+          error.message,
+          `Could not load settings: ${error.message}`
+        ),
+        true
+      );
       console.error(error);
     });
 

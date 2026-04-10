@@ -1,6 +1,8 @@
 (() => {
+  const shared = globalThis.YtActivityCleanerShared;
   const popup = (globalThis.YtActivityCleanerPopup =
     globalThis.YtActivityCleanerPopup || {});
+  const t = shared?.t || ((_key, _substitutions, fallback = "") => fallback);
 
   popup.elements = {
     pageStateElement: document.querySelector("#page-state"),
@@ -17,6 +19,7 @@
     stopButton: document.querySelector("#stop-button"),
     openPageButton: document.querySelector("#open-page-button"),
     supportButton: document.querySelector("#support-button"),
+    donateButton: document.querySelector("#donate-button"),
     settingsForm: document.querySelector("#settings-form"),
     resetSettingsButton: document.querySelector("#reset-settings-button"),
     speedProfileSelect: document.querySelector("#speed-profile"),
@@ -34,13 +37,19 @@
 
   popup.renderPowerState = (status) => {
     if (status?.keepAwakeActive) {
-      popup.elements.powerStateElement.textContent =
-        "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs.";
+      popup.elements.powerStateElement.textContent = t(
+        "popupKeepAwakeEnabled",
+        undefined,
+        "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs."
+      );
       return;
     }
 
-    popup.elements.powerStateElement.textContent =
-      "Keep-awake will be enabled automatically while cleaning is running.";
+    popup.elements.powerStateElement.textContent = t(
+      "popupKeepAwakeAuto",
+      undefined,
+      "Keep-awake will be enabled automatically while cleaning is running."
+    );
   };
 
   popup.renderDebugState = (message, isError = false) => {
@@ -55,20 +64,37 @@
 
     if (onSupportedPage) {
       popup.elements.pageStateElement.textContent = isUsingActiveTab
-        ? "Ready on the YouTube comments page."
-        : "Connected to a cleaner tab in another tab.";
+        ? t("popupPageReadyCurrent", undefined, "Ready on the YouTube comments page.")
+        : t("popupPageConnectedOtherTab", undefined, "Connected to a cleaner tab in another tab.");
       popup.elements.tabStateElement.textContent = isUsingActiveTab
-        ? "Using the current tab for cleaner commands."
-        : `Using: ${targetTab?.title || "YouTube comments tab"}`;
+        ? t("popupTabUsingCurrent", undefined, "Using the current tab for cleaner commands.")
+        : t(
+            "popupTabUsingTitle",
+            targetTab?.title || t("popupFallbackTabTitle", undefined, "YouTube comments tab"),
+            `Using: ${targetTab?.title || "YouTube comments tab"}`
+          );
     } else if (popup.isSupportedUrl(activeTab?.url)) {
-      popup.elements.pageStateElement.textContent = "Ready to start on the current tab.";
-      popup.elements.tabStateElement.textContent =
-        "Start will attach the cleaner to this tab.";
+      popup.elements.pageStateElement.textContent = t(
+        "popupPageReadyStartCurrentTab",
+        undefined,
+        "Ready to start on the current tab."
+      );
+      popup.elements.tabStateElement.textContent = t(
+        "popupTabStartAttachesCurrent",
+        undefined,
+        "Start will attach the cleaner to this tab."
+      );
     } else {
-      popup.elements.pageStateElement.textContent =
-        "Open Google My Activity -> Your YouTube comments.";
-      popup.elements.tabStateElement.textContent =
-        "No connected cleaner tab was found right now.";
+      popup.elements.pageStateElement.textContent = t(
+        "popupPageOpenCommentsPrompt",
+        undefined,
+        "Open Google My Activity -> Your YouTube comments."
+      );
+      popup.elements.tabStateElement.textContent = t(
+        "popupTabNoConnectedCleaner",
+        undefined,
+        "No connected cleaner tab was found right now."
+      );
     }
 
     popup.elements.deletedCountElement.textContent = String(status?.deleted || 0);
@@ -78,25 +104,52 @@
 
     if (status?.retryAttempt > 0 && status?.retryDelayMs > 0) {
       popup.renderDebugState(
-        `Retry ${status.retryAttempt} scheduled in ${(status.retryDelayMs / 1000).toFixed(1)}s.`
+        t(
+          "popupRetryScheduled",
+          [status.retryAttempt, (status.retryDelayMs / 1000).toFixed(1)],
+          `Retry ${status.retryAttempt} scheduled in ${(status.retryDelayMs / 1000).toFixed(1)}s.`
+        )
       );
     } else if (status?.paused) {
-      popup.renderDebugState("Paused because the cleaner tab is not visible.");
+      popup.renderDebugState(
+        t(
+          "popupPausedHidden",
+          undefined,
+          "Paused because the cleaner tab is not visible."
+        )
+      );
     } else if (status?.lastError) {
-      popup.renderDebugState(`Last issue: ${status.lastError}`, true);
+      popup.renderDebugState(
+        t("popupLastIssue", status.lastError, `Last issue: ${status.lastError}`),
+        true
+      );
     } else if (isTrackedTab && !isUsingActiveTab) {
       popup.renderDebugState(
-        "You can monitor status here, but the cleaner tab still needs to stay visible."
+        t(
+          "popupMonitorNeedsVisible",
+          undefined,
+          "You can monitor status here, but the cleaner tab still needs to stay visible."
+        )
       );
     } else {
-      popup.renderDebugState("No active retries or errors.");
+      popup.renderDebugState(
+        t("popupNoRetriesOrErrors", undefined, "No active retries or errors.")
+      );
     }
 
     if (!onSupportedPage) {
       popup.elements.runStateElement.textContent =
         canStartFromActiveTab
-          ? "Start is available on the current supported tab."
-          : "This extension works only on the YouTube comments page.";
+          ? t(
+              "popupStartAvailableSupportedTab",
+              undefined,
+              "Start is available on the current supported tab."
+            )
+          : t(
+              "popupOnlyWorksOnCommentsPage",
+              undefined,
+              "This extension works only on the YouTube comments page."
+            );
       popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
       return;
     }
@@ -105,13 +158,22 @@
       popup.elements.runStateElement.textContent =
         status.lastMessage ||
         (status?.starting
-          ? "Cleaner is starting on the current page."
-          : "Cleaner is running on the current page.");
+          ? t(
+              "popupCleanerStartingCurrentPage",
+              undefined,
+              "Cleaner is starting on the current page."
+            )
+          : t(
+              "popupCleanerRunningCurrentPage",
+              undefined,
+              "Cleaner is running on the current page."
+            ));
       popup.setButtonsState({ canStart: false, canStop: true });
       return;
     }
 
-    popup.elements.runStateElement.textContent = status?.lastMessage || "Cleaner is idle.";
+    popup.elements.runStateElement.textContent =
+      status?.lastMessage || t("popupCleanerIdle", undefined, "Cleaner is idle.");
     popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
   };
 

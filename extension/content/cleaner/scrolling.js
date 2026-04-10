@@ -1,6 +1,8 @@
 (() => {
+  const shared = globalThis.YtActivityCleanerShared;
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
+  const t = shared?.t || ((_key, _substitutions, fallback = "") => fallback);
 
   content.sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   content.scrollRoot = document.scrollingElement || document.documentElement;
@@ -11,14 +13,26 @@
     if (document.visibilityState === "visible") {
       if (state.paused) {
         state.paused = false;
-        content.setCleanerMessage("Resumed after the tab became visible.");
+        content.setCleanerMessage(
+          t(
+            "contentResumedAfterVisible",
+            undefined,
+            "Resumed after the tab became visible."
+          )
+        );
       }
 
       return true;
     }
 
     state.paused = true;
-    content.setCleanerMessage("Paused. Bring this tab to the front to continue.");
+    content.setCleanerMessage(
+      t(
+        "contentPausedBringToFront",
+        undefined,
+        "Paused. Bring this tab to the front to continue."
+      )
+    );
 
     while (document.visibilityState !== "visible") {
       if (state.stopRequested) {
@@ -29,7 +43,9 @@
     }
 
     state.paused = false;
-    content.setCleanerMessage("Tab active again. Continuing cleanup...");
+    content.setCleanerMessage(
+      t("contentTabActiveAgain", undefined, "Tab active again. Continuing cleanup...")
+    );
     return true;
   };
 

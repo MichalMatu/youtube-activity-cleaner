@@ -7,7 +7,9 @@
       "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments",
     SUPPORTED_PAGE_HOST: "myactivity.google.com",
     SUPPORTED_PAGE_FRAGMENT: "page=youtube_comments",
-    SUPPORT_URL: "https://buymeacoffee.com/michalmatuh",
+    PROJECT_SITE_URL: "https://michalmatu.github.io/youtube-activity-cleaner/",
+    SUPPORT_URL: "https://michalmatu.github.io/youtube-activity-cleaner/support.html",
+    DONATE_URL: "https://buymeacoffee.com/michalmatuh",
   });
 
   shared.isSupportedUrl = (url) =>

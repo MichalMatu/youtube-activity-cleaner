@@ -1,0 +1,320 @@
+{
+  "extName": {
+    "message": "YouTube Activity Cleaner"
+  },
+  "extDescription": {
+    "message": "Uruchamia cleaner komentarzy YouTube na stronie komentarzy Google My Activity."
+  },
+  "popupTitle": {
+    "message": "YouTube Activity Cleaner"
+  },
+  "popupEyebrow": {
+    "message": "Rozszerzenie Chrome"
+  },
+  "popupLead": {
+    "message": "Czyści komentarze na stronie komentarzy Google My Activity."
+  },
+  "popupCleanerTabLabel": {
+    "message": "Karta cleanera"
+  },
+  "popupCheckingPage": {
+    "message": "Sprawdzanie strony..."
+  },
+  "popupLookingForBestTab": {
+    "message": "Szukanie najlepszej karty do sterowania..."
+  },
+  "popupOpenCommentsPageToContinue": {
+    "message": "Otwórz stronę komentarzy, aby kontynuować."
+  },
+  "popupCleanerStatusLabel": {
+    "message": "Status cleanera"
+  },
+  "popupDeletedLabel": {
+    "message": "Usunięte"
+  },
+  "popupAttemptsLabel": {
+    "message": "Próby"
+  },
+  "popupFailedLabel": {
+    "message": "Błędy"
+  },
+  "popupKeepAwakeAuto": {
+    "message": "Keep-awake włączy się automatycznie podczas działania cleanera."
+  },
+  "popupKeepAwakeEnabled": {
+    "message": "Keep-awake jest włączony. Chrome powinien utrzymać ekran aktywny podczas pracy cleanera."
+  },
+  "popupNoRetriesOrErrors": {
+    "message": "Brak aktywnych ponowień ani błędów."
+  },
+  "popupSettingsLabel": {
+    "message": "Ustawienia"
+  },
+  "popupLoadingSavedSettings": {
+    "message": "Wczytywanie zapisanych ustawień..."
+  },
+  "popupSettingsSavedHint": {
+    "message": "Ustawienia są zapisywane lokalnie w Chrome i używane przy następnym uruchomieniu."
+  },
+  "popupResetButton": {
+    "message": "Reset"
+  },
+  "popupRunProfileLabel": {
+    "message": "Profil pracy"
+  },
+  "popupProfileFastLabel": {
+    "message": "Szybki"
+  },
+  "popupProfileSafeLabel": {
+    "message": "Bezpieczny"
+  },
+  "popupProfileModeSuffix": {
+    "message": "tryb"
+  },
+  "popupFastRecommendedNote": {
+    "message": "Szybki jest zalecany. Bezpieczny czeka dłużej na interfejs Google."
+  },
+  "popupDelayBetweenCommentsLabel": {
+    "message": "Odstęp między komentarzami"
+  },
+  "popupWaitAfterScrollLoadLabel": {
+    "message": "Czekanie po przewinięciu/wczytaniu"
+  },
+  "popupRetryFailedDeleteLabel": {
+    "message": "Ponów nieudane usunięcie"
+  },
+  "popupRetryBackoffLabel": {
+    "message": "Opóźnienie ponowień"
+  },
+  "popupStopAfterFailuresLabel": {
+    "message": "Zatrzymaj po błędach z rzędu"
+  },
+  "popupSecondsSuffix": {
+    "message": "sek"
+  },
+  "popupTimesSuffix": {
+    "message": "razy"
+  },
+  "popupSaveSettingsButton": {
+    "message": "Zapisz ustawienia"
+  },
+  "popupStartButton": {
+    "message": "Start"
+  },
+  "popupStopButton": {
+    "message": "Stop"
+  },
+  "popupOpenCommentsPageButton": {
+    "message": "Otwórz stronę komentarzy YouTube"
+  },
+  "popupHelpSupportButton": {
+    "message": "Pomoc i wsparcie"
+  },
+  "popupDonateButton": {
+    "message": "Postaw mi kawę"
+  },
+  "popupFootnote": {
+    "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale karta Google My Activity nadal powinna pozostać widoczna podczas działania cleanera."
+  },
+  "popupPageReadyCurrent": {
+    "message": "Gotowe na stronie komentarzy YouTube."
+  },
+  "popupPageConnectedOtherTab": {
+    "message": "Połączono z kartą cleanera w innej karcie."
+  },
+  "popupTabUsingCurrent": {
+    "message": "Do poleceń cleanera używana jest bieżąca karta."
+  },
+  "popupTabUsingTitle": {
+    "message": "Używana karta: $1"
+  },
+  "popupFallbackTabTitle": {
+    "message": "Karta komentarzy YouTube"
+  },
+  "popupPageReadyStartCurrentTab": {
+    "message": "Gotowe do startu na bieżącej karcie."
+  },
+  "popupTabStartAttachesCurrent": {
+    "message": "Start przypnie cleaner do tej karty."
+  },
+  "popupPageOpenCommentsPrompt": {
+    "message": "Otwórz Google My Activity -> Twoje komentarze w YouTube."
+  },
+  "popupTabNoConnectedCleaner": {
+    "message": "Nie znaleziono teraz podłączonej karty cleanera."
+  },
+  "popupRetryScheduled": {
+    "message": "Ponowienie $1 zaplanowane za $2 s."
+  },
+  "popupPausedHidden": {
+    "message": "Pauza, bo karta cleanera nie jest widoczna."
+  },
+  "popupLastIssue": {
+    "message": "Ostatni problem: $1"
+  },
+  "popupMonitorNeedsVisible": {
+    "message": "Możesz tu monitorować status, ale karta cleanera nadal musi pozostać widoczna."
+  },
+  "popupStartAvailableSupportedTab": {
+    "message": "Start jest dostępny na bieżącej obsługiwanej karcie."
+  },
+  "popupOnlyWorksOnCommentsPage": {
+    "message": "To rozszerzenie działa tylko na stronie komentarzy YouTube."
+  },
+  "popupCleanerStartingCurrentPage": {
+    "message": "Cleaner uruchamia się na bieżącej stronie."
+  },
+  "popupCleanerRunningCurrentPage": {
+    "message": "Cleaner działa na bieżącej stronie."
+  },
+  "popupCleanerIdle": {
+    "message": "Cleaner jest bezczynny."
+  },
+  "popupPageStillLoading": {
+    "message": "Strona komentarzy nadal się ładuje. Poczekaj chwilę i spróbuj ponownie."
+  },
+  "popupReloadCleanerTabReconnect": {
+    "message": "Odśwież kartę cleanera raz, aby rozszerzenie mogło połączyć się ponownie."
+  },
+  "popupReloadCommentsPageConnect": {
+    "message": "Odśwież stronę komentarzy raz, aby rozszerzenie mogło się połączyć."
+  },
+  "popupNoTargetTabFound": {
+    "message": "Nie znaleziono karty docelowej."
+  },
+  "popupCouldNotReadCleanerTabSession": {
+    "message": "Nie udało się odczytać sesji karty cleanera."
+  },
+  "popupCouldNotRememberCleanerTab": {
+    "message": "Nie udało się zapamiętać karty cleanera."
+  },
+  "popupCouldNotClearCleanerTab": {
+    "message": "Nie udało się wyczyścić karty cleanera."
+  },
+  "popupNoActiveTabFound": {
+    "message": "Nie znaleziono aktywnej karty."
+  },
+  "popupReloadCommentsPageTryAgain": {
+    "message": "Odśwież stronę komentarzy i spróbuj ponownie."
+  },
+  "popupOpenCommentsPageInCurrentTabFirst": {
+    "message": "Najpierw otwórz stronę komentarzy YouTube w bieżącej karcie."
+  },
+  "popupSettingsPreview": {
+    "message": "$1 • tempo $2 s • $3 ponowień"
+  },
+  "popupSettingsSavedStarting": {
+    "message": "Ustawienia zapisane. Cleaner startuje z zapisanymi wartościami."
+  },
+  "popupCouldNotStartCleaner": {
+    "message": "Nie udało się uruchomić cleanera."
+  },
+  "popupCouldNotStartCleanerPrefix": {
+    "message": "Nie udało się uruchomić cleanera: $1"
+  },
+  "popupNoCleanerTabConnected": {
+    "message": "Żadna karta cleanera nie jest teraz podłączona."
+  },
+  "popupSettingsSavedLocally": {
+    "message": "Ustawienia zapisane lokalnie w Chrome."
+  },
+  "popupCouldNotSaveSettings": {
+    "message": "Nie udało się zapisać ustawień: $1"
+  },
+  "popupDefaultSettingsRestored": {
+    "message": "Przywrócono ustawienia domyślne."
+  },
+  "popupCouldNotResetSettings": {
+    "message": "Nie udało się zresetować ustawień: $1"
+  },
+  "popupUnsavedChanges": {
+    "message": "Masz niezapisane zmiany. Zapisz je albo kliknij Start, aby ich użyć."
+  },
+  "popupSettingsLoaded": {
+    "message": "Ustawienia wczytane z pamięci Chrome."
+  },
+  "popupCouldNotLoadSettings": {
+    "message": "Nie udało się wczytać ustawień: $1"
+  },
+  "contentIdleMessage": {
+    "message": "Bezczynny."
+  },
+  "contentTabActiveAgain": {
+    "message": "Karta znów aktywna. Czyszczenie trwa dalej..."
+  },
+  "contentPausedBringToFront": {
+    "message": "Pauza. Przywróć tę kartę na wierzch, aby kontynuować."
+  },
+  "contentResumedAfterVisible": {
+    "message": "Wznowiono po ponownym pokazaniu karty."
+  },
+  "contentPreparingToDelete": {
+    "message": "Przygotowanie do usunięcia: $1"
+  },
+  "contentConfirmedDeletion": {
+    "message": "Potwierdzono usunięcie: $1"
+  },
+  "contentRetryingDelete": {
+    "message": "Ponawianie $1 ($2/$3) za $4: $5"
+  },
+  "contentCleanerStarted": {
+    "message": "Cleaner uruchomiony."
+  },
+  "contentDeletedComments": {
+    "message": "Usunięte komentarze: $1"
+  },
+  "contentFailedAttempt": {
+    "message": "Nieudana próba: $1. Błędy z rzędu: $2. Łącznie nieudanych: $3"
+  },
+  "contentStoppedAfterFailures": {
+    "message": "Zatrzymano po $1 błędach z rzędu. Ostatni problem: $2"
+  },
+  "contentLoadingMoreItems": {
+    "message": "Wczytywanie kolejnych elementów aktywności..."
+  },
+  "contentNoMoreDeleteButtons": {
+    "message": "Nie znaleziono już więcej widocznych przycisków usuwania."
+  },
+  "contentStoppedByUser": {
+    "message": "Zatrzymane przez użytkownika."
+  },
+  "contentFinished": {
+    "message": "Zakończono."
+  },
+  "contentOpenCommentsPageFirst": {
+    "message": "Najpierw otwórz stronę Twoje komentarze w YouTube w Google My Activity."
+  },
+  "contentLoadingSavedSettings": {
+    "message": "Wczytywanie zapisanych ustawień..."
+  },
+  "contentStartingCleaner": {
+    "message": "Uruchamianie cleanera $1 z $2 ponowieniami i tempem $3..."
+  },
+  "contentCleanerStoppedError": {
+    "message": "Cleaner zatrzymał się z powodu błędu: $1"
+  },
+  "contentStoppingBeforeStart": {
+    "message": "Zatrzymywanie przed startem cleanera..."
+  },
+  "contentStoppingAfterCurrentStep": {
+    "message": "Zatrzymywanie po bieżącym kroku..."
+  },
+  "logCouldNotLoadSettings": {
+    "message": "Nie udało się wczytać ustawień cleanera z pamięci."
+  },
+  "logCouldNotEnableKeepAwake": {
+    "message": "Nie udało się włączyć trybu keep-awake."
+  },
+  "logCouldNotReleaseKeepAwake": {
+    "message": "Nie udało się wyłączyć trybu keep-awake."
+  },
+  "logCleanerStartedFromExtension": {
+    "message": "YouTube Activity Cleaner uruchomiony z rozszerzenia."
+  },
+  "logCleanerFinished": {
+    "message": "YouTube Activity Cleaner zakończył działanie."
+  },
+  "logCleanerStoppedBecauseOfError": {
+    "message": "YouTube Activity Cleaner zatrzymał się z powodu błędu:"
+  }
+}

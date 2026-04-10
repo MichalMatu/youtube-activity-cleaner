@@ -43,6 +43,7 @@ Important:
 
 - The extension works only on the Google My Activity page for Your YouTube comments.
 - The target tab should stay visible while cleaning is running because hidden tabs are throttled by Chrome.
+- The current beta is best tested with the Google My Activity interface in English and Polish.
 - This tool automates the existing web UI. If Google changes the page layout, selectors may need updates.
 
 ## Store Assets Prepared In This Repo

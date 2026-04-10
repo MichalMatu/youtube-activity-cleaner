@@ -2,11 +2,12 @@
   const shared = (globalThis.YtActivityCleanerShared =
     globalThis.YtActivityCleanerShared || {});
   const { ext } = shared;
+  const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
 
   const SETTINGS_STORAGE_KEY = "cleanerSettings";
   const speedProfiles = Object.freeze({
-    fast: Object.freeze({ label: "Fast" }),
-    safe: Object.freeze({ label: "Safe" }),
+    fast: Object.freeze({ label: t("popupProfileFastLabel", undefined, "Fast") }),
+    safe: Object.freeze({ label: t("popupProfileSafeLabel", undefined, "Safe") }),
   });
   const legacyDefaults = Object.freeze({
     betweenItemsMs: 3200,
@@ -86,7 +87,7 @@
       const stored = await ext.storage.local.get(SETTINGS_STORAGE_KEY);
       return sanitizeSettings(stored?.[SETTINGS_STORAGE_KEY]);
     } catch (error) {
-      console.warn("Could not load cleaner settings from storage.", error);
+      console.warn(t("logCouldNotLoadSettings", undefined, "Could not load cleaner settings from storage."), error);
       return { ...defaultSettings };
     }
   };
