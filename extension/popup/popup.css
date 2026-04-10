@@ -263,6 +263,24 @@ button.secondary {
   margin-top: 8px;
 }
 
+.app-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  color: #9ca3af;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.meta-label {
+  font-weight: 700;
+}
+
+.meta-value {
+  color: #cbd5e1;
+}
+
 button.help-link {
   background: #121418;
   border: 1px solid #313844;

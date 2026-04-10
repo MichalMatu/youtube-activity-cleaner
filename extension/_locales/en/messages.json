@@ -113,6 +113,12 @@
   "popupDonateButton": {
     "message": "Buy me a coffee"
   },
+  "popupAboutLabel": {
+    "message": "About"
+  },
+  "popupAboutValue": {
+    "message": "Version $1 • UI: $2"
+  },
   "popupFootnote": {
     "message": "Screen sleep prevention helps avoid interruptions, but the Google My Activity tab should still stay visible while the cleaner is working."
   },

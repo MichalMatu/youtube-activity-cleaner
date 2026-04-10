@@ -113,6 +113,12 @@
   "popupDonateButton": {
     "message": "Postaw mi kawę"
   },
+  "popupAboutLabel": {
+    "message": "Informacje"
+  },
+  "popupAboutValue": {
+    "message": "Wersja $1 • UI: $2"
+  },
   "popupFootnote": {
     "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale karta Google My Activity nadal powinna pozostać widoczna podczas działania cleanera."
   },

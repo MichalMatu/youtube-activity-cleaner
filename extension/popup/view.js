@@ -20,6 +20,7 @@
     openPageButton: document.querySelector("#open-page-button"),
     supportButton: document.querySelector("#support-button"),
     donateButton: document.querySelector("#donate-button"),
+    appMetaElement: document.querySelector("#app-meta"),
     settingsForm: document.querySelector("#settings-form"),
     resetSettingsButton: document.querySelector("#reset-settings-button"),
     speedProfileSelect: document.querySelector("#speed-profile"),

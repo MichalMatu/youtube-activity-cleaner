@@ -21,6 +21,38 @@
     globalThis.document?.documentElement?.lang ||
     undefined;
 
+  popup.getAppVersion = () => ext?.runtime?.getManifest?.()?.version || "dev";
+
+  popup.getUiLocaleLabel = () => {
+    const locale = popup.getUiLocale() || "en";
+
+    try {
+      const displayNames = new Intl.DisplayNames([locale], {
+        type: "language",
+      });
+      const languageLabel = displayNames.of(locale);
+
+      return languageLabel ? `${languageLabel} (${locale})` : locale;
+    } catch (_error) {
+      return locale;
+    }
+  };
+
+  popup.getAppMetaText = () =>
+    t(
+      "popupAboutValue",
+      [popup.getAppVersion(), popup.getUiLocaleLabel()],
+      `Version ${popup.getAppVersion()} • UI: ${popup.getUiLocaleLabel()}`
+    );
+
+  popup.renderAppMeta = () => {
+    if (popup.elements?.appMetaElement) {
+      popup.elements.appMetaElement.textContent = popup.getAppMetaText();
+    }
+  };
+
+  popup.renderAppMeta();
+
   popup.formatSecondsInputValue = (ms) => {
     const seconds = ms / 1000;
 
