@@ -16,10 +16,24 @@
 
   shared.localizeDocument?.();
 
+  popup.getUiLocale = () =>
+    ext?.i18n?.getUILanguage?.() ||
+    globalThis.document?.documentElement?.lang ||
+    undefined;
+
   popup.formatSecondsInputValue = (ms) => {
     const seconds = ms / 1000;
 
     return Number.isInteger(seconds) ? String(seconds) : seconds.toFixed(1);
+  };
+
+  popup.formatSecondsDisplayValue = (ms) => {
+    const seconds = ms / 1000;
+
+    return new Intl.NumberFormat(popup.getUiLocale(), {
+      minimumFractionDigits: Number.isInteger(seconds) ? 0 : 1,
+      maximumFractionDigits: 1,
+    }).format(seconds);
   };
 
   popup.getSettingsPreviewText = (settings) => {
@@ -31,10 +45,10 @@
       "popupSettingsPreview",
       [
         profileLabel,
-        popup.formatSecondsInputValue(normalizedSettings.betweenItemsMs),
+        popup.formatSecondsDisplayValue(normalizedSettings.betweenItemsMs),
         normalizedSettings.retryLimit,
       ],
-      `${profileLabel} mode • ${popup.formatSecondsInputValue(
+      `${profileLabel} mode • ${popup.formatSecondsDisplayValue(
         normalizedSettings.betweenItemsMs
       )}s pace • ${normalizedSettings.retryLimit} retries`
     );
