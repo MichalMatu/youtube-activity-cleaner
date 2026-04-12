@@ -110,6 +110,9 @@
   "popupOpenCommentsPageButton": {
     "message": "Open YouTube comments page"
   },
+  "popupOpenLikedVideosPageButton": {
+    "message": "Open Liked videos"
+  },
   "popupHelpSupportButton": {
     "message": "Help & support"
   },

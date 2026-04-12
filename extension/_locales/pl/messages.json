@@ -110,6 +110,9 @@
   "popupOpenCommentsPageButton": {
     "message": "Otwórz stronę komentarzy YouTube"
   },
+  "popupOpenLikedVideosPageButton": {
+    "message": "Otwórz Polubione filmy"
+  },
   "popupHelpSupportButton": {
     "message": "Pomoc i wsparcie"
   },

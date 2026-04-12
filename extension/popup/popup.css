@@ -282,6 +282,16 @@ button.secondary {
   background: #1f6feb;
 }
 
+.quick-links {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.quick-links button.secondary {
+  margin-top: 0;
+}
+
 .extra-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

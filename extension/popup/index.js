@@ -433,8 +433,12 @@
     }
   });
 
-  popup.elements.openPageButton.addEventListener("click", async () => {
+  popup.elements.openCommentsPageButton.addEventListener("click", async () => {
     await ext.tabs.create({ url: shared.Constants.COMMENTS_PAGE_URL });
+  });
+
+  popup.elements.openLikedVideosPageButton.addEventListener("click", async () => {
+    await ext.tabs.create({ url: shared.Constants.LIKES_PAGE_URL });
   });
 
   popup.elements.supportButton.addEventListener("click", async () => {
