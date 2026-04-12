@@ -68,18 +68,25 @@
       isUsingActiveTab,
       canStartFromActiveTab,
     } = context;
+    const targetTabTarget = popup.getTargetByUrl?.(targetTab?.url);
     const onSupportedPage = popup.isSupportedUrl(targetTab?.url);
+    const currentTargetLabel = popup.getTargetLabel(targetTabTarget || activeTabTarget);
 
     if (onSupportedPage) {
       popup.elements.pageStateElement.textContent = isUsingActiveTab
-        ? t("popupPageReadyCurrent", undefined, "Ready on the YouTube comments page.")
-        : t("popupPageConnectedOtherTab", undefined, "Connected to a cleaner tab in another tab.");
+        ? t("popupPageReadyCurrentTarget", currentTargetLabel, `Ready on: ${currentTargetLabel}.`)
+        : t(
+            "popupPageConnectedOtherTabTarget",
+            currentTargetLabel,
+            `Connected to a ${currentTargetLabel} cleaner tab in another tab.`
+          );
       popup.elements.tabStateElement.textContent = isUsingActiveTab
         ? t("popupTabUsingCurrent", undefined, "Using the current tab for cleaner commands.")
         : t(
             "popupTabUsingTitle",
-            targetTab?.title || t("popupFallbackTabTitle", undefined, "YouTube comments tab"),
-            `Using: ${targetTab?.title || "YouTube comments tab"}`
+            targetTab?.title ||
+              t("popupFallbackTabTitleTarget", currentTargetLabel, `${currentTargetLabel} tab`),
+            `Using: ${targetTab?.title || `${currentTargetLabel} tab`}`
           );
     } else if (popup.isSupportedUrl(activeTab?.url)) {
       if (canStartFromActiveTab) {

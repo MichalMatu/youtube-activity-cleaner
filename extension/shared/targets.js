@@ -11,6 +11,8 @@
       requiredUrlFragments: freezeArray(definition.requiredUrlFragments),
       selectors: Object.freeze({
         deleteButtons: freezeArray(definition.selectors?.deleteButtons),
+        actionButtons: freezeArray(definition.selectors?.actionButtons),
+        menuItems: freezeArray(definition.selectors?.menuItems),
         confirmButtons: freezeArray(definition.selectors?.confirmButtons),
         status: freezeArray(definition.selectors?.status),
         loadMore: freezeArray(definition.selectors?.loadMore),
@@ -72,20 +74,31 @@
       id: "likes",
       labelKey: "targetLikesLabel",
       labelFallback: "Liked videos",
-      enabled: false,
+      enabled: true,
       pageUrl: "https://www.youtube.com/playlist?list=LL",
       supportedHost: "www.youtube.com",
       urlPrefixes: ["https://www.youtube.com/playlist", "https://youtube.com/playlist"],
       requiredUrlFragments: ["list=LL"],
       selectors: {
+        actionButtons: [
+          'ytd-playlist-video-renderer button[aria-label*="Action menu"]',
+          'ytd-playlist-video-renderer button[aria-label*="More actions"]',
+          'ytd-playlist-video-renderer button[aria-label*="Wi\\u0119cej"]',
+          'ytd-playlist-video-renderer ytd-menu-renderer yt-icon-button button',
+        ],
+        menuItems: [
+          "ytd-menu-popup-renderer ytd-menu-service-item-renderer",
+          "tp-yt-paper-listbox ytd-menu-service-item-renderer",
+          'tp-yt-iron-dropdown [role="menuitem"]',
+        ],
         deleteButtons: [],
         confirmButtons: [],
         status: [],
         loadMore: [],
       },
       dom: {
-        itemContainers: [],
-        descriptionSelectors: [],
+        itemContainers: ["ytd-playlist-video-renderer", '[role="listitem"]'],
+        descriptionSelectors: ["#video-title", "a#video-title", "#video-title span"],
       },
       statusPatterns: {
         pending: [],

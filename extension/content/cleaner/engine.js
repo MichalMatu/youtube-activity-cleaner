@@ -184,7 +184,9 @@
       const loadMoreButton = strategy.getLoadMoreButton();
       if (loadMoreButton) {
         content.setCleanerMessage(
-          t("contentLoadingMoreItems", undefined, "Loading more activity items...")
+          strategy.getLoadingMoreMessage
+            ? strategy.getLoadingMoreMessage()
+            : t("contentLoadingMoreItems", undefined, "Loading more activity items...")
         );
         await content.clickElement(loadMoreButton);
 

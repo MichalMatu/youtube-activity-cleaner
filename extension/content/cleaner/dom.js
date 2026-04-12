@@ -39,6 +39,12 @@
   content.getVisibleDeleteButtons = () =>
     content.getVisibleMatches(content.getSelectorList("deleteButtons"));
 
+  content.getVisibleActionButtons = () =>
+    content.getVisibleMatches(content.getSelectorList("actionButtons"));
+
+  content.getVisibleMenuItems = () =>
+    content.getVisibleMatches(content.getSelectorList("menuItems"));
+
   content.isConfirmLabel = (element) => {
     const label = content.normalizeText(
       element.innerText || element.textContent || element.getAttribute("aria-label")
@@ -136,6 +142,18 @@
     );
   };
 
+  content.getActionButtonFromItemContainer = (itemContainer) => {
+    if (!itemContainer?.isConnected) {
+      return null;
+    }
+
+    return (
+      content
+        .getVisibleActionButtons()
+        .find((button) => content.getItemContainer(button) === itemContainer) || null
+    );
+  };
+
   content.findRetryDeleteButton = (previousButton, description) => {
     const previousContainer = content.getItemContainer(previousButton);
     const sameItemButton = content.getDeleteButtonFromItemContainer(previousContainer);
@@ -148,6 +166,22 @@
         .getVisibleDeleteButtons()
         .find((button) => content.describeItem(button) === description) ||
       content.getVisibleDeleteButtons()[0] ||
+      null
+    );
+  };
+
+  content.findRetryActionButton = (previousButton, description) => {
+    const previousContainer = content.getItemContainer(previousButton);
+    const sameItemButton = content.getActionButtonFromItemContainer(previousContainer);
+    if (sameItemButton) {
+      return sameItemButton;
+    }
+
+    return (
+      content
+        .getVisibleActionButtons()
+        .find((button) => content.describeItem(button) === description) ||
+      content.getVisibleActionButtons()[0] ||
       null
     );
   };

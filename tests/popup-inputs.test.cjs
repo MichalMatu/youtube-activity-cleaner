@@ -157,7 +157,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   );
 });
 
-test("popup recognizes the likes page but does not allow starting it yet", async () => {
+test("popup recognizes the likes page and allows starting it", async () => {
   const likesUrl = "https://www.youtube.com/playlist?list=LL";
 
   const context = createContext({
@@ -180,11 +180,6 @@ test("popup recognizes the likes page but does not allow starting it yet", async
               return "Liked videos";
             }
 
-            if (key === "popupTargetNotEnabledYet") {
-              const value = Array.isArray(substitutions) ? substitutions[0] : substitutions;
-              return `${value} cleanup is not enabled yet.`;
-            }
-
             return fallback || "";
           },
           getUILanguage() {
@@ -202,6 +197,9 @@ test("popup recognizes the likes page but does not allow starting it yet", async
         tabs: {
           async query() {
             return [{ id: 2, url: likesUrl, status: "complete", title: "Liked videos" }];
+          },
+          async sendMessage() {
+            return { response: { status: { deleted: 0, attempted: 0, failed: 0 } } };
           },
           async create() {},
           async get() {
@@ -266,8 +264,8 @@ test("popup recognizes the likes page but does not allow starting it yet", async
   const resolved = await popup.resolveTargetContext();
 
   assert.equal(resolved.activeTabSupported, true);
-  assert.equal(resolved.activeTabRunnable, false);
-  assert.equal(resolved.canStartFromActiveTab, false);
+  assert.equal(resolved.activeTabRunnable, true);
+  assert.equal(resolved.canStartFromActiveTab, true);
   assert.equal(resolved.activeTabTarget?.id, "likes");
   assert.equal(
     popup.getTargetLabel(resolved.activeTabTarget),

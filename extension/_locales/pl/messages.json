@@ -15,7 +15,7 @@
     "message": "Podgląd V3"
   },
   "popupLead": {
-    "message": "Podgląd V3: czyszczenie komentarzy jest gotowe, a obsługa polubionych filmów jest w przygotowaniu."
+    "message": "Podgląd V3: czyszczenie komentarzy jest gotowe, a czyszczenie polubionych filmów jest eksperymentalne."
   },
   "popupCleanerTabLabel": {
     "message": "Karta cleanera"
@@ -125,6 +125,12 @@
   "popupFootnote": {
     "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale aktywna karta cleanera nadal powinna pozostać widoczna podczas działania."
   },
+  "popupPageReadyCurrentTarget": {
+    "message": "Gotowe na stronie: $1."
+  },
+  "popupPageConnectedOtherTabTarget": {
+    "message": "Połączono z kartą cleanera dla $1 w innej karcie."
+  },
   "popupPageReadyCurrent": {
     "message": "Gotowe na stronie komentarzy YouTube."
   },
@@ -139,6 +145,9 @@
   },
   "popupFallbackTabTitle": {
     "message": "Karta komentarzy YouTube"
+  },
+  "popupFallbackTabTitleTarget": {
+    "message": "Karta: $1"
   },
   "targetCommentsLabel": {
     "message": "komentarze YouTube"
@@ -278,6 +287,12 @@
   "contentConfirmedDeletion": {
     "message": "Potwierdzono usunięcie: $1"
   },
+  "contentPreparingToRemoveLike": {
+    "message": "Przygotowanie do usunięcia lajka: $1"
+  },
+  "contentConfirmedUnlike": {
+    "message": "Usunięto lajka: $1"
+  },
   "contentRetryingDelete": {
     "message": "Ponawianie $1 ($2/$3) za $4: $5"
   },
@@ -286,6 +301,9 @@
   },
   "contentDeletedComments": {
     "message": "Usunięte komentarze: $1"
+  },
+  "contentRemovedLikes": {
+    "message": "Usunięte lajki: $1"
   },
   "contentFailedAttempt": {
     "message": "Nieudana próba: $1. Błędy z rzędu: $2. Łącznie nieudanych: $3"
@@ -296,8 +314,14 @@
   "contentLoadingMoreItems": {
     "message": "Wczytywanie kolejnych elementów aktywności..."
   },
+  "contentLoadingMoreLikes": {
+    "message": "Wczytywanie kolejnych polubionych filmów..."
+  },
   "contentNoMoreDeleteButtons": {
     "message": "Nie znaleziono już więcej widocznych przycisków usuwania."
+  },
+  "contentNoMoreLikes": {
+    "message": "Nie znaleziono już polubionych filmów możliwych do usunięcia."
   },
   "contentStoppedByUser": {
     "message": "Zatrzymane przez użytkownika."

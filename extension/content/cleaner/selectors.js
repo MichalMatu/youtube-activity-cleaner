@@ -9,6 +9,8 @@
       'button[aria-label*="Usu\\u0144 element aktywno\\u015bci"]',
       'button[aria-label*="Usu\\u0144 aktywno\\u015b\\u0107"]',
     ],
+    actionButtons: [],
+    menuItems: [],
     confirmButtons: ['button[aria-label="Delete"]', 'button[aria-label="Usu\\u0144"]'],
     status: [
       '[jsname="PJEsad"]',

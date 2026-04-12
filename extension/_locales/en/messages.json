@@ -15,7 +15,7 @@
     "message": "V3 Preview"
   },
   "popupLead": {
-    "message": "V3 preview: comments cleanup is ready, and liked videos support is in progress."
+    "message": "V3 preview: comments cleanup is ready, and liked videos cleanup is experimental."
   },
   "popupCleanerTabLabel": {
     "message": "Cleaner tab"
@@ -125,6 +125,12 @@
   "popupFootnote": {
     "message": "Screen sleep prevention helps avoid interruptions, but the active cleaner tab should still stay visible while cleaning is running."
   },
+  "popupPageReadyCurrentTarget": {
+    "message": "Ready on: $1."
+  },
+  "popupPageConnectedOtherTabTarget": {
+    "message": "Connected to a $1 cleaner tab in another tab."
+  },
   "popupPageReadyCurrent": {
     "message": "Ready on the YouTube comments page."
   },
@@ -139,6 +145,9 @@
   },
   "popupFallbackTabTitle": {
     "message": "YouTube comments tab"
+  },
+  "popupFallbackTabTitleTarget": {
+    "message": "$1 tab"
   },
   "targetCommentsLabel": {
     "message": "YouTube comments"
@@ -278,6 +287,12 @@
   "contentConfirmedDeletion": {
     "message": "Confirmed deletion: $1"
   },
+  "contentPreparingToRemoveLike": {
+    "message": "Preparing to remove like: $1"
+  },
+  "contentConfirmedUnlike": {
+    "message": "Removed like: $1"
+  },
   "contentRetryingDelete": {
     "message": "Retrying $1 ($2/$3) in $4: $5"
   },
@@ -286,6 +301,9 @@
   },
   "contentDeletedComments": {
     "message": "Deleted comments: $1"
+  },
+  "contentRemovedLikes": {
+    "message": "Removed likes: $1"
   },
   "contentFailedAttempt": {
     "message": "Failed attempt: $1. Consecutive failures: $2. Total failed: $3"
@@ -296,8 +314,14 @@
   "contentLoadingMoreItems": {
     "message": "Loading more activity items..."
   },
+  "contentLoadingMoreLikes": {
+    "message": "Loading more liked videos..."
+  },
   "contentNoMoreDeleteButtons": {
     "message": "No more visible delete buttons were found."
+  },
+  "contentNoMoreLikes": {
+    "message": "No more removable liked videos were found."
   },
   "contentStoppedByUser": {
     "message": "Stopped by the user."
