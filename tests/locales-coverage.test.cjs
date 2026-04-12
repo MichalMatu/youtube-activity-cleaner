@@ -27,7 +27,9 @@ test("locale files cover all popup and runtime message keys", () => {
     "extension/content/index.js",
     "extension/content/cleaner/state.js",
     "extension/content/cleaner/scrolling.js",
+    "extension/content/cleaner/strategy.js",
     "extension/content/cleaner/engine.js",
+    "tests/engine-targets.test.cjs",
   ];
 
   const requiredKeys = new Set();

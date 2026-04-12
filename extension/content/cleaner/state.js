@@ -26,13 +26,20 @@
 
   content.getPageTarget = () => shared.getTargetByUrl?.(window.location.href) || null;
 
+  content.getRunnablePageTarget = () =>
+    shared.getRunnableTargetByUrl?.(window.location.href) || null;
+
   content.getTarget = () =>
     content.getPageTarget() ||
     shared.getTargetById?.(state.targetId) ||
     shared.getDefaultTarget?.() ||
     null;
 
+  content.getTargetLabel = (target = content.getTarget()) =>
+    shared.getTargetLabel?.(target, t) || target?.id || "";
+
   content.isSupportedPage = () => Boolean(content.getPageTarget());
+  content.isRunnablePage = () => Boolean(content.getRunnablePageTarget());
 
   content.setCleanerTarget = (targetId) => {
     state.targetId = shared.getTargetById?.(targetId)?.id || shared.DEFAULT_TARGET_ID || "";
@@ -55,6 +62,7 @@
     retryDelayMs: state.retryDelayMs,
     settings: { ...state.settings },
     supportedPage: content.isSupportedPage(),
+    runnablePage: content.isRunnablePage(),
     visibilityState: document.visibilityState,
   });
 

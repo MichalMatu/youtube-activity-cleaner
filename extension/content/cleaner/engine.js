@@ -36,112 +36,15 @@
   content.getRetryDelayMs = (failedAttemptNumber) =>
     content.getSettingValue("retryBackoffMs") * failedAttemptNumber;
 
-  content.runSingleDeleteAttempt = async (deleteButton, description) => {
+  content.performSingleActionAttempt = async (actionButton, description) =>
+    content.getTargetStrategy().runSingleAttempt(actionButton, description);
+
+  content.processOneAction = async (actionButton) => {
     const state = content.getState();
-    const itemContainer = content.getItemContainer(deleteButton);
-
-    state.lastItem = description;
-    content.setCleanerMessage(
-      t(
-        "contentPreparingToDelete",
-        description,
-        `Preparing to delete: ${description}`
-      )
-    );
-    content.setCleanerError("");
-    state.retryAttempt = 0;
-    state.retryDelayMs = 0;
-
-    await content.waitForStatusIdle();
-
-    if (!(await content.clickElement(deleteButton))) {
-      console.warn("Could not click delete button for:", description);
-      return { success: false, reason: "could not click the delete button" };
-    }
-
-    const firstState = await content.waitFor(() => {
-      const confirmButton = content.getConfirmButton();
-      if (confirmButton) {
-        return { type: "confirm", confirmButton };
-      }
-
-      const messages = content.getStatusMessages();
-      const failureMessage = messages.find(content.matchesFailureStatus);
-      if (failureMessage) {
-        return { type: "failure", message: failureMessage };
-      }
-
-      if (
-        messages.some(content.matchesPendingStatus) ||
-        messages.some(content.matchesSuccessStatus)
-      ) {
-        return { type: "status" };
-      }
-
-      if (content.isItemGone(itemContainer)) {
-        return { type: "removed_without_confirm" };
-      }
-
-      return null;
-    }, content.getSettingValue("waitForPostClickStateMs"));
-
-    if (!firstState) {
-      console.warn(
-        "No confirm dialog and no visible deletion state after click for:",
-        description
-      );
-      return {
-        success: false,
-        reason: "no confirmation dialog or delete status appeared after clicking",
-      };
-    }
-
-    if (firstState.type === "failure") {
-      console.warn("Delete failed for:", description, `(${firstState.message})`);
-      return { success: false, reason: firstState.message || "delete failed" };
-    }
-
-    if (firstState.type === "confirm") {
-      if (!(await content.pauseAwareSleep(content.getSettingValue("beforeConfirmClickMs")))) {
-        return { success: false, reason: "stopped" };
-      }
-
-      if (!(await content.clickElement(firstState.confirmButton))) {
-        console.warn("Could not click confirm button for:", description);
-        return { success: false, reason: "could not click the confirmation button" };
-      }
-
-      if (!(await content.pauseAwareSleep(content.getSettingValue("afterConfirmClickMs")))) {
-        return { success: false, reason: "stopped" };
-      }
-    }
-
-    const outcome = await content.waitForDeleteOutcome(itemContainer, {
-      firstStateType: firstState.type,
-    });
-    if (!outcome.success) {
-      console.warn(`Delete not confirmed for: ${description} (${outcome.reason})`);
-      return { success: false, reason: outcome.reason };
-    }
-
-    console.log(`Confirmed deletion: ${description}`);
-    content.setCleanerMessage(
-      t(
-        "contentConfirmedDeletion",
-        description,
-        `Confirmed deletion: ${description}`
-      )
-    );
-    await content.waitForStatusIdle();
-    content.setCleanerError("");
-    return { success: true, description };
-  };
-
-  content.deleteOneItem = async (deleteButton) => {
-    const state = content.getState();
-    const description = content.describeItem(deleteButton);
+    const strategy = content.getTargetStrategy();
+    const description = strategy.describeAction(actionButton);
     const maxAttempts = content.getSettingValue("retryLimit") + 1;
-    let currentButton = deleteButton;
+    let currentActionButton = actionButton;
     let lastFailureReason = "unknown error";
 
     for (let attemptNumber = 1; attemptNumber <= maxAttempts; attemptNumber += 1) {
@@ -150,14 +53,17 @@
       }
 
       state.attempted += 1;
-      const deleteResult = await content.runSingleDeleteAttempt(currentButton, description);
-      if (deleteResult.success) {
+      const actionResult = await content.performSingleActionAttempt(
+        currentActionButton,
+        description
+      );
+      if (actionResult.success) {
         state.retryAttempt = 0;
         state.retryDelayMs = 0;
-        return deleteResult;
+        return actionResult;
       }
 
-      lastFailureReason = deleteResult.reason || "unknown error";
+      lastFailureReason = actionResult.reason || "unknown error";
       content.setCleanerError(lastFailureReason);
 
       if (lastFailureReason === "stopped") {
@@ -190,10 +96,10 @@
       );
 
       await content.waitForStatusIdle();
-      currentButton = content.findRetryDeleteButton(currentButton, description);
+      currentActionButton = strategy.findRetryAction(currentActionButton, description);
 
-      if (!currentButton) {
-        lastFailureReason = "the delete button disappeared before retrying";
+      if (!currentActionButton) {
+        lastFailureReason = "the action button disappeared before retrying";
         content.setCleanerError(lastFailureReason);
         break;
       }
@@ -225,23 +131,18 @@
     );
 
     while (!state.stopRequested) {
-      const deleteButton = content.getVisibleDeleteButtons()[0];
+      const strategy = content.getTargetStrategy();
+      const actionButton = strategy.getActionButtons()[0];
 
-      if (deleteButton) {
-        const deleteResult = await content.deleteOneItem(deleteButton);
+      if (actionButton) {
+        const actionResult = await content.processOneAction(actionButton);
 
-        if (deleteResult.success) {
+        if (actionResult.success) {
           state.deleted += 1;
           idleRounds = 0;
           failureStreak = 0;
           content.setCleanerError("");
-          content.setCleanerMessage(
-            t(
-              "contentDeletedComments",
-              state.deleted,
-              `Deleted comments: ${state.deleted}`
-            )
-          );
+          content.setCleanerMessage(strategy.getCompletedCountMessage(state.deleted));
 
           if (!(await content.pauseAwareSleep(content.getSettingValue("betweenItemsMs")))) {
             break;
@@ -252,12 +153,12 @@
 
         state.failed += 1;
         failureStreak += 1;
-        content.setCleanerError(deleteResult.reason);
+        content.setCleanerError(actionResult.reason);
         content.setCleanerMessage(
           t(
             "contentFailedAttempt",
-            [deleteResult.reason, failureStreak, state.failed],
-            `Failed attempt: ${deleteResult.reason}. Consecutive failures: ${failureStreak}. Total failed: ${state.failed}`
+            [actionResult.reason, failureStreak, state.failed],
+            `Failed attempt: ${actionResult.reason}. Consecutive failures: ${failureStreak}. Total failed: ${state.failed}`
           )
         );
 
@@ -265,8 +166,8 @@
           content.setCleanerMessage(
             t(
               "contentStoppedAfterFailures",
-              [failureStreak, deleteResult.reason],
-              `Stopped after ${failureStreak} failures in a row. Last issue: ${deleteResult.reason}`
+              [failureStreak, actionResult.reason],
+              `Stopped after ${failureStreak} failures in a row. Last issue: ${actionResult.reason}`
             )
           );
           break;
@@ -280,7 +181,7 @@
         continue;
       }
 
-      const loadMoreButton = content.getLoadMoreButton();
+      const loadMoreButton = strategy.getLoadMoreButton();
       if (loadMoreButton) {
         content.setCleanerMessage(
           t("contentLoadingMoreItems", undefined, "Loading more activity items...")
@@ -309,13 +210,7 @@
       }
 
       if (idleRounds >= content.getSettingValue("idleRoundsLimit")) {
-        content.setCleanerMessage(
-          t(
-            "contentNoMoreDeleteButtons",
-            undefined,
-            "No more visible delete buttons were found."
-          )
-        );
+        content.setCleanerMessage(strategy.getNoMoreActionsMessage());
         break;
       }
     }
@@ -354,6 +249,17 @@
           "contentOpenCommentsPageFirst",
           undefined,
           "Open the Your YouTube comments page in Google My Activity first."
+        )
+      );
+      return content.getCleanerStatus();
+    }
+
+    if (!content.isRunnablePage()) {
+      content.setCleanerMessage(
+        t(
+          "contentTargetNotEnabledYet",
+          content.getTargetLabel(pageTarget),
+          `${content.getTargetLabel(pageTarget)} cleanup is not enabled yet.`
         )
       );
       return content.getCleanerStatus();

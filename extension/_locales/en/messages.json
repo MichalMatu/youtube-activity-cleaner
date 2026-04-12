@@ -305,6 +305,9 @@
   "contentOpenCommentsPageFirst": {
     "message": "Open the Your YouTube comments page in Google My Activity first."
   },
+  "contentTargetNotEnabledYet": {
+    "message": "$1 cleanup is not enabled yet."
+  },
   "contentLoadingSavedSettings": {
     "message": "Loading saved settings..."
   },

@@ -103,6 +103,10 @@
   shared.getTargetById = (targetId) => targets[targetId] || null;
   shared.getDefaultTarget = () => shared.getTargetById(defaultTargetId);
   shared.isRunnableTarget = (target) => Boolean(target && target.enabled !== false);
+  shared.getTargetLabel = (
+    target,
+    translate = (_key, _substitutions, fallback = "") => fallback
+  ) => (target ? translate(target.labelKey, undefined, target.labelFallback || target.id) : "");
   shared.matchesTargetUrl = (target, url) =>
     Boolean(
       target &&

@@ -305,6 +305,9 @@
   "contentOpenCommentsPageFirst": {
     "message": "Najpierw otwórz stronę Twoje komentarze w YouTube w Google My Activity."
   },
+  "contentTargetNotEnabledYet": {
+    "message": "Czyszczenie dla $1 nie jest jeszcze włączone."
+  },
   "contentLoadingSavedSettings": {
     "message": "Wczytywanie zapisanych ustawień..."
   },

@@ -11,7 +11,11 @@
     "128": "assets/icon-128.png"
   },
   "permissions": ["tabs", "power", "storage"],
-  "host_permissions": ["https://myactivity.google.com/*"],
+  "host_permissions": [
+    "https://myactivity.google.com/*",
+    "https://www.youtube.com/playlist*",
+    "https://youtube.com/playlist*"
+  ],
   "background": {
     "service_worker": "background/service-worker.js"
   },
@@ -27,7 +31,11 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://myactivity.google.com/*"],
+      "matches": [
+        "https://myactivity.google.com/*",
+        "https://www.youtube.com/playlist*",
+        "https://youtube.com/playlist*"
+      ],
       "js": [
         "shared/browser-api.js",
         "shared/i18n.js",
@@ -41,6 +49,7 @@
         "content/cleaner/scrolling.js",
         "content/cleaner/dom.js",
         "content/cleaner/status.js",
+        "content/cleaner/strategy.js",
         "content/cleaner/engine.js",
         "content/index.js"
       ],
