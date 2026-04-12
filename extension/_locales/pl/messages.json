@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Uruchamia cleaner komentarzy YouTube na stronie komentarzy Google My Activity."
+    "message": "Podgląd V3 cleanera aktywności YouTube dla komentarzy i polubionych filmów."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -11,8 +11,11 @@
   "popupEyebrow": {
     "message": "Rozszerzenie Chrome"
   },
+  "popupPreviewBadge": {
+    "message": "Podgląd V3"
+  },
   "popupLead": {
-    "message": "Czyści komentarze na stronie komentarzy Google My Activity."
+    "message": "Podgląd V3: czyszczenie komentarzy jest gotowe, a obsługa polubionych filmów jest w przygotowaniu."
   },
   "popupCleanerTabLabel": {
     "message": "Karta cleanera"
@@ -117,10 +120,10 @@
     "message": "Informacje"
   },
   "popupAboutValue": {
-    "message": "Wersja $1 • UI: $2"
+    "message": "Podgląd V3 • Wersja $1 • UI: $2"
   },
   "popupFootnote": {
-    "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale karta Google My Activity nadal powinna pozostać widoczna podczas działania cleanera."
+    "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale aktywna karta cleanera nadal powinna pozostać widoczna podczas działania."
   },
   "popupPageReadyCurrent": {
     "message": "Gotowe na stronie komentarzy YouTube."

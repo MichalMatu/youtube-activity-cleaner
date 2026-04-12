@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Run the YouTube comment cleaner on the Google My Activity comments page."
+    "message": "V3 preview of the YouTube activity cleaner for comments and liked videos."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -11,8 +11,11 @@
   "popupEyebrow": {
     "message": "Chrome extension"
   },
+  "popupPreviewBadge": {
+    "message": "V3 Preview"
+  },
   "popupLead": {
-    "message": "Clean comments from the Google My Activity comments page."
+    "message": "V3 preview: comments cleanup is ready, and liked videos support is in progress."
   },
   "popupCleanerTabLabel": {
     "message": "Cleaner tab"
@@ -117,10 +120,10 @@
     "message": "About"
   },
   "popupAboutValue": {
-    "message": "Version $1 • UI: $2"
+    "message": "V3 Preview • Version $1 • UI: $2"
   },
   "popupFootnote": {
-    "message": "Screen sleep prevention helps avoid interruptions, but the Google My Activity tab should still stay visible while the cleaner is working."
+    "message": "Screen sleep prevention helps avoid interruptions, but the active cleaner tab should still stay visible while cleaning is running."
   },
   "popupPageReadyCurrent": {
     "message": "Ready on the YouTube comments page."

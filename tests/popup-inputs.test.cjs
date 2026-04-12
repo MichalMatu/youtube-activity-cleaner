@@ -87,7 +87,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
         },
         runtime: {
           getManifest() {
-            return { version: "1.0.0" };
+            return { version: "3.0.0" };
           },
           async sendMessage(message) {
             if (message.type === "cleaner/get-tab") {
@@ -143,7 +143,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
 
   assert.equal(popup.parseSecondsInput("1,2"), 1200);
   assert.equal(popup.getUiLocaleLabel(), "polski (pl)");
-  assert.equal(popup.getAppMetaText(), "Wersja 1.0.0 • UI: polski (pl)");
+  assert.equal(popup.getAppMetaText(), "Podgląd V3 • Wersja 3.0.0 • UI: polski (pl)");
   assert.equal(
     popup.getSettingsPreviewText({
       speedProfile: "safe",
@@ -210,7 +210,7 @@ test("popup recognizes the likes page but does not allow starting it yet", async
         },
         runtime: {
           getManifest() {
-            return { version: "1.0.0" };
+            return { version: "3.0.0" };
           },
           async sendMessage(message) {
             if (message.type === "cleaner/get-tab") {
