@@ -8,15 +8,6 @@
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
   },
-  "popupEyebrow": {
-    "message": "Chrome extension"
-  },
-  "popupPreviewBadge": {
-    "message": "V3 Preview"
-  },
-  "popupLead": {
-    "message": "V3 preview: comments cleanup is ready, and liked videos cleanup is experimental."
-  },
   "popupCleanerTabLabel": {
     "message": "Cleaner tab"
   },
@@ -53,17 +44,23 @@
   "popupSettingsLabel": {
     "message": "Settings"
   },
+  "popupOpenSettingsButton": {
+    "message": "Open settings"
+  },
+  "popupCloseSettingsButton": {
+    "message": "Close settings"
+  },
   "popupLoadingSavedSettings": {
     "message": "Loading saved settings..."
   },
   "popupSettingsSavedHint": {
-    "message": "Settings are saved locally in Chrome and used on the next run."
+    "message": "Saved in Chrome."
   },
   "popupResetButton": {
     "message": "Reset"
   },
   "popupRunProfileLabel": {
-    "message": "Run profile"
+    "message": "Profile"
   },
   "popupProfileFastLabel": {
     "message": "Fast"
@@ -71,35 +68,32 @@
   "popupProfileSafeLabel": {
     "message": "Safe"
   },
-  "popupProfileModeSuffix": {
-    "message": "mode"
-  },
   "popupFastRecommendedNote": {
-    "message": "Fast is recommended. Safe waits longer for Google UI."
+    "message": "Fast recommended."
   },
   "popupDelayBetweenCommentsLabel": {
-    "message": "Delay between comments"
+    "message": "Between items"
   },
   "popupWaitAfterScrollLoadLabel": {
-    "message": "Wait after scroll/load"
+    "message": "After scroll/load"
   },
   "popupRetryFailedDeleteLabel": {
-    "message": "Retry failed delete"
+    "message": "Retry limit"
   },
   "popupRetryBackoffLabel": {
-    "message": "Retry backoff"
+    "message": "Retry delay"
   },
   "popupStopAfterFailuresLabel": {
-    "message": "Stop after failures in a row"
+    "message": "Stop streak"
   },
   "popupSecondsSuffix": {
-    "message": "sec"
+    "message": "s"
   },
   "popupTimesSuffix": {
-    "message": "times"
+    "message": "x"
   },
   "popupSaveSettingsButton": {
-    "message": "Save settings"
+    "message": "Save"
   },
   "popupStartButton": {
     "message": "Start"
@@ -119,14 +113,8 @@
   "popupDonateButton": {
     "message": "Buy me a coffee"
   },
-  "popupAboutLabel": {
-    "message": "About"
-  },
-  "popupAboutValue": {
-    "message": "V3 Preview • Version $1 • UI: $2"
-  },
-  "popupFootnote": {
-    "message": "Screen sleep prevention helps avoid interruptions, but the active cleaner tab should still stay visible while cleaning is running."
+  "popupVersionValue": {
+    "message": "V3 Preview • Version $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Ready on: $1."
@@ -237,10 +225,10 @@
     "message": "$1 cleanup is not enabled yet."
   },
   "popupSettingsPreview": {
-    "message": "$1 mode • $2s pace • $3 retries"
+    "message": "$1 • $2s • $3x"
   },
   "popupSettingsSavedStarting": {
-    "message": "Settings saved. Starting cleaner with the saved values."
+    "message": "Saved. Starting cleaner."
   },
   "popupCouldNotStartCleaner": {
     "message": "Could not start cleaner."
@@ -252,22 +240,22 @@
     "message": "No cleaner tab is connected right now."
   },
   "popupSettingsSavedLocally": {
-    "message": "Settings saved locally in Chrome."
+    "message": "Saved in Chrome."
   },
   "popupCouldNotSaveSettings": {
     "message": "Could not save settings: $1"
   },
   "popupDefaultSettingsRestored": {
-    "message": "Default settings restored."
+    "message": "Defaults restored."
   },
   "popupCouldNotResetSettings": {
     "message": "Could not reset settings: $1"
   },
   "popupUnsavedChanges": {
-    "message": "Unsaved changes. Save them or click Start to use them."
+    "message": "Unsaved changes."
   },
   "popupSettingsLoaded": {
-    "message": "Settings loaded from Chrome storage."
+    "message": "Loaded from Chrome."
   },
   "popupCouldNotLoadSettings": {
     "message": "Could not load settings: $1"

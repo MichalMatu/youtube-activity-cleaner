@@ -8,14 +8,29 @@
   </head>
   <body>
     <main class="popup">
-      <p class="eyebrow" data-i18n="popupEyebrow">Chrome extension</p>
-      <div class="title-row">
+      <div class="header-row">
         <h1 data-i18n="popupTitle">YouTube Activity Cleaner</h1>
-        <span class="preview-badge" data-i18n="popupPreviewBadge">V3 Preview</span>
+        <button
+          id="settings-toggle-button"
+          class="icon-button"
+          type="button"
+          aria-controls="settings-panel"
+          aria-expanded="false"
+          data-i18n-aria-label="popupOpenSettingsButton"
+          data-i18n-title="popupOpenSettingsButton"
+        >
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 5.5h12M4 10h12M4 14.5h12M7 5.5a1.5 1.5 0 1 0 0-.01M12 10a1.5 1.5 0 1 0 0-.01M9 14.5a1.5 1.5 0 1 0 0-.01"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+            />
+          </svg>
+        </button>
       </div>
-      <p class="lead" data-i18n="popupLead">
-        V3 preview: comments cleanup is ready, and liked videos support is in progress.
-      </p>
 
       <section class="panel">
         <p class="label" data-i18n="popupCleanerTabLabel">Cleaner tab</p>
@@ -51,147 +66,6 @@
           No active retries or errors.
         </p>
       </section>
-
-      <details id="settings-panel" class="panel settings-panel">
-        <summary class="settings-summary">
-          <div>
-            <p class="label" data-i18n="popupSettingsLabel">Settings</p>
-            <p
-              id="settings-preview"
-              class="settings-preview"
-              data-i18n="popupLoadingSavedSettings"
-            >
-              Loading saved settings...
-            </p>
-          </div>
-          <span class="settings-chevron" aria-hidden="true"></span>
-        </summary>
-
-        <div class="settings-body">
-          <div class="settings-toolbar">
-            <p
-              id="settings-state"
-              class="hint settings-hint"
-              data-i18n="popupSettingsSavedHint"
-            >
-              Settings are saved locally in Chrome and used on the next run.
-            </p>
-            <button
-              id="reset-settings-button"
-              class="ghost-button"
-              type="button"
-              data-i18n="popupResetButton"
-            >
-              Reset
-            </button>
-          </div>
-
-          <form id="settings-form" class="settings-form">
-            <label class="field">
-              <span data-i18n="popupRunProfileLabel">Run profile</span>
-              <div class="field-input">
-                <select id="speed-profile" name="speedProfile">
-                  <option value="fast" data-i18n="popupProfileFastLabel">Fast</option>
-                  <option value="safe" data-i18n="popupProfileSafeLabel">Safe</option>
-                </select>
-                <span class="suffix" data-i18n="popupProfileModeSuffix">mode</span>
-              </div>
-              <span class="field-note" data-i18n="popupFastRecommendedNote">
-                Fast is recommended. Safe waits longer for Google UI.
-              </span>
-            </label>
-
-            <label class="field">
-              <span data-i18n="popupDelayBetweenCommentsLabel">Delay between comments</span>
-              <div class="field-input">
-                <input
-                  id="between-items-seconds"
-                  name="betweenItemsSeconds"
-                  type="number"
-                  min="1.0"
-                  max="12.0"
-                  step="0.1"
-                  inputmode="decimal"
-                />
-                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
-              </div>
-            </label>
-
-            <label class="field">
-              <span data-i18n="popupWaitAfterScrollLoadLabel">Wait after scroll/load</span>
-              <div class="field-input">
-                <input
-                  id="scroll-pause-seconds"
-                  name="scrollPauseSeconds"
-                  type="number"
-                  min="0.8"
-                  max="10.0"
-                  step="0.1"
-                  inputmode="decimal"
-                />
-                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
-              </div>
-            </label>
-
-            <label class="field">
-              <span data-i18n="popupRetryFailedDeleteLabel">Retry failed delete</span>
-              <div class="field-input">
-                <input
-                  id="retry-limit"
-                  name="retryLimit"
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="1"
-                  inputmode="numeric"
-                />
-                <span class="suffix" data-i18n="popupTimesSuffix">times</span>
-              </div>
-            </label>
-
-            <label class="field">
-              <span data-i18n="popupRetryBackoffLabel">Retry backoff</span>
-              <div class="field-input">
-                <input
-                  id="retry-backoff-seconds"
-                  name="retryBackoffSeconds"
-                  type="number"
-                  min="0.5"
-                  max="10.0"
-                  step="0.1"
-                  inputmode="decimal"
-                />
-                <span class="suffix" data-i18n="popupSecondsSuffix">sec</span>
-              </div>
-            </label>
-
-            <label class="field">
-              <span data-i18n="popupStopAfterFailuresLabel">Stop after failures in a row</span>
-              <div class="field-input">
-                <input
-                  id="failure-streak-limit"
-                  name="failureStreakLimit"
-                  type="number"
-                  min="1"
-                  max="10"
-                  step="1"
-                  inputmode="numeric"
-                />
-                <span class="suffix" data-i18n="popupTimesSuffix">times</span>
-              </div>
-            </label>
-
-            <button
-              id="save-settings-button"
-              class="secondary compact-button"
-              type="submit"
-              data-i18n="popupSaveSettingsButton"
-            >
-              Save settings
-            </button>
-          </form>
-        </div>
-      </details>
 
       <div class="actions">
         <button
@@ -251,15 +125,171 @@
         </button>
       </div>
 
-      <p class="app-meta">
-        <span class="meta-label" data-i18n="popupAboutLabel">About</span>
-        <span id="app-meta" class="meta-value">Version ... • UI: ...</span>
-      </p>
+      <section id="settings-panel" class="settings-popover" hidden aria-hidden="true">
+        <div class="settings-card" role="dialog" aria-labelledby="settings-title">
+          <div class="settings-header">
+            <div class="settings-heading">
+              <p id="settings-title" class="label" data-i18n="popupSettingsLabel">Settings</p>
+              <p
+                id="settings-preview"
+                class="settings-preview"
+                data-i18n="popupLoadingSavedSettings"
+              >
+                Loading saved settings...
+              </p>
+            </div>
+            <button
+              id="settings-close-button"
+              class="icon-button subtle-icon-button"
+              type="button"
+              data-i18n-aria-label="popupCloseSettingsButton"
+              data-i18n-title="popupCloseSettingsButton"
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M6 6l8 8M14 6l-8 8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-width="1.8"
+                />
+              </svg>
+            </button>
+          </div>
 
-      <p class="footnote" data-i18n="popupFootnote">
-        Screen sleep prevention helps avoid interruptions, but the Google My Activity tab
-        should still stay visible while the cleaner is working.
-      </p>
+          <div class="settings-body">
+            <div class="settings-toolbar">
+              <p
+                id="settings-state"
+                class="hint settings-hint"
+                data-i18n="popupSettingsSavedHint"
+              >
+                Saved in Chrome.
+              </p>
+              <button
+                id="reset-settings-button"
+                class="ghost-button"
+                type="button"
+                data-i18n="popupResetButton"
+              >
+                Reset
+              </button>
+            </div>
+
+            <form id="settings-form" class="settings-form">
+              <label class="field">
+                <span class="field-copy">
+                  <span class="field-title" data-i18n="popupRunProfileLabel">Profile</span>
+                  <span class="field-note" data-i18n="popupFastRecommendedNote">
+                    Fast recommended.
+                  </span>
+                </span>
+                <div class="field-input field-input-single">
+                  <select id="speed-profile" name="speedProfile">
+                    <option value="fast" data-i18n="popupProfileFastLabel">Fast</option>
+                    <option value="safe" data-i18n="popupProfileSafeLabel">Safe</option>
+                  </select>
+                </div>
+              </label>
+
+              <label class="field">
+                <span class="field-title" data-i18n="popupDelayBetweenCommentsLabel">
+                  Between items
+                </span>
+                <div class="field-input">
+                  <input
+                    id="between-items-seconds"
+                    name="betweenItemsSeconds"
+                    type="number"
+                    min="1.0"
+                    max="12.0"
+                    step="0.1"
+                    inputmode="decimal"
+                  />
+                  <span class="suffix" data-i18n="popupSecondsSuffix">s</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span class="field-title" data-i18n="popupWaitAfterScrollLoadLabel">
+                  After scroll/load
+                </span>
+                <div class="field-input">
+                  <input
+                    id="scroll-pause-seconds"
+                    name="scrollPauseSeconds"
+                    type="number"
+                    min="0.8"
+                    max="10.0"
+                    step="0.1"
+                    inputmode="decimal"
+                  />
+                  <span class="suffix" data-i18n="popupSecondsSuffix">s</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span class="field-title" data-i18n="popupRetryFailedDeleteLabel">Retry limit</span>
+                <div class="field-input">
+                  <input
+                    id="retry-limit"
+                    name="retryLimit"
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="1"
+                    inputmode="numeric"
+                  />
+                  <span class="suffix" data-i18n="popupTimesSuffix">x</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span class="field-title" data-i18n="popupRetryBackoffLabel">Retry delay</span>
+                <div class="field-input">
+                  <input
+                    id="retry-backoff-seconds"
+                    name="retryBackoffSeconds"
+                    type="number"
+                    min="0.5"
+                    max="10.0"
+                    step="0.1"
+                    inputmode="decimal"
+                  />
+                  <span class="suffix" data-i18n="popupSecondsSuffix">s</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span class="field-title" data-i18n="popupStopAfterFailuresLabel">Stop streak</span>
+                <div class="field-input">
+                  <input
+                    id="failure-streak-limit"
+                    name="failureStreakLimit"
+                    type="number"
+                    min="1"
+                    max="10"
+                    step="1"
+                    inputmode="numeric"
+                  />
+                  <span class="suffix" data-i18n="popupTimesSuffix">x</span>
+                </div>
+              </label>
+
+              <button
+                id="save-settings-button"
+                class="secondary compact-button"
+                type="submit"
+                data-i18n="popupSaveSettingsButton"
+              >
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <p id="app-meta" class="app-meta">V3 Preview • Version ...</p>
     </main>
 
     <script src="../shared/browser-api.js"></script>

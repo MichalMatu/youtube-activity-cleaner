@@ -8,15 +8,6 @@
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
   },
-  "popupEyebrow": {
-    "message": "Rozszerzenie Chrome"
-  },
-  "popupPreviewBadge": {
-    "message": "Podgląd V3"
-  },
-  "popupLead": {
-    "message": "Podgląd V3: czyszczenie komentarzy jest gotowe, a czyszczenie polubionych filmów jest eksperymentalne."
-  },
   "popupCleanerTabLabel": {
     "message": "Karta cleanera"
   },
@@ -53,17 +44,23 @@
   "popupSettingsLabel": {
     "message": "Ustawienia"
   },
+  "popupOpenSettingsButton": {
+    "message": "Otwórz ustawienia"
+  },
+  "popupCloseSettingsButton": {
+    "message": "Zamknij ustawienia"
+  },
   "popupLoadingSavedSettings": {
     "message": "Wczytywanie zapisanych ustawień..."
   },
   "popupSettingsSavedHint": {
-    "message": "Ustawienia są zapisywane lokalnie w Chrome i używane przy następnym uruchomieniu."
+    "message": "Zapisane w Chrome."
   },
   "popupResetButton": {
     "message": "Reset"
   },
   "popupRunProfileLabel": {
-    "message": "Profil pracy"
+    "message": "Profil"
   },
   "popupProfileFastLabel": {
     "message": "Szybki"
@@ -71,35 +68,32 @@
   "popupProfileSafeLabel": {
     "message": "Bezpieczny"
   },
-  "popupProfileModeSuffix": {
-    "message": "tryb"
-  },
   "popupFastRecommendedNote": {
-    "message": "Szybki jest zalecany. Bezpieczny czeka dłużej na interfejs Google."
+    "message": "Zalecany: Szybki."
   },
   "popupDelayBetweenCommentsLabel": {
-    "message": "Odstęp między komentarzami"
+    "message": "Między akcjami"
   },
   "popupWaitAfterScrollLoadLabel": {
-    "message": "Czekanie po przewinięciu/wczytaniu"
+    "message": "Po przewinięciu"
   },
   "popupRetryFailedDeleteLabel": {
-    "message": "Ponów nieudane usunięcie"
+    "message": "Limit ponowień"
   },
   "popupRetryBackoffLabel": {
-    "message": "Opóźnienie ponowień"
+    "message": "Odstęp ponowień"
   },
   "popupStopAfterFailuresLabel": {
-    "message": "Zatrzymaj po błędach z rzędu"
+    "message": "Przerwij po serii"
   },
   "popupSecondsSuffix": {
-    "message": "sek"
+    "message": "s"
   },
   "popupTimesSuffix": {
-    "message": "razy"
+    "message": "x"
   },
   "popupSaveSettingsButton": {
-    "message": "Zapisz ustawienia"
+    "message": "Zapisz"
   },
   "popupStartButton": {
     "message": "Start"
@@ -119,14 +113,8 @@
   "popupDonateButton": {
     "message": "Postaw mi kawę"
   },
-  "popupAboutLabel": {
-    "message": "Informacje"
-  },
-  "popupAboutValue": {
-    "message": "Podgląd V3 • Wersja $1 • UI: $2"
-  },
-  "popupFootnote": {
-    "message": "Zapobieganie usypianiu ekranu pomaga uniknąć przerwań, ale aktywna karta cleanera nadal powinna pozostać widoczna podczas działania."
+  "popupVersionValue": {
+    "message": "Podgląd V3 • Wersja $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Gotowe na stronie: $1."
@@ -237,10 +225,10 @@
     "message": "Czyszczenie dla $1 nie jest jeszcze włączone."
   },
   "popupSettingsPreview": {
-    "message": "$1 • tempo $2 s • $3 ponowień"
+    "message": "$1 • $2 s • $3x"
   },
   "popupSettingsSavedStarting": {
-    "message": "Ustawienia zapisane. Cleaner startuje z zapisanymi wartościami."
+    "message": "Zapisano. Start cleanera."
   },
   "popupCouldNotStartCleaner": {
     "message": "Nie udało się uruchomić cleanera."
@@ -252,22 +240,22 @@
     "message": "Żadna karta cleanera nie jest teraz podłączona."
   },
   "popupSettingsSavedLocally": {
-    "message": "Ustawienia zapisane lokalnie w Chrome."
+    "message": "Zapisano w Chrome."
   },
   "popupCouldNotSaveSettings": {
     "message": "Nie udało się zapisać ustawień: $1"
   },
   "popupDefaultSettingsRestored": {
-    "message": "Przywrócono ustawienia domyślne."
+    "message": "Przywrócono domyślne."
   },
   "popupCouldNotResetSettings": {
     "message": "Nie udało się zresetować ustawień: $1"
   },
   "popupUnsavedChanges": {
-    "message": "Masz niezapisane zmiany. Zapisz je albo kliknij Start, aby ich użyć."
+    "message": "Niezapisane zmiany."
   },
   "popupSettingsLoaded": {
-    "message": "Ustawienia wczytane z pamięci Chrome."
+    "message": "Wczytano z Chrome."
   },
   "popupCouldNotLoadSettings": {
     "message": "Nie udało się wczytać ustawień: $1"

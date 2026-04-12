@@ -25,26 +25,11 @@
 
   popup.getAppVersion = () => ext?.runtime?.getManifest?.()?.version || "dev";
 
-  popup.getUiLocaleLabel = () => {
-    const locale = popup.getUiLocale() || "en";
-
-    try {
-      const displayNames = new Intl.DisplayNames([locale], {
-        type: "language",
-      });
-      const languageLabel = displayNames.of(locale);
-
-      return languageLabel ? `${languageLabel} (${locale})` : locale;
-    } catch (_error) {
-      return locale;
-    }
-  };
-
   popup.getAppMetaText = () =>
     t(
-      "popupAboutValue",
-      [popup.getAppVersion(), popup.getUiLocaleLabel()],
-      `Version ${popup.getAppVersion()} • UI: ${popup.getUiLocaleLabel()}`
+      "popupVersionValue",
+      popup.getAppVersion(),
+      `V3 Preview • Version ${popup.getAppVersion()}`
     );
 
   popup.renderAppMeta = () => {
@@ -54,6 +39,19 @@
   };
 
   popup.renderAppMeta();
+
+  popup.setSettingsPanelOpen = (isOpen) => {
+    const { settingsPanel, settingsToggleButton } = popup.elements || {};
+    if (!settingsPanel || !settingsToggleButton) {
+      return;
+    }
+
+    settingsPanel.hidden = !isOpen;
+    settingsPanel.setAttribute("aria-hidden", String(!isOpen));
+    settingsToggleButton.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  popup.setSettingsPanelOpen(false);
 
   popup.formatSecondsInputValue = (ms) => {
     const seconds = ms / 1000;
@@ -82,9 +80,9 @@
         popup.formatSecondsDisplayValue(normalizedSettings.betweenItemsMs),
         normalizedSettings.retryLimit,
       ],
-      `${profileLabel} mode • ${popup.formatSecondsDisplayValue(
+      `${profileLabel} • ${popup.formatSecondsDisplayValue(
         normalizedSettings.betweenItemsMs
-      )}s pace • ${normalizedSettings.retryLimit} retries`
+      )}s • ${normalizedSettings.retryLimit}x`
     );
   };
 
@@ -447,6 +445,26 @@
 
   popup.elements.donateButton.addEventListener("click", async () => {
     await ext.tabs.create({ url: shared.Constants.DONATE_URL });
+  });
+
+  popup.elements.settingsToggleButton.addEventListener("click", () => {
+    popup.setSettingsPanelOpen(popup.elements.settingsPanel.hidden);
+  });
+
+  popup.elements.settingsCloseButton.addEventListener("click", () => {
+    popup.setSettingsPanelOpen(false);
+  });
+
+  popup.elements.settingsPanel.addEventListener("click", (event) => {
+    if (event.target === popup.elements.settingsPanel) {
+      popup.setSettingsPanelOpen(false);
+    }
+  });
+
+  globalThis.document?.addEventListener?.("keydown", (event) => {
+    if (event.key === "Escape" && popup.elements?.settingsPanel && !popup.elements.settingsPanel.hidden) {
+      popup.setSettingsPanelOpen(false);
+    }
   });
 
   popup.elements.settingsForm.addEventListener("submit", async (event) => {

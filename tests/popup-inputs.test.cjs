@@ -37,7 +37,15 @@ function createElement(value = "") {
     textContent: "",
     style: {},
     disabled: false,
+    hidden: false,
+    attributes: {},
     addEventListener() {},
+    setAttribute(name, nextValue) {
+      this.attributes[name] = nextValue;
+    },
+    getAttribute(name) {
+      return this.attributes[name];
+    },
   };
 }
 
@@ -118,6 +126,9 @@ test("popup accepts comma decimals and shows localized preview text", async () =
         supportButton: createElement(),
         donateButton: createElement(),
         appMetaElement: createElement(),
+        settingsPanel: createElement(),
+        settingsToggleButton: createElement(),
+        settingsCloseButton: createElement(),
         settingsForm: createElement(),
         resetSettingsButton: createElement(),
         settingsPreviewElement: createElement(),
@@ -143,8 +154,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   const popup = context.YtActivityCleanerPopup;
 
   assert.equal(popup.parseSecondsInput("1,2"), 1200);
-  assert.equal(popup.getUiLocaleLabel(), "polski (pl)");
-  assert.equal(popup.getAppMetaText(), "Podgląd V3 • Wersja 3.0.0 • UI: polski (pl)");
+  assert.equal(popup.getAppMetaText(), "Podgląd V3 • Wersja 3.0.0");
   assert.equal(
     popup.getSettingsPreviewText({
       speedProfile: "safe",
@@ -154,7 +164,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
       retryBackoffMs: 1200,
       failureStreakLimit: 4,
     }),
-    "Bezpieczny • tempo 1,2 s • 2 ponowień"
+    "Bezpieczny • 1,2 s • 2x"
   );
 });
 
@@ -240,6 +250,9 @@ test("popup recognizes the likes page and allows starting it", async () => {
         supportButton: createElement(),
         donateButton: createElement(),
         appMetaElement: createElement(),
+        settingsPanel: createElement(),
+        settingsToggleButton: createElement(),
+        settingsCloseButton: createElement(),
         settingsForm: createElement(),
         resetSettingsButton: createElement(),
         settingsPreviewElement: createElement(),
