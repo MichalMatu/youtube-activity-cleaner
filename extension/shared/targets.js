@@ -29,6 +29,9 @@
   const targets = Object.freeze({
     comments: createTarget({
       id: "comments",
+      labelKey: "targetCommentsLabel",
+      labelFallback: "YouTube comments",
+      enabled: true,
       pageUrl:
         "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments",
       supportedHost: "myactivity.google.com",
@@ -65,6 +68,31 @@
         ],
       },
     }),
+    likes: createTarget({
+      id: "likes",
+      labelKey: "targetLikesLabel",
+      labelFallback: "Liked videos",
+      enabled: false,
+      pageUrl: "https://www.youtube.com/playlist?list=LL",
+      supportedHost: "www.youtube.com",
+      urlPrefixes: ["https://www.youtube.com/playlist", "https://youtube.com/playlist"],
+      requiredUrlFragments: ["list=LL"],
+      selectors: {
+        deleteButtons: [],
+        confirmButtons: [],
+        status: [],
+        loadMore: [],
+      },
+      dom: {
+        itemContainers: [],
+        descriptionSelectors: [],
+      },
+      statusPatterns: {
+        pending: [],
+        success: [],
+        failure: [],
+      },
+    }),
   });
 
   const targetList = Object.freeze(Object.values(targets));
@@ -74,6 +102,7 @@
   shared.DEFAULT_TARGET_ID = defaultTargetId;
   shared.getTargetById = (targetId) => targets[targetId] || null;
   shared.getDefaultTarget = () => shared.getTargetById(defaultTargetId);
+  shared.isRunnableTarget = (target) => Boolean(target && target.enabled !== false);
   shared.matchesTargetUrl = (target, url) =>
     Boolean(
       target &&
@@ -83,5 +112,10 @@
     );
   shared.getTargetByUrl = (url) =>
     targetList.find((target) => shared.matchesTargetUrl(target, url)) || null;
+  shared.getRunnableTargetByUrl = (url) => {
+    const target = shared.getTargetByUrl(url);
+    return shared.isRunnableTarget(target) ? target : null;
+  };
   shared.isSupportedUrl = (url) => Boolean(shared.getTargetByUrl(url));
+  shared.isRunnableUrl = (url) => Boolean(shared.getRunnableTargetByUrl(url));
 })();

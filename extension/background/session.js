@@ -2,7 +2,7 @@
   const shared = globalThis.YtActivityCleanerShared;
   const background = (globalThis.YtActivityCleanerBackground =
     globalThis.YtActivityCleanerBackground || {});
-  const { ext, Messages, isSupportedUrl } = shared;
+  const { ext, Messages, isRunnableUrl } = shared;
 
   const CLEANER_SESSION_KEY = "cleanerSession";
   const sessionStorage = ext.storage.session ?? ext.storage.local;
@@ -112,7 +112,7 @@
       }
 
       const url = changeInfo.url ?? tab?.url;
-      if (typeof url === "string" && !isSupportedUrl(url)) {
+      if (typeof url === "string" && !isRunnableUrl(url)) {
         await clearCleanerSession();
       }
     })();

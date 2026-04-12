@@ -137,11 +137,23 @@
   "popupFallbackTabTitle": {
     "message": "Karta komentarzy YouTube"
   },
+  "targetCommentsLabel": {
+    "message": "komentarze YouTube"
+  },
+  "targetLikesLabel": {
+    "message": "Polubione filmy"
+  },
   "popupPageReadyStartCurrentTab": {
     "message": "Gotowe do startu na bieżącej karcie."
   },
   "popupTabStartAttachesCurrent": {
     "message": "Start przypnie cleaner do tej karty."
+  },
+  "popupPageDetectedTarget": {
+    "message": "Wykryta strona: $1."
+  },
+  "popupTargetComingSoon": {
+    "message": "Czyszczenie dla $1 jest planowane, ale nie jest jeszcze włączone."
   },
   "popupPageOpenCommentsPrompt": {
     "message": "Otwórz Google My Activity -> Twoje komentarze w YouTube."
@@ -205,6 +217,9 @@
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
     "message": "Najpierw otwórz stronę komentarzy YouTube w bieżącej karcie."
+  },
+  "popupTargetNotEnabledYet": {
+    "message": "Czyszczenie dla $1 nie jest jeszcze włączone."
   },
   "popupSettingsPreview": {
     "message": "$1 • tempo $2 s • $3 ponowień"

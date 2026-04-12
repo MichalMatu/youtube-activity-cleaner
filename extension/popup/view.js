@@ -59,8 +59,15 @@
   };
 
   popup.renderStatus = (status, context) => {
-    const { activeTab, targetTab, isTrackedTab, isUsingActiveTab, canStartFromActiveTab } =
-      context;
+    const {
+      activeTab,
+      activeTabSupported,
+      activeTabTarget,
+      targetTab,
+      isTrackedTab,
+      isUsingActiveTab,
+      canStartFromActiveTab,
+    } = context;
     const onSupportedPage = popup.isSupportedUrl(targetTab?.url);
 
     if (onSupportedPage) {
@@ -75,16 +82,29 @@
             `Using: ${targetTab?.title || "YouTube comments tab"}`
           );
     } else if (popup.isSupportedUrl(activeTab?.url)) {
-      popup.elements.pageStateElement.textContent = t(
-        "popupPageReadyStartCurrentTab",
-        undefined,
-        "Ready to start on the current tab."
-      );
-      popup.elements.tabStateElement.textContent = t(
-        "popupTabStartAttachesCurrent",
-        undefined,
-        "Start will attach the cleaner to this tab."
-      );
+      if (canStartFromActiveTab) {
+        popup.elements.pageStateElement.textContent = t(
+          "popupPageReadyStartCurrentTab",
+          undefined,
+          "Ready to start on the current tab."
+        );
+        popup.elements.tabStateElement.textContent = t(
+          "popupTabStartAttachesCurrent",
+          undefined,
+          "Start will attach the cleaner to this tab."
+        );
+      } else {
+        popup.elements.pageStateElement.textContent = t(
+          "popupPageDetectedTarget",
+          popup.getTargetLabel(activeTabTarget),
+          `Detected page: ${popup.getTargetLabel(activeTabTarget)}.`
+        );
+        popup.elements.tabStateElement.textContent = t(
+          "popupTargetComingSoon",
+          popup.getTargetLabel(activeTabTarget),
+          `${popup.getTargetLabel(activeTabTarget)} cleanup is planned, but it is not enabled yet.`
+        );
+      }
     } else {
       popup.elements.pageStateElement.textContent = t(
         "popupPageOpenCommentsPrompt",
@@ -146,6 +166,12 @@
               undefined,
               "Start is available on the current supported tab."
             )
+          : activeTabSupported
+            ? t(
+                "popupTargetNotEnabledYet",
+                popup.getTargetLabel(activeTabTarget),
+                `${popup.getTargetLabel(activeTabTarget)} cleanup is not enabled yet.`
+              )
           : t(
               "popupOnlyWorksOnCommentsPage",
               undefined,

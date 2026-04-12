@@ -137,11 +137,23 @@
   "popupFallbackTabTitle": {
     "message": "YouTube comments tab"
   },
+  "targetCommentsLabel": {
+    "message": "YouTube comments"
+  },
+  "targetLikesLabel": {
+    "message": "Liked videos"
+  },
   "popupPageReadyStartCurrentTab": {
     "message": "Ready to start on the current tab."
   },
   "popupTabStartAttachesCurrent": {
     "message": "Start will attach the cleaner to this tab."
+  },
+  "popupPageDetectedTarget": {
+    "message": "Detected page: $1."
+  },
+  "popupTargetComingSoon": {
+    "message": "$1 cleanup is planned, but it is not enabled yet."
   },
   "popupPageOpenCommentsPrompt": {
     "message": "Open Google My Activity -> Your YouTube comments."
@@ -205,6 +217,9 @@
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
     "message": "Open the YouTube comments page in the current tab first."
+  },
+  "popupTargetNotEnabledYet": {
+    "message": "$1 cleanup is not enabled yet."
   },
   "popupSettingsPreview": {
     "message": "$1 mode • $2s pace • $3 retries"

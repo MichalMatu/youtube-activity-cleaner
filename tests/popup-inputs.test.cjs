@@ -156,3 +156,121 @@ test("popup accepts comma decimals and shows localized preview text", async () =
     "Bezpieczny • tempo 1,2 s • 2 ponowień"
   );
 });
+
+test("popup recognizes the likes page but does not allow starting it yet", async () => {
+  const likesUrl = "https://www.youtube.com/playlist?list=LL";
+
+  const context = createContext({
+    Intl,
+    setInterval() {
+      return 0;
+    },
+    clearInterval() {},
+    document: {
+      documentElement: { lang: "en" },
+      querySelectorAll() {
+        return [];
+      },
+    },
+    YtActivityCleanerShared: {
+      ext: {
+        i18n: {
+          getMessage(key, substitutions, fallback) {
+            if (key === "targetLikesLabel") {
+              return "Liked videos";
+            }
+
+            if (key === "popupTargetNotEnabledYet") {
+              const value = Array.isArray(substitutions) ? substitutions[0] : substitutions;
+              return `${value} cleanup is not enabled yet.`;
+            }
+
+            return fallback || "";
+          },
+          getUILanguage() {
+            return "en";
+          },
+        },
+        storage: {
+          local: {
+            async get() {
+              return {};
+            },
+            async set() {},
+          },
+        },
+        tabs: {
+          async query() {
+            return [{ id: 2, url: likesUrl, status: "complete", title: "Liked videos" }];
+          },
+          async create() {},
+          async get() {
+            return null;
+          },
+        },
+        runtime: {
+          getManifest() {
+            return { version: "1.0.0" };
+          },
+          async sendMessage(message) {
+            if (message.type === "cleaner/get-tab") {
+              return { session: { tabId: null, hasCleanerTab: false } };
+            }
+
+            if (message.type === "power/get-status") {
+              return { keepAwakeActive: false };
+            }
+
+            return { ok: true, session: { tabId: null, hasCleanerTab: false } };
+          },
+        },
+      },
+    },
+    YtActivityCleanerPopup: {
+      elements: {
+        speedProfileSelect: createElement("fast"),
+        betweenItemsSecondsInput: createElement("1.2"),
+        scrollPauseSecondsInput: createElement("1.2"),
+        retryLimitInput: createElement("2"),
+        retryBackoffSecondsInput: createElement("1.2"),
+        failureStreakLimitInput: createElement("4"),
+        startButton: createElement(),
+        stopButton: createElement(),
+        openPageButton: createElement(),
+        supportButton: createElement(),
+        donateButton: createElement(),
+        appMetaElement: createElement(),
+        settingsForm: createElement(),
+        resetSettingsButton: createElement(),
+        settingsPreviewElement: createElement(),
+        settingsStateElement: createElement(),
+      },
+      renderStatus() {},
+      renderError() {},
+      renderDisconnectedPage() {},
+      renderSettingsState() {},
+      renderSettingsPreview() {},
+    },
+  });
+
+  loadScript("extension/shared/i18n.js", context);
+  loadScript("extension/shared/messages.js", context);
+  loadScript("extension/shared/targets.js", context);
+  loadScript("extension/shared/constants.js", context);
+  loadScript("extension/shared/settings.js", context);
+  loadScript("extension/popup/index.js", context);
+
+  await Promise.resolve();
+
+  const popup = context.YtActivityCleanerPopup;
+  const resolved = await popup.resolveTargetContext();
+
+  assert.equal(resolved.activeTabSupported, true);
+  assert.equal(resolved.activeTabRunnable, false);
+  assert.equal(resolved.canStartFromActiveTab, false);
+  assert.equal(resolved.activeTabTarget?.id, "likes");
+  assert.equal(
+    popup.getTargetLabel(resolved.activeTabTarget),
+    "Liked videos"
+  );
+});

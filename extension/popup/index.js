@@ -7,6 +7,8 @@
     Messages,
     Settings,
     getSettings,
+    getTargetByUrl,
+    isRunnableUrl,
     saveSettings,
     resetSettings,
     sanitizeSettings,
@@ -137,7 +139,11 @@
     return tab || null;
   };
 
+  popup.getTargetByUrl = getTargetByUrl;
   popup.isSupportedUrl = isSupportedUrl;
+  popup.isRunnableUrl = isRunnableUrl;
+  popup.getTargetLabel = (target) =>
+    target ? t(target.labelKey, undefined, target.labelFallback || target.id) : "";
 
   popup.isMissingReceiverError = (error) =>
     /Could not establish connection|Receiving end does not exist/i.test(
@@ -245,9 +251,10 @@
       popup.getActiveTab(),
       popup.getCleanerSession(),
     ]);
+    const activeTabTarget = popup.getTargetByUrl(activeTab?.url);
     let trackedTab = await popup.getTabById(cleanerSession.tabId);
 
-    if (trackedTab && !popup.isSupportedUrl(trackedTab.url)) {
+    if (trackedTab && !popup.isRunnableUrl(trackedTab.url)) {
       trackedTab = null;
     }
 
@@ -255,18 +262,21 @@
       await popup.clearCleanerTab();
     }
 
-    const activeTabSupported = popup.isSupportedUrl(activeTab?.url);
-    const targetTab = trackedTab || (activeTabSupported ? activeTab : null);
+    const activeTabSupported = Boolean(activeTabTarget);
+    const activeTabRunnable = popup.isRunnableUrl(activeTab?.url);
+    const targetTab = trackedTab || (activeTabRunnable ? activeTab : null);
     const isTrackedTab = Boolean(trackedTab);
     const isUsingActiveTab = Boolean(targetTab?.id && activeTab?.id && targetTab.id === activeTab.id);
 
     return {
       activeTab,
       activeTabSupported,
+      activeTabRunnable,
+      activeTabTarget,
       targetTab,
       isTrackedTab,
       isUsingActiveTab,
-      canStartFromActiveTab: activeTabSupported,
+      canStartFromActiveTab: activeTabRunnable,
     };
   };
 
@@ -327,7 +337,17 @@
   popup.elements.startButton.addEventListener("click", async () => {
     try {
       const context = await popup.resolveTargetContext();
-      if (!context.activeTabSupported || !context.activeTab?.id) {
+      if (context.activeTabSupported && !context.activeTabRunnable) {
+        throw new Error(
+          t(
+            "popupTargetNotEnabledYet",
+            popup.getTargetLabel(context.activeTabTarget),
+            `${popup.getTargetLabel(context.activeTabTarget)} cleanup is not enabled yet.`
+          )
+        );
+      }
+
+      if (!context.activeTabRunnable || !context.activeTab?.id) {
         throw new Error(
           t(
             "popupOpenCommentsPageInCurrentTabFirst",

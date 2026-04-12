@@ -17,6 +17,11 @@ test("target registry resolves the comments page and keeps compatibility constan
   assert.equal(shared.DEFAULT_TARGET_ID, "comments");
   assert.equal(commentsTarget?.id, "comments");
   assert.equal(shared.isSupportedUrl(commentsUrl), true);
+  assert.equal(shared.isRunnableUrl(commentsUrl), true);
+  assert.equal(shared.getTargetById("likes")?.id, "likes");
+  assert.equal(shared.Constants.LIKES_PAGE_URL, "https://www.youtube.com/playlist?list=LL");
+  assert.equal(shared.isSupportedUrl("https://www.youtube.com/playlist?list=LL"), true);
+  assert.equal(shared.isRunnableUrl("https://www.youtube.com/playlist?list=LL"), false);
   assert.equal(shared.isSupportedUrl("https://www.youtube.com/watch?v=abc"), false);
   assert.equal(shared.Constants.COMMENTS_PAGE_URL, commentsUrl);
 });
