@@ -1,6 +1,7 @@
 importScripts(
   "../shared/browser-api.js",
   "../shared/messages.js",
+  "../shared/targets.js",
   "../shared/constants.js",
   "./power.js",
   "./session.js"

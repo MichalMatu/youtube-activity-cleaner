@@ -2,6 +2,13 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
 
+  const defaultDomConfig = Object.freeze({
+    itemContainers: ['c-wiz[jsname="Ttx95"]', '[role="listitem"]', "c-wiz", "li"],
+    descriptionSelectors: [".QTGV3c", ".SiEggd"],
+  });
+
+  content.getTargetDomConfig = () => content.getTarget?.()?.dom || defaultDomConfig;
+
   content.normalizeText = (value) =>
     (value || "")
       .replace(/\s+/g, " ")
@@ -30,7 +37,7 @@
       .filter(content.isVisible);
 
   content.getVisibleDeleteButtons = () =>
-    content.getVisibleMatches(content.selectors.deleteButtons);
+    content.getVisibleMatches(content.getSelectorList("deleteButtons"));
 
   content.isConfirmLabel = (element) => {
     const label = content.normalizeText(
@@ -42,7 +49,7 @@
 
   content.getConfirmButton = () => {
     const buttons = content
-      .getVisibleMatches(content.selectors.confirmButtons)
+      .getVisibleMatches(content.getSelectorList("confirmButtons"))
       .filter(content.isConfirmLabel);
 
     return (
@@ -83,14 +90,15 @@
     }
 
     const card =
-      element.closest('c-wiz[jsname="Ttx95"]') ||
-      element.closest('[role="listitem"]') ||
-      element.closest("c-wiz") ||
-      element.parentElement;
+      content.getTargetDomConfig()
+        .itemContainers.map((selector) => element.closest(selector))
+        .find(Boolean) || element.parentElement;
 
     const primary =
-      card?.querySelector(".QTGV3c")?.textContent ||
-      card?.querySelector(".SiEggd")?.textContent ||
+      content
+        .getTargetDomConfig()
+        .descriptionSelectors.map((selector) => card?.querySelector(selector)?.textContent)
+        .find(Boolean) ||
       element.innerText ||
       "";
 
@@ -98,10 +106,10 @@
   };
 
   content.getItemContainer = (element) =>
-    element?.closest('c-wiz[jsname="Ttx95"]') ||
-    element?.closest('[role="listitem"]') ||
-    element?.closest("c-wiz") ||
-    element?.closest("li") ||
+    content
+      .getTargetDomConfig()
+      .itemContainers.map((selector) => element?.closest(selector))
+      .find(Boolean) ||
     element?.parentElement ||
     null;
 
@@ -114,7 +122,7 @@
   };
 
   content.getLoadMoreButton = () =>
-    content.getVisibleMatches(content.selectors.loadMore)[0] || null;
+    content.getVisibleMatches(content.getSelectorList("loadMore"))[0] || null;
 
   content.getDeleteButtonFromItemContainer = (itemContainer) => {
     if (!itemContainer?.isConnected) {

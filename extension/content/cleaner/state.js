@@ -2,10 +2,11 @@
   const shared = globalThis.YtActivityCleanerShared;
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
-  const { Constants, Settings, sanitizeSettings } = shared;
+  const { Settings, sanitizeSettings } = shared;
   const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
 
   const state = (content.state = content.state || {
+    targetId: shared.DEFAULT_TARGET_ID || "",
     starting: false,
     running: false,
     stopRequested: false,
@@ -23,11 +24,23 @@
 
   content.getState = () => state;
 
-  content.isSupportedPage = () =>
-    window.location.hostname === Constants.SUPPORTED_PAGE_HOST &&
-    window.location.href.includes(Constants.SUPPORTED_PAGE_FRAGMENT);
+  content.getPageTarget = () => shared.getTargetByUrl?.(window.location.href) || null;
+
+  content.getTarget = () =>
+    content.getPageTarget() ||
+    shared.getTargetById?.(state.targetId) ||
+    shared.getDefaultTarget?.() ||
+    null;
+
+  content.isSupportedPage = () => Boolean(content.getPageTarget());
+
+  content.setCleanerTarget = (targetId) => {
+    state.targetId = shared.getTargetById?.(targetId)?.id || shared.DEFAULT_TARGET_ID || "";
+    return state.targetId;
+  };
 
   content.getCleanerStatus = () => ({
+    targetId: content.getTarget()?.id || state.targetId || "",
     starting: state.starting,
     running: state.running,
     stopRequested: state.stopRequested,

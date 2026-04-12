@@ -32,6 +32,7 @@
         "shared/browser-api.js",
         "shared/i18n.js",
         "shared/messages.js",
+        "shared/targets.js",
         "shared/constants.js",
         "shared/settings.js",
         "content/cleaner/config.js",

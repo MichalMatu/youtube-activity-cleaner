@@ -342,12 +342,13 @@
 
   content.startCleaner = async () => {
     const state = content.getState();
+    const pageTarget = content.getPageTarget();
 
     if (state.running || state.starting) {
       return content.getCleanerStatus();
     }
 
-    if (!content.isSupportedPage()) {
+    if (!pageTarget) {
       content.setCleanerMessage(
         t(
           "contentOpenCommentsPageFirst",
@@ -358,6 +359,7 @@
       return content.getCleanerStatus();
     }
 
+    content.setCleanerTarget(pageTarget.id);
     state.starting = true;
     state.running = false;
     state.stopRequested = false;

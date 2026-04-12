@@ -2,7 +2,7 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
 
-  content.selectors = Object.freeze({
+  const defaultSelectors = Object.freeze({
     deleteButtons: [
       'button[aria-label*="Delete activity item"]',
       'button[aria-label*="Delete activity"]',
@@ -19,4 +19,8 @@
     ],
     loadMore: ['button[jsname="T8gEfd"]', ".ksBjEc.lKxP2d.LQeN7"],
   });
+
+  content.getTargetSelectors = () => content.getTarget?.()?.selectors || defaultSelectors;
+
+  content.getSelectorList = (key) => content.getTargetSelectors()?.[key] || [];
 })();

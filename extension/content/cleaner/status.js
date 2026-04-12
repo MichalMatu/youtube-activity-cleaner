@@ -2,18 +2,32 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
 
+  const defaultStatusPatterns = Object.freeze({
+    pending: [/deleting now|deleting|removing|usuwanie|trwa usuwanie/],
+    success: [
+      /\bitem deleted\b|\bitems deleted\b|deleted successfully|usunięto|element usunięty/,
+    ],
+    failure: [
+      /couldn.?t delete|unable to delete|failed|something went wrong|nie udało się usunąć|nie można usunąć|błąd/,
+    ],
+  });
+
+  content.getTargetStatusPatterns = () =>
+    content.getTarget?.()?.statusPatterns || defaultStatusPatterns;
+
+  content.matchesStatusPattern = (group, text) =>
+    content
+      .getTargetStatusPatterns()
+      [group].some((pattern) => pattern.test(text));
+
   content.matchesPendingStatus = (text) =>
-    /deleting now|deleting|removing|usuwanie|trwa usuwanie/.test(text);
+    content.matchesStatusPattern("pending", text);
 
   content.matchesSuccessStatus = (text) =>
-    /\bitem deleted\b|\bitems deleted\b|deleted successfully|usunięto|element usunięty/.test(
-      text
-    );
+    content.matchesStatusPattern("success", text);
 
   content.matchesFailureStatus = (text) =>
-    /couldn.?t delete|unable to delete|failed|something went wrong|nie udało się usunąć|nie można usunąć|błąd/.test(
-      text
-    );
+    content.matchesStatusPattern("failure", text);
 
   content.isCleanerStatusText = (text) =>
     content.matchesPendingStatus(text) ||
@@ -24,7 +38,7 @@
     const seen = new Set();
 
     return content
-      .getVisibleMatches(content.selectors.status)
+      .getVisibleMatches(content.getSelectorList?.("status") || [])
       .map((element) => content.normalizeText(element.innerText || element.textContent))
       .filter((text) => text && text.length <= 120)
       .filter(content.isCleanerStatusText)
