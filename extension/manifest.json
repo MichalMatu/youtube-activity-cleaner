@@ -51,6 +51,7 @@
         "content/cleaner/status.js",
         "content/cleaner/strategy.js",
         "content/cleaner/engine.js",
+        "content/debug.js",
         "content/index.js"
       ],
       "run_at": "document_idle"
