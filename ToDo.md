@@ -36,3 +36,10 @@ Proponowane modyfikacje mające poprawić "ludzkość" skryptu oraz dodać nowe,
 - [ ] **Wygodne wznawianie (Pause/Resume):** 
   - Rozszerzenie obecnie ubogiej obsługi zatrzymywania (`stopRequested = true`) o stan Pauzy, który nie zresetuje całkowicie cyklu.
   - Przydatne przy usuwaniu tysięcy wpisów, gdzie nagle trzeba tymczasowo wstrzymać pracę maszyny.
+
+## 3. Ważne modyfikacje architektury UI (Dla przyszłego Agenta)
+
+- [ ] **Dynamiczne renderowanie menu GUI (Pop-up):**
+  - **Problem:** Obecnie przyciski skrótów w pliku `popup/popup.html` (sekcja `<div class="quick-links">`) są dodane na tzw. "sztywno". Dodanie każdego nowego obsługiwanego linku wymagałoby ręcznej ingerencji w 3 plikach naraz (nowy tag `<button>` w HTML, definicja w `constants.js` oraz przypinanie zdarzeń click() w `popup/index.js`).
+  - **Zadanie:** Należy przeprowadzić refaktoring w pliku `popup/index.js`. Pop-up powinien używać sprytnej pętli, która sama w locie przeczyta wszystkie obiekty celów pobierane z `shared.Targets` (z pliku `targets.js` należącego do logiki z tła) i dynamicznie wygeneruje te przyciski bazując na obiektach tam zapisanych.
+  - **Zysk:** Znacznie mniejszy wysiłek integracji nowych funkcji – w przyszłości dodanie wsparcia dla nowego elementu ograniczy się tylko i wyłącznie do zaktualizowana słownika w pliku `targets.js`, a interfejs wtyczki sam zaktualizuje się automatycznie o nowe opcje!
