@@ -102,10 +102,10 @@
     "message": "Stop"
   },
   "popupOpenCommentsPageButton": {
-    "message": "Open YouTube comments page"
+    "message": "Open comments page"
   },
   "popupOpenLikedVideosPageButton": {
-    "message": "Open Liked videos"
+    "message": "Open liked videos page"
   },
   "popupHelpSupportButton": {
     "message": "Help & support"
@@ -159,7 +159,7 @@
     "message": "$1 cleanup is planned, but it is not enabled yet."
   },
   "popupPageOpenCommentsPrompt": {
-    "message": "Open Google My Activity -> Your YouTube comments."
+    "message": "Click Open comments page or Open liked videos page."
   },
   "popupTabNoConnectedCleaner": {
     "message": "No connected cleaner tab was found right now."
@@ -180,7 +180,7 @@
     "message": "Start is available on the current supported tab."
   },
   "popupOnlyWorksOnCommentsPage": {
-    "message": "This extension works only on the YouTube comments page."
+    "message": "Open the comments page or the liked videos page to continue."
   },
   "popupCleanerStartingCurrentPage": {
     "message": "Cleaner is starting on the current page."
@@ -192,13 +192,13 @@
     "message": "Cleaner is idle."
   },
   "popupPageStillLoading": {
-    "message": "The comments page is still loading. Wait a moment and try again."
+    "message": "The page is still loading. Wait a moment and try again."
   },
   "popupReloadCleanerTabReconnect": {
     "message": "Reload the cleaner tab once so the extension can reconnect to it."
   },
   "popupReloadCommentsPageConnect": {
-    "message": "Reload the comments page once so the extension can connect to it."
+    "message": "Reload the page once so the extension can connect to it."
   },
   "popupNoTargetTabFound": {
     "message": "No target tab found."
@@ -216,10 +216,10 @@
     "message": "No active tab found."
   },
   "popupReloadCommentsPageTryAgain": {
-    "message": "Reload the comments page and try again."
+    "message": "Reload the page and try again."
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
-    "message": "Open the YouTube comments page in the current tab first."
+    "message": "Open the comments page or the liked videos page in the current tab first."
   },
   "popupTargetNotEnabledYet": {
     "message": "$1 cleanup is not enabled yet."
@@ -321,7 +321,7 @@
     "message": "Finished."
   },
   "contentOpenCommentsPageFirst": {
-    "message": "Open the Your YouTube comments page in Google My Activity first."
+    "message": "Open the comments page or the liked videos page first."
   },
   "contentTargetNotEnabledYet": {
     "message": "$1 cleanup is not enabled yet."

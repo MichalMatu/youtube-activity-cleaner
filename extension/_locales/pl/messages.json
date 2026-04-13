@@ -102,10 +102,10 @@
     "message": "Stop"
   },
   "popupOpenCommentsPageButton": {
-    "message": "Otwórz stronę komentarzy YouTube"
+    "message": "Otwórz stronę komentarzy"
   },
   "popupOpenLikedVideosPageButton": {
-    "message": "Otwórz Polubione filmy"
+    "message": "Otwórz stronę polubionych filmów"
   },
   "popupHelpSupportButton": {
     "message": "Pomoc i wsparcie"
@@ -159,7 +159,7 @@
     "message": "Czyszczenie dla $1 jest planowane, ale nie jest jeszcze włączone."
   },
   "popupPageOpenCommentsPrompt": {
-    "message": "Otwórz Google My Activity -> Twoje komentarze w YouTube."
+    "message": "Kliknij Otwórz stronę komentarzy albo Otwórz stronę polubionych filmów."
   },
   "popupTabNoConnectedCleaner": {
     "message": "Nie znaleziono teraz podłączonej karty cleanera."
@@ -180,7 +180,7 @@
     "message": "Start jest dostępny na bieżącej obsługiwanej karcie."
   },
   "popupOnlyWorksOnCommentsPage": {
-    "message": "To rozszerzenie działa tylko na stronie komentarzy YouTube."
+    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów."
   },
   "popupCleanerStartingCurrentPage": {
     "message": "Cleaner uruchamia się na bieżącej stronie."
@@ -192,13 +192,13 @@
     "message": "Cleaner jest bezczynny."
   },
   "popupPageStillLoading": {
-    "message": "Strona komentarzy nadal się ładuje. Poczekaj chwilę i spróbuj ponownie."
+    "message": "Strona nadal się ładuje. Poczekaj chwilę i spróbuj ponownie."
   },
   "popupReloadCleanerTabReconnect": {
     "message": "Odśwież kartę cleanera raz, aby rozszerzenie mogło połączyć się ponownie."
   },
   "popupReloadCommentsPageConnect": {
-    "message": "Odśwież stronę komentarzy raz, aby rozszerzenie mogło się połączyć."
+    "message": "Odśwież stronę raz, aby rozszerzenie mogło się połączyć."
   },
   "popupNoTargetTabFound": {
     "message": "Nie znaleziono karty docelowej."
@@ -216,10 +216,10 @@
     "message": "Nie znaleziono aktywnej karty."
   },
   "popupReloadCommentsPageTryAgain": {
-    "message": "Odśwież stronę komentarzy i spróbuj ponownie."
+    "message": "Odśwież stronę i spróbuj ponownie."
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
-    "message": "Najpierw otwórz stronę komentarzy YouTube w bieżącej karcie."
+    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów w bieżącej karcie."
   },
   "popupTargetNotEnabledYet": {
     "message": "Czyszczenie dla $1 nie jest jeszcze włączone."
@@ -321,7 +321,7 @@
     "message": "Zakończono."
   },
   "contentOpenCommentsPageFirst": {
-    "message": "Najpierw otwórz stronę Twoje komentarze w YouTube w Google My Activity."
+    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów."
   },
   "contentTargetNotEnabledYet": {
     "message": "Czyszczenie dla $1 nie jest jeszcze włączone."

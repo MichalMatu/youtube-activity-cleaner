@@ -153,7 +153,7 @@
       return t(
         "popupPageStillLoading",
         undefined,
-        "The comments page is still loading. Wait a moment and try again."
+        "The page is still loading. Wait a moment and try again."
       );
     }
 
@@ -166,7 +166,7 @@
       : t(
           "popupReloadCommentsPageConnect",
           undefined,
-          "Reload the comments page once so the extension can connect to it."
+          "Reload the page once so the extension can connect to it."
         );
   };
 
@@ -324,7 +324,7 @@
         t(
           "popupReloadCommentsPageTryAgain",
           undefined,
-          "Reload the comments page and try again."
+          "Reload the page and try again."
         ),
         context
       );
@@ -350,7 +350,7 @@
           t(
             "popupOpenCommentsPageInCurrentTabFirst",
             undefined,
-            "Open the YouTube comments page in the current tab first."
+            "Open the comments page or the liked videos page in the current tab first."
           )
         );
       }

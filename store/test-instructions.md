@@ -13,10 +13,10 @@ This extension automates the delete flow for the user's own YouTube comments on 
 ## Test Flow
 
 1. Load the extension and open the popup.
-2. Click `Open YouTube comments page` or open:
+2. Click `Open comments page` or open:
    - `https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments`
 3. Reopen the popup on that page.
-4. Confirm the popup shows `Ready on the YouTube comments page.` or `Ready to start on the current tab.`
+4. Confirm the popup shows `Ready to start on the current tab.` or another clear ready state with `Start` available.
 5. Expand `Settings` if you want to inspect the run profile.
 6. Click `Start`.
 7. Observe that:

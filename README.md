@@ -62,9 +62,9 @@ If the extension icon is not pinned, click the Chrome `Extensions` button and op
 ### Run the cleaner
 
 1. Open the extension popup
-2. If needed, click `Open YouTube comments page`
+2. If needed, click `Open comments page`
 3. Reopen the popup on that page
-4. Wait for `Ready on the YouTube comments page.`
+4. Wait for `Ready to start on the current tab.`
 5. Open the collapsed `Settings` section only if you want a slower, safer, or more aggressive run
 6. Click `Start`
 7. Keep that Google My Activity tab visible while the cleaner is working

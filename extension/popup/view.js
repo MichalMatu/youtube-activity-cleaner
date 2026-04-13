@@ -120,7 +120,7 @@
       popup.elements.pageStateElement.textContent = t(
         "popupPageOpenCommentsPrompt",
         undefined,
-        "Open Google My Activity -> Your YouTube comments."
+        "Click Open comments page or Open liked videos page."
       );
       popup.elements.tabStateElement.textContent = t(
         "popupTabNoConnectedCleaner",
@@ -186,7 +186,7 @@
           : t(
               "popupOnlyWorksOnCommentsPage",
               undefined,
-              "This extension works only on the YouTube comments page."
+              "Open the comments page or the liked videos page to continue."
             );
       popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
       return;

@@ -13,8 +13,7 @@
           <p class="eyebrow">Chrome Extension</p>
           <h1>YouTube Activity Cleaner</h1>
           <p>
-            Clean old YouTube comments from the Google My Activity comments page with a focused,
-            local-first MV3 extension.
+            Clean comments and liked videos with a focused, local-first MV3 extension.
           </p>
           <div class="actions">
             <a class="button primary" href="https://github.com/MichalMatu/youtube-activity-cleaner">View GitHub Repository</a>
@@ -24,7 +23,7 @@
           <div class="meta">
             <div class="panel">
               <h2>What It Does</h2>
-              <p>Finds visible delete actions on the Google My Activity comments page, confirms them, waits for the page to react, and repeats.</p>
+              <p>Opens the right page from the popup, follows the visible cleanup action, waits for the page to react, and repeats.</p>
             </div>
             <div class="panel">
               <h2>What It Does Not Do</h2>
@@ -58,15 +57,16 @@
       <section class="panel">
         <h2>How To Use</h2>
         <ol class="list">
-          <li>Load the unpacked extension from the <code>extension/</code> directory or install it from the Chrome Web Store later.</li>
-          <li>Open the Google My Activity page for Your YouTube comments.</li>
-          <li>Open the popup, review the settings, and click Start.</li>
-          <li>Keep the Google My Activity tab visible while the cleaner is working.</li>
-          <li>Use the popup to monitor progress or click Stop.</li>
+          <li>Click the extension.</li>
+          <li>Click <code>Open comments page</code> or <code>Open liked videos page</code>.</li>
+          <li>When the page finishes loading, click <code>Start</code>.</li>
         </ol>
         <p>
-          The current beta is best tested with the Google My Activity interface in English and
-          Polish.
+          Keep that page visible while the cleaner is working. You can use <code>Stop</code>
+          any time.
+        </p>
+        <p>
+          The current beta is best tested with the interface in English and Polish.
         </p>
       </section>
 
@@ -76,6 +76,24 @@
           <li>The core cleaner flow, popup controls, saved settings, and keep-awake support are implemented in the current v2 build.</li>
           <li>Current localization coverage is focused on the English and Polish Google My Activity interface.</li>
           <li>The remaining release work is mainly manual smoke testing, final real screenshots, and store publication setup.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Update Plan</h2>
+        <p><strong>Copy cleanup.</strong></p>
+        <ul class="list">
+          <li>Keep the main instruction as one short 3-step flow.</li>
+          <li>Use the exact popup button labels everywhere: <code>Open comments page</code>, <code>Open liked videos page</code>, and <code>Start</code>.</li>
+          <li>Reduce extra setup wording so the first screen is focused on starting fast.</li>
+        </ul>
+        <p><strong>Screenshots to add.</strong></p>
+        <ul class="list">
+          <li>Popup opened on a normal tab with both blue quick-link buttons visible.</li>
+          <li>Comments page loaded with the popup ready to start.</li>
+          <li>Liked videos page loaded with the popup ready to start.</li>
+          <li>Cleaner running with counters changing and the <code>Stop</code> button visible.</li>
+          <li>Settings panel open with the profile and pacing controls visible.</li>
         </ul>
       </section>
 

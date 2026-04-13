@@ -250,7 +250,7 @@
         t(
           "contentOpenCommentsPageFirst",
           undefined,
-          "Open the Your YouTube comments page in Google My Activity first."
+          "Open the comments page or the liked videos page first."
         )
       );
       return content.getCleanerStatus();
