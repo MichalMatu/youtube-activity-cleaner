@@ -46,6 +46,7 @@ a {
   grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
   gap: 28px;
   padding: 28px;
+  align-items: stretch;
 }
 
 .eyebrow {
@@ -85,8 +86,9 @@ li {
 }
 
 .actions {
-  grid-auto-flow: column;
-  justify-content: start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   margin-top: 20px;
 }
 
@@ -113,11 +115,21 @@ li {
   color: var(--text);
 }
 
+.hero-media {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
 .hero img {
   width: 100%;
+  height: 100%;
+  max-height: 760px;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  object-fit: cover;
+  object-position: top center;
 }
 
 .meta {
@@ -155,7 +167,8 @@ code {
     grid-template-columns: 1fr;
   }
 
-  .actions {
-    grid-auto-flow: row;
+  .hero-media {
+    max-width: 560px;
+    margin: 0 auto;
   }
 }
