@@ -7,17 +7,17 @@ Ten dokument zawiera plan wdrożenia nowych celów usuwania oraz ulepszeń w kod
 Obecnie wtyczka wspiera "comments" i "likes". Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
 
 - [ ] **Polubienia komentarzy (Comment Likes):** 
-  - Dodanie obsługi dla zakładki My Activity: `page=youtube_comment_likes`.
+  - Dodanie obsługi dla zakładki My Activity: `https://myactivity.google.com/page?page=youtube_comment_likes`.
   - Powinno korzystać z takiej samej logiki jak zwykłe komentarze.
 - [ ] **Wiadomości na Czacie na Żywo (Live Chat Messages):** 
-  - Dodanie obsługi logiki dla: `page=youtube_live_chat`.
+  - Dodanie obsługi logiki dla: `https://myactivity.google.com/page?page=youtube_live_chat`.
 - [ ] **Playlista "Do Obejrzenia" (Watch Later):** 
-  - Dodanie obsługi do `targets.js` dla urla: `youtube.com/playlist?list=WL`. 
+  - Dodanie obsługi do `targets.js` dla urla: `https://www.youtube.com/playlist?list=WL`. 
   - Logika zbliżona do modułu "Likes".
 - [ ] **Masowe odsubskrybowanie kanałów (Mass Unsubscribe):** 
-  - Skrypt do automatycznego odklikiwania „Odsubskrybuj” wszystkich subskrybowanych kanałów na `youtube.com/feed/channels`.
+  - Skrypt do automatycznego odklikiwania „Odsubskrybuj” wszystkich subskrybowanych kanałów na `https://www.youtube.com/feed/channels`.
 - [ ] **Zarządzanie historią oglądania i wyszukiwania:** 
-  - Alternatywa dla wbudowanego czyszczenia Google, pozwalająca na selektywne usuwanie historii.
+  - Alternatywa dla wbudowanego czyszczenia Google, pozwalająca na selektywne usuwanie historii (np. historia `https://myactivity.google.com/activitycontrols/youtube` czy wpisy we własnej karcie Społeczność `https://myactivity.google.com/page?page=youtube_community_posts`).
 
 ## 2. Ulepszenia w silniku skryptu (Engine & Quality of Life)
 
