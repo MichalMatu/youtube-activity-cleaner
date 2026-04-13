@@ -1,0 +1,38 @@
+# Plan Rozwoju i Ulepszeń Wtyczki (YouTube Activity Cleaner)
+
+Ten dokument zawiera plan wdrożenia nowych celów usuwania oraz ulepszeń w kodzie wtyczki, podzielony na pojedyncze kroki.
+
+## 1. Nowe cele (Targets) do dodania
+
+Obecnie wtyczka wspiera "comments" i "likes". Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
+
+- [ ] **Polubienia komentarzy (Comment Likes):** 
+  - Dodanie obsługi dla zakładki My Activity: `page=youtube_comment_likes`.
+  - Powinno korzystać z takiej samej logiki jak zwykłe komentarze.
+- [ ] **Wiadomości na Czacie na Żywo (Live Chat Messages):** 
+  - Dodanie obsługi logiki dla: `page=youtube_live_chat`.
+- [ ] **Playlista "Do Obejrzenia" (Watch Later):** 
+  - Dodanie obsługi do `targets.js` dla urla: `youtube.com/playlist?list=WL`. 
+  - Logika zbliżona do modułu "Likes".
+- [ ] **Masowe odsubskrybowanie kanałów (Mass Unsubscribe):** 
+  - Skrypt do automatycznego odklikiwania „Odsubskrybuj” wszystkich subskrybowanych kanałów na `youtube.com/feed/channels`.
+- [ ] **Zarządzanie historią oglądania i wyszukiwania:** 
+  - Alternatywa dla wbudowanego czyszczenia Google, pozwalająca na selektywne usuwanie historii.
+
+## 2. Ulepszenia w silniku skryptu (Engine & Quality of Life)
+
+Proponowane modyfikacje mające poprawić "ludzkość" skryptu oraz dodać nowe, zaawansowane narzędzia dla użytkownika:
+
+- [ ] **Dodanie losowości w przerwach (Jitter):** 
+  - Aktualizacja w module `engine.js` / opóźnieniach.
+  - Zamiast sztywnych czasów przerw (np. `betweenItemsMs: 3200`), wprowadzić losowy jitter (np. stała 3200ms + losowana wartość 0 - 800ms) aby chociaż trochę zasymulować ludzkie klikanie.
+- [ ] **Tryb Symulacji (Dry Run / Test):** 
+  - Wdrożenie trybu polegającego tylko na skanowaniu w dół strony (bez strzelania komendami `click()`).
+  - Podświetlanie ramkami CSS elementów kandydujących do usunięcia.
+  - Wyświetlenie podsumowania/licznika z symulacji.
+- [ ] **Filtrowanie zawartości po słowie:** 
+  - Dodanie do menu pop-up wtyczki pola np. `Wyszukaj tylko tekst/tytuł`.
+  - Aktualizacja `strategy.js` o weryfikację tekstu w danym rzędzie przed aktywacją logiki usuwania.
+- [ ] **Wygodne wznawianie (Pause/Resume):** 
+  - Rozszerzenie obecnie ubogiej obsługi zatrzymywania (`stopRequested = true`) o stan Pauzy, który nie zresetuje całkowicie cyklu.
+  - Przydatne przy usuwaniu tysięcy wpisów, gdzie nagle trzeba tymczasowo wstrzymać pracę maszyny.
