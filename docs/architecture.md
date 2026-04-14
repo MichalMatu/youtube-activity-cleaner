@@ -91,6 +91,7 @@ Targets live in `extension/shared/targets.js`.
 Rules for new targets:
 
 - add metadata and selectors in the target registry first
+- it is fine to land `enabled: false` placeholders first when we want page detection, popup shortcuts, and copy reviewed before runtime support ships
 - reuse an existing strategy only when the UI signals are truly the same
 - if Google shows a different delete lifecycle, create a new strategy instead of adding more conditionals to the old one
 

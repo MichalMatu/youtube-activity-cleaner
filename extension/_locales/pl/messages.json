@@ -131,6 +131,12 @@
   "targetCommentLikesLabel": {
     "message": "polubienia komentarzy"
   },
+  "targetLiveChatsLabel": {
+    "message": "historia czatów na żywo"
+  },
+  "targetCommunityPostsLabel": {
+    "message": "posty społeczności"
+  },
   "targetLikesLabel": {
     "message": "Polubione filmy"
   },

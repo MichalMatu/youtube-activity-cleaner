@@ -131,6 +131,12 @@
   "targetCommentLikesLabel": {
     "message": "Comment likes"
   },
+  "targetLiveChatsLabel": {
+    "message": "Live chat history"
+  },
+  "targetCommunityPostsLabel": {
+    "message": "Community posts"
+  },
   "targetLikesLabel": {
     "message": "Liked videos"
   },

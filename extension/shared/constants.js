@@ -12,6 +12,12 @@
     COMMENT_LIKES_PAGE_URL:
       shared.getTargetById?.("commentLikes")?.pageUrl ||
       "https://myactivity.google.com/page?page=youtube_comment_likes",
+    LIVE_CHATS_PAGE_URL:
+      shared.getTargetById?.("liveChats")?.pageUrl ||
+      "https://www.youtube.com/feed/history/live_chat_history",
+    COMMUNITY_POSTS_PAGE_URL:
+      shared.getTargetById?.("communityPosts")?.pageUrl ||
+      "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity",
     LIKES_PAGE_URL:
       shared.getTargetById?.("likes")?.pageUrl || "https://www.youtube.com/playlist?list=LL",
     SUPPORTED_PAGE_HOST: defaultTarget?.supportedHost || "myactivity.google.com",

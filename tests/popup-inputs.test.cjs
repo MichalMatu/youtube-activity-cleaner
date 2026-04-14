@@ -205,6 +205,8 @@ test("popup accepts comma decimals and shows localized preview text", async () =
     [
       "Otwórz komentarze YouTube",
       "Otwórz polubienia komentarzy",
+      "Otwórz historia czatów na żywo",
+      "Otwórz posty społeczności",
       "Otwórz Polubione filmy",
     ]
   );
@@ -312,5 +314,96 @@ test("popup recognizes the likes page and allows starting it", async () => {
     popup.getTargetLabel(resolved.activeTabTarget),
     "Liked videos"
   );
-  assert.equal(popup.elements.quickLinksElement.children.length, 3);
+  assert.equal(popup.elements.quickLinksElement.children.length, 5);
+});
+
+test("popup recognizes planned community-post cleanup without allowing start", async () => {
+  const communityPostsUrl =
+    "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity";
+
+  const context = createContext({
+    Intl,
+    setInterval() {
+      return 0;
+    },
+    clearInterval() {},
+    document: {
+      documentElement: { lang: "en" },
+      createElement() {
+        return createElement();
+      },
+      addEventListener() {},
+      querySelectorAll() {
+        return [];
+      },
+    },
+    YtActivityCleanerShared: {
+      ext: {
+        i18n: {
+          getMessage(_key, _substitutions, fallback) {
+            return fallback || "";
+          },
+          getUILanguage() {
+            return "en";
+          },
+        },
+        storage: {
+          local: {
+            async get() {
+              return {};
+            },
+            async set() {},
+          },
+        },
+        tabs: {
+          async query() {
+            return [{ id: 3, url: communityPostsUrl, status: "complete", title: "Community posts" }];
+          },
+          async sendMessage() {
+            return { response: { status: { deleted: 0, attempted: 0, failed: 0 } } };
+          },
+          async create() {},
+          async get() {
+            return null;
+          },
+        },
+        runtime: {
+          getManifest() {
+            return { version: "4.0.0" };
+          },
+          async sendMessage(message) {
+            if (message.type === "cleaner/get-tab") {
+              return { session: { tabId: null, hasCleanerTab: false } };
+            }
+
+            if (message.type === "power/get-status") {
+              return { keepAwakeActive: false };
+            }
+
+            return { ok: true, session: { tabId: null, hasCleanerTab: false } };
+          },
+        },
+      },
+    },
+    YtActivityCleanerPopup: {
+      elements: createPopupElements(),
+      renderStatus() {},
+      renderError() {},
+      renderDisconnectedPage() {},
+      renderSettingsState() {},
+      renderSettingsPreview() {},
+    },
+  });
+
+  loadPopupStack(context);
+
+  await Promise.resolve();
+
+  const popup = context.YtActivityCleanerPopup;
+  const resolved = await popup.resolveTargetContext();
+
+  assert.equal(resolved.activeTabSupported, true);
+  assert.equal(resolved.activeTabRunnable, false);
+  assert.equal(resolved.canStartFromActiveTab, false);
+  assert.equal(resolved.activeTabTarget?.id, "communityPosts");
 });
