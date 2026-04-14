@@ -12,12 +12,16 @@ Use this before the first `v4` upload or after changes that affect popup flow, s
 | Comments run and stop | `English` | Cleaner starts, counters move, stop works |
 | Comment likes ready state | `English` | Popup connects, shows ready state, settings preview loads |
 | Comment likes run and stop | `English` | Cleaner starts, counters move, stop works |
+| Live chat history ready state | `English` | Popup connects, shows ready state, settings preview loads |
+| Live chat history run and stop | `English` | Cleaner starts, counters move, stop works |
 | Liked videos ready state | `English` | Popup connects, shows ready state, settings preview loads |
 | Liked videos run and stop | `English` | Cleaner starts, counters move, stop works |
 | Comments ready state | `Polish` | Popup connects, shows localized ready state, settings preview loads |
 | Comments run and stop | `Polish` | Cleaner starts, counters move, stop works |
 | Comment likes ready state | `Polish` | Popup connects, shows localized ready state, settings preview loads |
 | Comment likes run and stop | `Polish` | Cleaner starts, counters move, stop works |
+| Live chat history ready state | `Polish` | Popup connects, shows localized ready state, settings preview loads |
+| Live chat history run and stop | `Polish` | Cleaner starts, counters move, stop works |
 | Liked videos ready state | `Polish` | Popup connects, shows ready state, settings preview loads |
 | Liked videos run and stop | `Polish` | Cleaner starts, counters move, stop works |
 
@@ -43,7 +47,7 @@ Use this before the first `v4` upload or after changes that affect popup flow, s
 
 - Extension version shown in the popup
 - UI language shown in the popup
-- Target page tested: comments, comment likes, or liked videos
+- Target page tested: comments, comment likes, live chat history, or liked videos
 - Test account language used for the page
 - Whether `Start`, counters, and `Stop` behaved correctly
 - Whether any retry or error text appeared

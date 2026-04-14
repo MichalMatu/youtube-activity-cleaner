@@ -13,7 +13,7 @@ test("target registry resolves the comments page and keeps compatibility constan
   const commentsUrl =
     "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments";
   const commentLikesUrl = "https://myactivity.google.com/page?page=youtube_comment_likes";
-  const liveChatsUrl = "https://www.youtube.com/feed/history/live_chat_history";
+  const liveChatsUrl = "https://myactivity.google.com/page?page=youtube_live_chat";
   const communityPostsUrl =
     "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity";
   const commentsTarget = shared.getTargetByUrl(commentsUrl);
@@ -35,7 +35,7 @@ test("target registry resolves the comments page and keeps compatibility constan
   assert.equal(shared.isSupportedUrl(commentLikesUrl), true);
   assert.equal(shared.isRunnableUrl(commentLikesUrl), true);
   assert.equal(shared.isSupportedUrl(liveChatsUrl), true);
-  assert.equal(shared.isRunnableUrl(liveChatsUrl), false);
+  assert.equal(shared.isRunnableUrl(liveChatsUrl), true);
   assert.equal(shared.isSupportedUrl(communityPostsUrl), true);
   assert.equal(shared.isRunnableUrl(communityPostsUrl), false);
   assert.equal(shared.getTargetById("commentLikes")?.id, "commentLikes");

@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Local-first cleaner for YouTube comments, comment likes, and liked videos."
+    "message": "Local-first cleaner for YouTube comments, comment likes, live chat history, and liked videos."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -284,6 +284,9 @@
   "contentDeletedCommentLikes": {
     "message": "Deleted comment likes: $1"
   },
+  "contentDeletedLiveChats": {
+    "message": "Deleted live chat messages: $1"
+  },
   "contentRemovedLikes": {
     "message": "Removed likes: $1"
   },
@@ -304,6 +307,9 @@
   },
   "contentNoMoreCommentLikes": {
     "message": "No more visible comment-like delete buttons were found."
+  },
+  "contentNoMoreLiveChats": {
+    "message": "No more visible live-chat delete buttons were found."
   },
   "contentNoMoreLikes": {
     "message": "No more removable liked videos were found."

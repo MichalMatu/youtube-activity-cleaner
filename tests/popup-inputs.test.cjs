@@ -317,6 +317,107 @@ test("popup recognizes the likes page and allows starting it", async () => {
   assert.equal(popup.elements.quickLinksElement.children.length, 5);
 });
 
+test("popup recognizes the live chat history page and allows starting it", async () => {
+  const liveChatsUrl = "https://myactivity.google.com/page?page=youtube_live_chat";
+
+  const context = createContext({
+    Intl,
+    setInterval() {
+      return 0;
+    },
+    clearInterval() {},
+    document: {
+      documentElement: { lang: "en" },
+      createElement() {
+        return createElement();
+      },
+      addEventListener() {},
+      querySelectorAll() {
+        return [];
+      },
+    },
+    YtActivityCleanerShared: {
+      ext: {
+        i18n: {
+          getMessage(key, substitutions, fallback) {
+            if (key === "targetLiveChatsLabel") {
+              return "Live chat history";
+            }
+
+            return fallback || "";
+          },
+          getUILanguage() {
+            return "en";
+          },
+        },
+        storage: {
+          local: {
+            async get() {
+              return {};
+            },
+            async set() {},
+          },
+        },
+        tabs: {
+          async query() {
+            return [{ id: 4, url: liveChatsUrl, status: "complete", title: "Live chat history" }];
+          },
+          async sendMessage() {
+            return { response: { status: { deleted: 0, attempted: 0, failed: 0 } } };
+          },
+          async create() {},
+          async get() {
+            return null;
+          },
+        },
+        runtime: {
+          getManifest() {
+            return { version: "4.0.0" };
+          },
+          async sendMessage(message) {
+            if (message.type === "cleaner/get-tab") {
+              return { session: { tabId: null, hasCleanerTab: false } };
+            }
+
+            if (message.type === "power/get-status") {
+              return { keepAwakeActive: false };
+            }
+
+            return { ok: true, session: { tabId: null, hasCleanerTab: false } };
+          },
+        },
+      },
+    },
+    YtActivityCleanerPopup: {
+      elements: {
+        ...createPopupElements(),
+        speedProfileSelect: createElement("fast"),
+      },
+      renderStatus() {},
+      renderError() {},
+      renderDisconnectedPage() {},
+      renderSettingsState() {},
+      renderSettingsPreview() {},
+    },
+  });
+
+  loadPopupStack(context);
+
+  await Promise.resolve();
+
+  const popup = context.YtActivityCleanerPopup;
+  const resolved = await popup.resolveTargetContext();
+
+  assert.equal(resolved.activeTabSupported, true);
+  assert.equal(resolved.activeTabRunnable, true);
+  assert.equal(resolved.canStartFromActiveTab, true);
+  assert.equal(resolved.activeTabTarget?.id, "liveChats");
+  assert.equal(
+    popup.getTargetLabel(resolved.activeTabTarget),
+    "Live chat history"
+  );
+});
+
 test("popup recognizes planned community-post cleanup without allowing start", async () => {
   const communityPostsUrl =
     "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity";

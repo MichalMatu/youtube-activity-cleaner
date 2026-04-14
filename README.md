@@ -1,6 +1,6 @@
 # YouTube Activity Cleaner
 
-Delete YouTube comments, comment likes, and liked videos with a local-first cleaner.
+Delete YouTube comments, comment likes, live chat history, and liked videos with a local-first cleaner.
 
 Project site:
 
@@ -66,7 +66,7 @@ If the extension icon is not pinned, click the Chrome `Extensions` button and op
 ### Run the cleaner
 
 1. Open the extension popup
-2. If needed, use one of the popup shortcuts to open the comments, comment likes, or liked videos page
+2. If needed, use one of the popup shortcuts to open the comments, comment likes, live chat history, or liked videos page
 3. Reopen the popup on that page
 4. Wait for `Ready to start on the current tab.`
 5. Open the collapsed `Settings` section only if you want a slower, safer, or more aggressive run
@@ -105,6 +105,7 @@ The current extension branch is in an active `v4` build-out stage.
 
 - comments cleaner: working
 - comment likes cleaner: working
+- live chat history cleaner: working
 - liked videos cleaner: working
 - popup shortcuts, counters, and settings: working
 - popup architecture: split into view, target-shortcuts, settings-form, and orchestration layers
@@ -255,4 +256,4 @@ stopYtCommentCleaner()
 - Google can change the page layout at any time, which may break selectors.
 - It is a good idea to test the script on a few comments first.
 - Google may take some time to fully reflect deletions after they are triggered.
-- The extension currently supports comments, comment likes, and liked videos.
+- The extension currently supports comments, comment likes, live chat history, and liked videos.

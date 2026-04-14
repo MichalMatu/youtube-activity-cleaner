@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Lokalny cleaner aktywności YouTube dla komentarzy, polubień komentarzy i polubionych filmów."
+    "message": "Lokalny cleaner aktywności YouTube dla komentarzy, polubień komentarzy, historii czatów na żywo i polubionych filmów."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -284,6 +284,9 @@
   "contentDeletedCommentLikes": {
     "message": "Usunięte polubienia komentarzy: $1"
   },
+  "contentDeletedLiveChats": {
+    "message": "Usunięte wiadomości czatu na żywo: $1"
+  },
   "contentRemovedLikes": {
     "message": "Usunięte lajki: $1"
   },
@@ -304,6 +307,9 @@
   },
   "contentNoMoreCommentLikes": {
     "message": "Nie znaleziono już więcej widocznych przycisków usuwania polubień komentarzy."
+  },
+  "contentNoMoreLiveChats": {
+    "message": "Nie znaleziono już więcej widocznych przycisków usuwania wiadomości czatu na żywo."
   },
   "contentNoMoreLikes": {
     "message": "Nie znaleziono już polubionych filmów możliwych do usunięcia."

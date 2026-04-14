@@ -9,7 +9,7 @@ Obecnie wtyczka wspiera `comments`, `commentLikes` i `likes` (liked videos). Pon
 - [x] **Polubienia komentarzy (Comment Likes):**
   - Dodanie obsługi dla zakładki My Activity: `https://myactivity.google.com/page?page=youtube_comment_likes`.
   - Powinno korzystać z takiej samej logiki jak zwykłe komentarze.
-- [ ] **Wiadomości na Czacie na Żywo (Live Chat Messages):** 
+- [x] **Wiadomości na Czacie na Żywo (Live Chat Messages):**
   - Dodanie obsługi logiki dla: `https://myactivity.google.com/page?page=youtube_live_chat`.
 - [ ] **Playlista "Do Obejrzenia" (Watch Later):** 
   - Dodanie obsługi do `targets.js` dla urla: `https://www.youtube.com/playlist?list=WL`. 

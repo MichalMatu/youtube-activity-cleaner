@@ -14,7 +14,7 @@
       "https://myactivity.google.com/page?page=youtube_comment_likes",
     LIVE_CHATS_PAGE_URL:
       shared.getTargetById?.("liveChats")?.pageUrl ||
-      "https://www.youtube.com/feed/history/live_chat_history",
+      "https://myactivity.google.com/page?page=youtube_live_chat",
     COMMUNITY_POSTS_PAGE_URL:
       shared.getTargetById?.("communityPosts")?.pageUrl ||
       "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity",
