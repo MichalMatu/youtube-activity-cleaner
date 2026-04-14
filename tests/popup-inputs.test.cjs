@@ -512,3 +512,93 @@ test("popup recognizes the community-post page and allows starting it", async ()
     "Community posts"
   );
 });
+
+test("popup recognizes the alternate community-post page URL and allows starting it", async () => {
+  const communityPostsUrl = "https://myactivity.google.com/page?page=youtube_community_posts";
+
+  const context = createContext({
+    Intl,
+    setInterval() {
+      return 0;
+    },
+    clearInterval() {},
+    document: {
+      documentElement: { lang: "en" },
+      createElement() {
+        return createElement();
+      },
+      addEventListener() {},
+      querySelectorAll() {
+        return [];
+      },
+    },
+    YtActivityCleanerShared: {
+      ext: {
+        i18n: {
+          getMessage(_key, _substitutions, fallback) {
+            return fallback || "";
+          },
+          getUILanguage() {
+            return "en";
+          },
+        },
+        storage: {
+          local: {
+            async get() {
+              return {};
+            },
+            async set() {},
+          },
+        },
+        tabs: {
+          async query() {
+            return [{ id: 5, url: communityPostsUrl, status: "complete", title: "Community posts" }];
+          },
+          async sendMessage() {
+            return { response: { status: { deleted: 0, attempted: 0, failed: 0 } } };
+          },
+          async create() {},
+          async get() {
+            return null;
+          },
+        },
+        runtime: {
+          getManifest() {
+            return { version: "4.0.0" };
+          },
+          async sendMessage(message) {
+            if (message.type === "cleaner/get-tab") {
+              return { session: { tabId: null, hasCleanerTab: false } };
+            }
+
+            if (message.type === "power/get-status") {
+              return { keepAwakeActive: false };
+            }
+
+            return { ok: true, session: { tabId: null, hasCleanerTab: false } };
+          },
+        },
+      },
+    },
+    YtActivityCleanerPopup: {
+      elements: createPopupElements(),
+      renderStatus() {},
+      renderError() {},
+      renderDisconnectedPage() {},
+      renderSettingsState() {},
+      renderSettingsPreview() {},
+    },
+  });
+
+  loadPopupStack(context);
+
+  await Promise.resolve();
+
+  const popup = context.YtActivityCleanerPopup;
+  const resolved = await popup.resolveTargetContext();
+
+  assert.equal(resolved.activeTabSupported, true);
+  assert.equal(resolved.activeTabRunnable, true);
+  assert.equal(resolved.canStartFromActiveTab, true);
+  assert.equal(resolved.activeTabTarget?.id, "communityPosts");
+});

@@ -47,6 +47,7 @@
       ...definition,
       urlPrefixes: freezeArray(definition.urlPrefixes),
       requiredUrlFragments: freezeArray(definition.requiredUrlFragments),
+      requiredAnyUrlFragments: freezeArray(definition.requiredAnyUrlFragments),
       selectors: Object.freeze({
         deleteButtons: freezeArray(definition.selectors?.deleteButtons),
         actionButtons: freezeArray(definition.selectors?.actionButtons),
@@ -120,7 +121,11 @@
       labelFallback: "Community posts",
       enabled: true,
       pageUrl: "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity",
-      requiredUrlFragments: ["page=youtube_posts_activity"],
+      requiredUrlFragments: [],
+      requiredAnyUrlFragments: [
+        "page=youtube_posts_activity",
+        "page=youtube_community_posts",
+      ],
       completedCountKey: "contentDeletedCommunityPosts",
       completedCountFallback: "Deleted community posts: $1",
       noMoreActionsKey: "contentNoMoreCommunityPosts",
@@ -184,7 +189,9 @@
       target &&
         typeof url === "string" &&
         target.urlPrefixes.some((prefix) => url.startsWith(prefix)) &&
-        target.requiredUrlFragments.every((fragment) => url.includes(fragment))
+        target.requiredUrlFragments.every((fragment) => url.includes(fragment)) &&
+        (!target.requiredAnyUrlFragments.length ||
+          target.requiredAnyUrlFragments.some((fragment) => url.includes(fragment)))
     );
   shared.getTargetByUrl = (url) =>
     targetList.find((target) => shared.matchesTargetUrl(target, url)) || null;

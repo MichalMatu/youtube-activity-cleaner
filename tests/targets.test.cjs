@@ -16,10 +16,13 @@ test("target registry resolves the comments page and keeps compatibility constan
   const liveChatsUrl = "https://myactivity.google.com/page?page=youtube_live_chat";
   const communityPostsUrl =
     "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity";
+  const alternateCommunityPostsUrl =
+    "https://myactivity.google.com/page?page=youtube_community_posts";
   const commentsTarget = shared.getTargetByUrl(commentsUrl);
   const commentLikesTarget = shared.getTargetByUrl(commentLikesUrl);
   const liveChatsTarget = shared.getTargetByUrl(liveChatsUrl);
   const communityPostsTarget = shared.getTargetByUrl(communityPostsUrl);
+  const alternateCommunityPostsTarget = shared.getTargetByUrl(alternateCommunityPostsUrl);
 
   assert.equal(shared.DEFAULT_TARGET_ID, "comments");
   assert.equal(commentsTarget?.id, "comments");
@@ -30,6 +33,8 @@ test("target registry resolves the comments page and keeps compatibility constan
   assert.equal(liveChatsTarget?.strategyId, "myActivityDelete");
   assert.equal(communityPostsTarget?.id, "communityPosts");
   assert.equal(communityPostsTarget?.strategyId, "myActivityDelete");
+  assert.equal(alternateCommunityPostsTarget?.id, "communityPosts");
+  assert.equal(alternateCommunityPostsTarget?.strategyId, "myActivityDelete");
   assert.equal(shared.isSupportedUrl(commentsUrl), true);
   assert.equal(shared.isRunnableUrl(commentsUrl), true);
   assert.equal(shared.isSupportedUrl(commentLikesUrl), true);
@@ -38,6 +43,8 @@ test("target registry resolves the comments page and keeps compatibility constan
   assert.equal(shared.isRunnableUrl(liveChatsUrl), true);
   assert.equal(shared.isSupportedUrl(communityPostsUrl), true);
   assert.equal(shared.isRunnableUrl(communityPostsUrl), true);
+  assert.equal(shared.isSupportedUrl(alternateCommunityPostsUrl), true);
+  assert.equal(shared.isRunnableUrl(alternateCommunityPostsUrl), true);
   assert.equal(shared.getTargetById("commentLikes")?.id, "commentLikes");
   assert.equal(shared.getTargetById("liveChats")?.id, "liveChats");
   assert.equal(shared.getTargetById("communityPosts")?.id, "communityPosts");
