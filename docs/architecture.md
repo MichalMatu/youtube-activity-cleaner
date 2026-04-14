@@ -30,7 +30,13 @@ These objects are registries, not single-file god objects. New logic should live
 - `extension/content/cleaner/scrolling.js`
   Scroll and wait primitives.
 - `extension/content/cleaner/dom.js`
-  DOM lookup, click helpers, item-container resolution, and viewport prioritization.
+  DOM primitives: visibility checks, click helpers, item-container resolution, and item descriptions.
+- `extension/content/cleaner/dom-viewport.js`
+  Viewport ranking and visible-candidate selection.
+- `extension/content/cleaner/dom-dialogs.js`
+  Confirm buttons, load-more discovery, and known blocking-dialog handling.
+- `extension/content/cleaner/dom-retry.js`
+  Retry-target lookup scoped back to the current activity row when possible.
 - `extension/content/cleaner/status.js`
   Status/toast parsing and deletion outcome confirmation.
 - `extension/content/cleaner/candidates.js`
@@ -69,8 +75,10 @@ These objects are registries, not single-file god objects. New logic should live
   This is now the main runtime hotspot. If pause/resume, dry-run, or queue policies expand, split action processing from navigation/idle detection before adding more branches.
 - `extension/content/cleaner/lifecycle.js`
   Holds start/stop transitions and failure recovery. If more run phases appear, move the state transitions into narrower helpers instead of growing one long initializer.
-- `extension/content/cleaner/dom.js`
-  This file is now the densest collection of heuristics. Prefer extracting dialog handling or viewport candidate ranking into narrower helpers before adding more selector exceptions.
+- `extension/content/cleaner/dom-viewport.js`
+  This is now the main DOM hotspot. If selector heuristics grow again, split raw element collection from viewport ranking before adding more fallback branches.
+- `extension/content/cleaner/dom-dialogs.js`
+  Keep dialog heuristics narrowly scoped to shared UI signals. If a target needs custom behavior, prefer strategy-level code over another pile of generic exceptions here.
 - `extension/content/cleaner/strategy.js`
   Kept intentionally thin as the registry. New flow logic should land in `strategies/*.js`, not here.
 - `extension/content/cleaner/strategies/my-activity-delete.js`
@@ -93,6 +101,8 @@ Rules for new targets:
 - Do not add popup polling or cleaner-tab session code back into `popup/index.js`; keep it in `popup/runtime.js`.
 - Do not add settings-panel behavior or external-link buttons to `popup/index.js`; keep it in `popup/panel.js`.
 - Do not add start/stop lifecycle or keep-awake policy back into `content/cleaner/engine.js`; keep it in `lifecycle.js`.
+- Do not add viewport ranking heuristics back into `content/cleaner/dom.js`; keep them in `dom-viewport.js`.
+- Do not add dialog-specific exceptions back into `content/cleaner/dom.js`; keep them in `dom-dialogs.js`.
 - Do not put target-specific selector exceptions directly into the run loop.
 - Prefer adding a helper to the closest layer over attaching another generic utility to every namespace.
 - Keep debug helpers read-only unless the function name clearly says it mutates state or performs a probe.

@@ -49,6 +49,13 @@ function createVisibleElement({
   };
 }
 
+function loadDomScripts(context) {
+  loadScript("extension/content/cleaner/dom.js", context);
+  loadScript("extension/content/cleaner/dom-viewport.js", context);
+  loadScript("extension/content/cleaner/dom-dialogs.js", context);
+  loadScript("extension/content/cleaner/dom-retry.js", context);
+}
+
 test("getLoadMoreButton ignores the verification banner button", () => {
   const verificationButton = createVisibleElement({
     textContent: "Zarządzaj weryfikacją na stronie Moja aktywność",
@@ -87,7 +94,7 @@ test("getLoadMoreButton ignores the verification banner button", () => {
     },
   });
 
-  loadScript("extension/content/cleaner/dom.js", context);
+  loadDomScripts(context);
 
   assert.equal(context.YtActivityCleanerContent.getLoadMoreButton(), null);
 });
@@ -144,7 +151,7 @@ test("dismissKnownBlockingDialog clicks the visible close button", async () => {
     },
   });
 
-  loadScript("extension/content/cleaner/dom.js", context);
+  loadDomScripts(context);
 
   const result = await context.YtActivityCleanerContent.dismissKnownBlockingDialog();
 
@@ -195,7 +202,7 @@ test("getVisibleDeleteButtons keeps only delete buttons from the current viewpor
     },
   });
 
-  loadScript("extension/content/cleaner/dom.js", context);
+  loadDomScripts(context);
 
   const buttons = context.YtActivityCleanerContent.getVisibleDeleteButtons();
 
@@ -239,7 +246,7 @@ test("getItemContainer prefers the most specific matching ancestor", () => {
     YtActivityCleanerContent: {},
   });
 
-  loadScript("extension/content/cleaner/dom.js", context);
+  loadDomScripts(context);
 
   const container = context.YtActivityCleanerContent.getItemContainer(button);
 
@@ -292,10 +299,63 @@ test("getVisibleDeleteButtons falls back to hidden buttons using the visible ite
     },
   });
 
-  loadScript("extension/content/cleaner/dom.js", context);
+  loadDomScripts(context);
 
   const buttons = context.YtActivityCleanerContent.getVisibleDeleteButtons();
 
   assert.equal(buttons.length, 1);
   assert.equal(buttons[0], hiddenButton);
+});
+
+test("findRetryDeleteButton prefers a button from the same item container", () => {
+  const currentRow = createVisibleElement();
+  const otherRow = createVisibleElement();
+  const previousButton = createVisibleElement({
+    closestMap: {
+      '[role="listitem"]': currentRow,
+    },
+  });
+  const retryButton = createVisibleElement({
+    closestMap: {
+      '[role="listitem"]': currentRow,
+    },
+  });
+  const otherButton = createVisibleElement({
+    closestMap: {
+      '[role="listitem"]': otherRow,
+    },
+  });
+
+  const context = createContext({
+    document: {
+      documentElement: {
+        clientHeight: 900,
+      },
+      querySelectorAll() {
+        return [];
+      },
+    },
+    window: {
+      innerHeight: 900,
+    },
+    getComputedStyle(element) {
+      return {
+        visibility: element?.__visible === false ? "hidden" : "visible",
+        display: element?.__visible === false ? "none" : "block",
+      };
+    },
+    YtActivityCleanerContent: {},
+  });
+
+  loadDomScripts(context);
+
+  context.YtActivityCleanerContent.getVisibleDeleteButtons = () => [otherButton, retryButton];
+  context.YtActivityCleanerContent.describeItem = () => "test comment";
+
+  const retryCandidate = context.YtActivityCleanerContent.findRetryDeleteButton(
+    previousButton,
+    "test comment"
+  );
+
+  assert.equal(retryCandidate, retryButton);
 });
