@@ -130,7 +130,7 @@ This repo now includes:
 
 Store asset TODO:
 
-- replace generated/mock listing screenshots with final real captures from the live extension popup on `Google My Activity -> Your YouTube comments`
+- replace the remaining generated/mock listing screenshots with final real captures from the live extension popup on the supported cleanup pages
 
 Recommended next step before publishing:
 

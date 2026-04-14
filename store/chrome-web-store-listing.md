@@ -61,13 +61,15 @@ Important:
 - Store icon: [store-icon-128.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/store-icon-128.png)
 - Small promo tile: [small-promo-tile-440x280.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/small-promo-tile-440x280.png)
 - Marquee promo tile: [marquee-promo-tile-1400x560.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/marquee-promo-tile-1400x560.png)
+- Live popup capture 1: [screenshot-04-live-popup-ready-overview-676x1206.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-04-live-popup-ready-overview-676x1206.png)
+- Live popup capture 2: [screenshot-05-live-popup-footer-banner-674x746.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-05-live-popup-footer-banner-674x746.png)
 - Screenshot 1: [screenshot-01-ready-overview-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-01-ready-overview-1280x800.png)
 - Screenshot 2: [screenshot-02-fast-mode-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-02-fast-mode-1280x800.png)
 - Screenshot 3: [screenshot-03-settings-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-03-settings-1280x800.png)
 
 TODO before the next listing refresh:
 
-- Replace the generated/mock screenshots with real captures from the live extension popup on the supported cleanup pages
+- Replace the remaining generated/mock screenshots with real captures from the live extension popup on the supported cleanup pages
 - Capture one clear running-state screenshot with the popup open and progress counters visible
 - Re-export the final chosen screenshots to the Chrome Web Store required size without browser clutter
 

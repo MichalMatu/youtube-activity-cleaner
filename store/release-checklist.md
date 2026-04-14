@@ -20,7 +20,7 @@ Prepared on April 10, 2026.
 - [ ] Enable GitHub Pages from the `docs/` directory
 - [ ] Verify the final public URLs in the store listing
 - [ ] Review screenshots and promo assets one last time
-- [ ] Replace placeholder/generated store screenshots with final real captures from the live extension UI
+- [ ] Replace remaining placeholder/generated store screenshots with final real captures from the live extension UI
 - [ ] Add one strong running-state screenshot with the popup open and `Deleted > 0`
 - [ ] Decide whether first release should be `unlisted` or `public`
 - [ ] Decide final monetization model
