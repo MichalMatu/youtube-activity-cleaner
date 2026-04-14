@@ -86,6 +86,7 @@ test("comments strategy counts a recycled row as a successful delete", async () 
     YtActivityCleanerContent: content,
   });
 
+  loadScript("extension/shared/text.js", context);
   loadScript("extension/content/cleaner/strategy.js", context);
 
   const result = await context.YtActivityCleanerContent
@@ -174,6 +175,7 @@ test("comments strategy accepts a delayed success when no initial status appears
     YtActivityCleanerContent: content,
   });
 
+  loadScript("extension/shared/text.js", context);
   loadScript("extension/content/cleaner/strategy.js", context);
 
   const result = await context.YtActivityCleanerContent

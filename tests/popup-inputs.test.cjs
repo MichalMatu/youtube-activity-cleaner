@@ -168,10 +168,13 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   });
 
   loadScript("extension/shared/i18n.js", context);
+  loadScript("extension/shared/text.js", context);
   loadScript("extension/shared/messages.js", context);
   loadScript("extension/shared/targets.js", context);
   loadScript("extension/shared/constants.js", context);
   loadScript("extension/shared/settings.js", context);
+  loadScript("extension/popup/targets.js", context);
+  loadScript("extension/popup/settings-form.js", context);
   loadScript("extension/popup/index.js", context);
 
   await Promise.resolve();
@@ -289,10 +292,13 @@ test("popup recognizes the likes page and allows starting it", async () => {
   });
 
   loadScript("extension/shared/i18n.js", context);
+  loadScript("extension/shared/text.js", context);
   loadScript("extension/shared/messages.js", context);
   loadScript("extension/shared/targets.js", context);
   loadScript("extension/shared/constants.js", context);
   loadScript("extension/shared/settings.js", context);
+  loadScript("extension/popup/targets.js", context);
+  loadScript("extension/popup/settings-form.js", context);
   loadScript("extension/popup/index.js", context);
 
   await Promise.resolve();

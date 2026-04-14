@@ -25,6 +25,7 @@ test("comment likes reuse the delete strategy with target-specific messages", ()
   });
 
   loadScript("extension/shared/targets.js", context);
+  loadScript("extension/shared/text.js", context);
 
   const target = context.YtActivityCleanerShared.getTargetById("commentLikes");
   context.YtActivityCleanerContent.getTarget = () => target;

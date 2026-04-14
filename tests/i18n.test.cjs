@@ -46,6 +46,27 @@ test("t returns translated messages and falls back cleanly", () => {
   assert.equal(context.YtActivityCleanerShared.t("missing", undefined, "fallback"), "fallback");
 });
 
+test("translateWithFallback formats substitutions when the locale entry is missing", () => {
+  const context = createContext({
+    YtActivityCleanerShared: {
+      t(_key, _substitutions, fallback = "") {
+        return fallback;
+      },
+    },
+  });
+
+  loadScript("extension/shared/text.js", context);
+
+  assert.equal(
+    context.YtActivityCleanerShared.translateWithFallback(
+      "missingKey",
+      ["Comment likes", 4],
+      "Open $1 ($2)"
+    ),
+    "Open Comment likes (4)"
+  );
+});
+
 test("localizeDocument translates text and attributes and updates html lang", () => {
   const title = createElement({ "data-i18n": "popupTitle" }, "Old title");
   const button = createElement({ "data-i18n": "popupStartButton" }, "Old button");

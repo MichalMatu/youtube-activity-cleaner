@@ -9,7 +9,11 @@ Project site:
 You can use:
 
 - the Chrome extension in [`extension/`](extension/) for the easiest flow
-- the browser-console script in [yt-comment-cleaner.js](yt-comment-cleaner.js) if you do not want to install the extension
+- the legacy browser-console script in [yt-comment-cleaner.js](yt-comment-cleaner.js) for comments-only cleanup without installing the extension
+
+Architecture notes for future work:
+
+- [docs/architecture.md](docs/architecture.md)
 
 ## Recommended: Chrome Extension
 
@@ -95,20 +99,23 @@ The extension enables Chrome keep-awake mode while it runs, which helps prevent 
 
 The current beta is best tested with the Google My Activity interface in `English` and `Polish`. Other interface languages may still work, but selector and status-text coverage is not as complete yet.
 
-### Current V2 Status
+### Current V4 Status
 
-The `v2` branch is currently in a `late beta / release prep` stage.
+The current extension branch is in an active `v4` build-out stage.
 
-- core cleaner flow: done
-- popup controls, counters, and settings: done
-- localized popup UI: done for `English` and `Polish`
-- automated lightweight tests: done
+- comments cleaner: working
+- comment likes cleaner: working
+- liked videos cleaner: working
+- popup shortcuts, counters, and settings: working
+- popup architecture: split into view, target-shortcuts, settings-form, and orchestration layers
+- localized UI: covered for `English` and `Polish`
+- automated lightweight tests: working and recommended before each selector change
 - manual smoke test on the live Google My Activity page: still recommended before release
 - Chrome Web Store screenshots and release decisions: still open
 
 Planning docs for the next steps:
 
-- [`store/v2-launch-plan.md`](store/v2-launch-plan.md)
+- [`store/v4-launch-plan.md`](store/v4-launch-plan.md)
 - [`store/manual-smoke-test.md`](store/manual-smoke-test.md)
 
 ## Chrome Web Store Prep
@@ -141,9 +148,11 @@ Optional support for the project:
 
 `https://buymeacoffee.com/michalmatuh`
 
-## Console Method
+## Legacy Console Method
 
-Use this if you do not want to install the extension.
+Use this only if you do not want to install the extension.
+
+This script is kept as a legacy fallback for `comments` only. It does not include the popup, saved settings, comment likes support, or liked videos support from the extension.
 
 ### Quick Flow
 

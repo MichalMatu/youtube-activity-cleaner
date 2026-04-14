@@ -4,6 +4,7 @@
   "name": "__MSG_extName__",
   "version": "4.0.0",
   "description": "__MSG_extDescription__",
+  "homepage_url": "https://michalmatu.github.io/youtube-activity-cleaner/",
   "icons": {
     "16": "assets/icon-16.png",
     "32": "assets/icon-32.png",
@@ -39,6 +40,7 @@
       "js": [
         "shared/browser-api.js",
         "shared/i18n.js",
+        "shared/text.js",
         "shared/messages.js",
         "shared/targets.js",
         "shared/constants.js",

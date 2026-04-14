@@ -3,21 +3,10 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
   const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
-  const formatTemplate = (template, substitutions) => {
-    const values =
-      substitutions === undefined
-        ? []
-        : Array.isArray(substitutions)
-          ? substitutions
-          : [substitutions];
-
-    return String(template || "").replace(/\$(\d+)/g, (_match, index) => {
-      const value = values[Number(index) - 1];
-      return value === undefined ? "" : String(value);
-    });
-  };
-  const translateWithFallback = (key, substitutions, fallbackTemplate) =>
-    t(key, substitutions, "") || formatTemplate(fallbackTemplate, substitutions);
+  const translateWithFallback =
+    shared.translateWithFallback ||
+    ((key, substitutions, fallbackTemplate) =>
+      t(key, substitutions, "") || shared.formatTemplate?.(fallbackTemplate, substitutions));
   const verificationDialogBlockedReason = () =>
     t(
       "contentVerificationDialogBlocked",
