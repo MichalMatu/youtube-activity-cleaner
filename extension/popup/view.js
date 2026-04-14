@@ -17,8 +17,7 @@
     failedCountElement: document.querySelector("#failed-count"),
     startButton: document.querySelector("#start-button"),
     stopButton: document.querySelector("#stop-button"),
-    openCommentsPageButton: document.querySelector("#open-comments-page-button"),
-    openLikedVideosPageButton: document.querySelector("#open-liked-videos-page-button"),
+    quickLinksElement: document.querySelector("#quick-links"),
     supportButton: document.querySelector("#support-button"),
     donateButton: document.querySelector("#donate-button"),
     appMetaElement: document.querySelector("#app-meta"),
@@ -120,7 +119,7 @@
       popup.elements.pageStateElement.textContent = t(
         "popupPageOpenCommentsPrompt",
         undefined,
-        "Click Open comments page or Open liked videos page."
+        "Use one of the supported page shortcuts below."
       );
       popup.elements.tabStateElement.textContent = t(
         "popupTabNoConnectedCleaner",
@@ -155,6 +154,8 @@
         t("popupLastIssue", status.lastError, `Last issue: ${status.lastError}`),
         true
       );
+    } else if (status?.lastDebugEvent) {
+      popup.renderDebugState(status.lastDebugEvent);
     } else if (isTrackedTab && !isUsingActiveTab) {
       popup.renderDebugState(
         t(
@@ -186,7 +187,7 @@
           : t(
               "popupOnlyWorksOnCommentsPage",
               undefined,
-              "Open the comments page or the liked videos page to continue."
+              "Open one of the supported cleaner pages to continue."
             );
       popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
       return;

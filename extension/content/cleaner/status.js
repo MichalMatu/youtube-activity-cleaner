@@ -103,7 +103,13 @@
       content.getSettingValue("allowRemovalWithoutSuccess") &&
       (options.firstStateType === "confirm" ||
         options.firstStateType === "status" ||
-        options.firstStateType === "removed_without_confirm");
+        options.firstStateType === "removed_without_confirm" ||
+        options.firstStateType === "unknown_after_click");
+
+    content.pushDebugEvent?.("wait_outcome:start", {
+      firstStateType: options.firstStateType || "",
+      expectedDescription: options.expectedDescription || "",
+    });
 
     while (Date.now() < deadline) {
       if (content.getState().stopRequested) {
@@ -123,6 +129,9 @@
       const messages = content.getStatusMessages();
       const failureMessage = messages.find(content.matchesFailureStatus);
       if (failureMessage) {
+        content.pushDebugEvent?.("wait_outcome:failure", {
+          reason: failureMessage,
+        });
         return { success: false, reason: failureMessage };
       }
 
@@ -134,13 +143,38 @@
       if (successMessage) {
         sawSuccess = true;
         lastSuccessMessage = successMessage;
+        content.pushDebugEvent?.("wait_outcome:success_status", {
+          message: successMessage,
+        });
       }
 
       if (content.isItemGone(itemContainer)) {
         sawRemoval = true;
+        content.pushDebugEvent?.("wait_outcome:item_gone");
+      }
+
+      if (!sawRemoval && options.actionButton && !options.actionButton.isConnected) {
+        sawRemoval = true;
+        content.pushDebugEvent?.("wait_outcome:action_gone");
+      }
+
+      if (
+        !sawRemoval &&
+        content.hasMeaningfulDescriptionChange?.(
+          itemContainer,
+          options.expectedDescription
+        )
+      ) {
+        sawRemoval = true;
+        content.pushDebugEvent?.("wait_outcome:item_changed", {
+          expectedDescription: options.expectedDescription || "",
+        });
       }
 
       if (sawSuccess && sawRemoval) {
+        content.pushDebugEvent?.("wait_outcome:confirmed", {
+          reason: lastSuccessMessage || "confirmed by ui",
+        });
         return {
           success: true,
           reason: lastSuccessMessage || messages.join(" | ") || "confirmed by UI",
@@ -148,9 +182,14 @@
       }
 
       if (allowRemovalWithoutSuccess && sawRemoval && !failureMessage) {
+        content.pushDebugEvent?.("wait_outcome:confirmed_without_toast", {
+          reason: lastSuccessMessage || "item disappeared or changed after the delete request",
+        });
         return {
           success: true,
-          reason: lastSuccessMessage || "item disappeared after the delete request",
+          reason:
+            lastSuccessMessage ||
+            "item disappeared or changed after the delete request",
         };
       }
 
@@ -161,7 +200,7 @@
       success: false,
       reason: sawPending
         ? "timed out while waiting for final delete confirmation"
-        : "item disappeared without a final success message",
+        : "item disappeared or changed without a final success message",
     };
   };
 })();

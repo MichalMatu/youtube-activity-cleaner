@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Podgląd V3 cleanera aktywności YouTube dla komentarzy i polubionych filmów."
+    "message": "Podgląd V4 cleanera aktywności YouTube dla komentarzy, polubień komentarzy i polubionych filmów."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -18,7 +18,7 @@
     "message": "Szukanie najlepszej karty do sterowania..."
   },
   "popupOpenCommentsPageToContinue": {
-    "message": "Otwórz stronę komentarzy, aby kontynuować."
+    "message": "Otwórz jedną z obsługiwanych stron, aby kontynuować."
   },
   "popupCleanerStatusLabel": {
     "message": "Status cleanera"
@@ -101,11 +101,8 @@
   "popupStopButton": {
     "message": "Stop"
   },
-  "popupOpenCommentsPageButton": {
-    "message": "Otwórz stronę komentarzy"
-  },
-  "popupOpenLikedVideosPageButton": {
-    "message": "Otwórz stronę polubionych filmów"
+  "popupOpenTargetButton": {
+    "message": "Otwórz $1"
   },
   "popupHelpSupportButton": {
     "message": "Pomoc i wsparcie"
@@ -114,7 +111,7 @@
     "message": "Postaw mi kawę"
   },
   "popupVersionValue": {
-    "message": "Podgląd V3 • Wersja $1"
+    "message": "Podgląd V4 • Wersja $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Gotowe na stronie: $1."
@@ -143,6 +140,9 @@
   "targetCommentsLabel": {
     "message": "komentarze YouTube"
   },
+  "targetCommentLikesLabel": {
+    "message": "polubienia komentarzy"
+  },
   "targetLikesLabel": {
     "message": "Polubione filmy"
   },
@@ -159,7 +159,7 @@
     "message": "Czyszczenie dla $1 jest planowane, ale nie jest jeszcze włączone."
   },
   "popupPageOpenCommentsPrompt": {
-    "message": "Kliknij Otwórz stronę komentarzy albo Otwórz stronę polubionych filmów."
+    "message": "Użyj jednego z poniższych skrótów do obsługiwanych stron."
   },
   "popupTabNoConnectedCleaner": {
     "message": "Nie znaleziono teraz podłączonej karty cleanera."
@@ -180,7 +180,7 @@
     "message": "Start jest dostępny na bieżącej obsługiwanej karcie."
   },
   "popupOnlyWorksOnCommentsPage": {
-    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów."
+    "message": "Najpierw otwórz jedną z obsługiwanych stron cleanera."
   },
   "popupCleanerStartingCurrentPage": {
     "message": "Cleaner uruchamia się na bieżącej stronie."
@@ -219,7 +219,7 @@
     "message": "Odśwież stronę i spróbuj ponownie."
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
-    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów w bieżącej karcie."
+    "message": "Najpierw otwórz obsługiwaną stronę cleanera w bieżącej karcie."
   },
   "popupTargetNotEnabledYet": {
     "message": "Czyszczenie dla $1 nie jest jeszcze włączone."
@@ -293,6 +293,9 @@
   "contentDeletedComments": {
     "message": "Usunięte komentarze: $1"
   },
+  "contentDeletedCommentLikes": {
+    "message": "Usunięte polubienia komentarzy: $1"
+  },
   "contentRemovedLikes": {
     "message": "Usunięte lajki: $1"
   },
@@ -311,8 +314,14 @@
   "contentNoMoreDeleteButtons": {
     "message": "Nie znaleziono już więcej widocznych przycisków usuwania."
   },
+  "contentNoMoreCommentLikes": {
+    "message": "Nie znaleziono już więcej widocznych przycisków usuwania polubień komentarzy."
+  },
   "contentNoMoreLikes": {
     "message": "Nie znaleziono już polubionych filmów możliwych do usunięcia."
+  },
+  "contentVerificationDialogBlocked": {
+    "message": "Okno dodatkowej weryfikacji Mojej aktywności zablokowało usuwanie. Zamknij je albo wyłącz dodatkową weryfikację dla Mojej aktywności."
   },
   "contentStoppedByUser": {
     "message": "Zatrzymane przez użytkownika."
@@ -321,7 +330,7 @@
     "message": "Zakończono."
   },
   "contentOpenCommentsPageFirst": {
-    "message": "Najpierw otwórz stronę komentarzy albo stronę polubionych filmów."
+    "message": "Najpierw otwórz jedną z obsługiwanych stron cleanera."
   },
   "contentTargetNotEnabledYet": {
     "message": "Czyszczenie dla $1 nie jest jeszcze włączone."

@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "V3 preview of the YouTube activity cleaner for comments and liked videos."
+    "message": "V4 preview of the YouTube activity cleaner for comments, comment likes, and liked videos."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -18,7 +18,7 @@
     "message": "Looking for the best tab to control..."
   },
   "popupOpenCommentsPageToContinue": {
-    "message": "Open the comments page to continue."
+    "message": "Open a supported page to continue."
   },
   "popupCleanerStatusLabel": {
     "message": "Cleaner status"
@@ -101,11 +101,8 @@
   "popupStopButton": {
     "message": "Stop"
   },
-  "popupOpenCommentsPageButton": {
-    "message": "Open comments page"
-  },
-  "popupOpenLikedVideosPageButton": {
-    "message": "Open liked videos page"
+  "popupOpenTargetButton": {
+    "message": "Open $1"
   },
   "popupHelpSupportButton": {
     "message": "Help & support"
@@ -114,7 +111,7 @@
     "message": "Buy me a coffee"
   },
   "popupVersionValue": {
-    "message": "V3 Preview • Version $1"
+    "message": "V4 Preview • Version $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Ready on: $1."
@@ -143,6 +140,9 @@
   "targetCommentsLabel": {
     "message": "YouTube comments"
   },
+  "targetCommentLikesLabel": {
+    "message": "Comment likes"
+  },
   "targetLikesLabel": {
     "message": "Liked videos"
   },
@@ -159,7 +159,7 @@
     "message": "$1 cleanup is planned, but it is not enabled yet."
   },
   "popupPageOpenCommentsPrompt": {
-    "message": "Click Open comments page or Open liked videos page."
+    "message": "Use one of the supported page shortcuts below."
   },
   "popupTabNoConnectedCleaner": {
     "message": "No connected cleaner tab was found right now."
@@ -180,7 +180,7 @@
     "message": "Start is available on the current supported tab."
   },
   "popupOnlyWorksOnCommentsPage": {
-    "message": "Open the comments page or the liked videos page to continue."
+    "message": "Open one of the supported cleaner pages to continue."
   },
   "popupCleanerStartingCurrentPage": {
     "message": "Cleaner is starting on the current page."
@@ -219,7 +219,7 @@
     "message": "Reload the page and try again."
   },
   "popupOpenCommentsPageInCurrentTabFirst": {
-    "message": "Open the comments page or the liked videos page in the current tab first."
+    "message": "Open a supported cleaner page in the current tab first."
   },
   "popupTargetNotEnabledYet": {
     "message": "$1 cleanup is not enabled yet."
@@ -293,6 +293,9 @@
   "contentDeletedComments": {
     "message": "Deleted comments: $1"
   },
+  "contentDeletedCommentLikes": {
+    "message": "Deleted comment likes: $1"
+  },
   "contentRemovedLikes": {
     "message": "Removed likes: $1"
   },
@@ -311,8 +314,14 @@
   "contentNoMoreDeleteButtons": {
     "message": "No more visible delete buttons were found."
   },
+  "contentNoMoreCommentLikes": {
+    "message": "No more visible comment-like delete buttons were found."
+  },
   "contentNoMoreLikes": {
     "message": "No more removable liked videos were found."
+  },
+  "contentVerificationDialogBlocked": {
+    "message": "A My Activity verification dialog blocked the delete flow. Close it or disable extra verification for My Activity."
   },
   "contentStoppedByUser": {
     "message": "Stopped by the user."
@@ -321,7 +330,7 @@
     "message": "Finished."
   },
   "contentOpenCommentsPageFirst": {
-    "message": "Open the comments page or the liked videos page first."
+    "message": "Open a supported cleaner page first."
   },
   "contentTargetNotEnabledYet": {
     "message": "$1 cleanup is not enabled yet."

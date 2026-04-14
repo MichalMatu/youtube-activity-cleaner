@@ -26,6 +26,7 @@ function createStatusContext(overrides = {}) {
         allowRemovalWithoutSuccess: true,
       })[key],
     isItemGone: () => false,
+    hasMeaningfulDescriptionChange: () => false,
     ...overrides,
   };
 
@@ -77,7 +78,7 @@ test("fast mode accepts removal without a success toast after a confirmed delete
   );
 
   assert.equal(result.success, true);
-  assert.equal(result.reason, "item disappeared after the delete request");
+  assert.equal(result.reason, "item disappeared or changed after the delete request");
 });
 
 test("safe mode still requires final success confirmation", async () => {
@@ -99,5 +100,50 @@ test("safe mode still requires final success confirmation", async () => {
   );
 
   assert.equal(result.success, false);
-  assert.equal(result.reason, "item disappeared without a final success message");
+  assert.equal(result.reason, "item disappeared or changed without a final success message");
+});
+
+test("fast mode accepts a recycled activity row as a successful delete", async () => {
+  const context = createStatusContext({
+    hasMeaningfulDescriptionChange: () => true,
+  });
+
+  const result = await context.YtActivityCleanerContent.waitForDeleteOutcome(
+    { id: "comment-card" },
+    { firstStateType: "removed_without_confirm", expectedDescription: "old item" }
+  );
+
+  assert.equal(result.success, true);
+  assert.equal(result.reason, "item disappeared or changed after the delete request");
+});
+
+test("fast mode accepts delayed removal even without an initial UI signal", async () => {
+  const context = createStatusContext({
+    isItemGone: () => true,
+  });
+
+  const result = await context.YtActivityCleanerContent.waitForDeleteOutcome(
+    { id: "comment-card" },
+    { firstStateType: "unknown_after_click", expectedDescription: "old item" }
+  );
+
+  assert.equal(result.success, true);
+  assert.equal(result.reason, "item disappeared or changed after the delete request");
+});
+
+test("fast mode accepts the original delete button disappearing from the DOM", async () => {
+  const actionButton = { isConnected: false };
+  const context = createStatusContext();
+
+  const result = await context.YtActivityCleanerContent.waitForDeleteOutcome(
+    { id: "comment-card" },
+    {
+      firstStateType: "unknown_after_click",
+      expectedDescription: "old item",
+      actionButton,
+    }
+  );
+
+  assert.equal(result.success, true);
+  assert.equal(result.reason, "item disappeared or changed after the delete request");
 });

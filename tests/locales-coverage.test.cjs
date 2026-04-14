@@ -23,6 +23,7 @@ test("locale files cover all popup and runtime message keys", () => {
     "extension/popup/popup.html",
     "extension/popup/index.js",
     "extension/popup/view.js",
+    "extension/shared/targets.js",
     "extension/shared/settings.js",
     "extension/content/index.js",
     "extension/content/cleaner/state.js",
@@ -42,6 +43,10 @@ test("locale files cover all popup and runtime message keys", () => {
     }
 
     for (const key of collectMatches(source, /\bt\("([^"]+)"/g)) {
+      requiredKeys.add(key);
+    }
+
+    for (const key of collectMatches(source, /\b(?:labelKey|completedCountKey|noMoreActionsKey): "([^"]+)"/g)) {
       requiredKeys.add(key);
     }
 

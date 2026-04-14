@@ -15,6 +15,21 @@
     isSupportedUrl,
   } = shared;
   const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
+  const formatTemplate = (template, substitutions) => {
+    const values =
+      substitutions === undefined
+        ? []
+        : Array.isArray(substitutions)
+          ? substitutions
+          : [substitutions];
+
+    return String(template || "").replace(/\$(\d+)/g, (_match, index) => {
+      const value = values[Number(index) - 1];
+      return value === undefined ? "" : String(value);
+    });
+  };
+  const translateWithFallback = (key, substitutions, fallbackTemplate) =>
+    t(key, substitutions, "") || formatTemplate(fallbackTemplate, substitutions);
 
   shared.localizeDocument?.();
 
@@ -29,7 +44,7 @@
     t(
       "popupVersionValue",
       popup.getAppVersion(),
-      `V3 Preview • Version ${popup.getAppVersion()}`
+      `V4 Preview • Version ${popup.getAppVersion()}`
     );
 
   popup.renderAppMeta = () => {
@@ -142,6 +157,49 @@
   popup.isRunnableUrl = isRunnableUrl;
   popup.getTargetLabel = (target) =>
     target ? t(target.labelKey, undefined, target.labelFallback || target.id) : "";
+  popup.getPageShortcutTargets = () =>
+    (shared.getTargets?.() || Object.values(shared.Targets || {})).filter((target) =>
+      Boolean(target?.pageUrl)
+    );
+  popup.getOpenTargetButtonLabel = (target) =>
+    translateWithFallback(
+      "popupOpenTargetButton",
+      popup.getTargetLabel(target),
+      "Open $1"
+    );
+  popup.renderQuickLinks = () => {
+    const { quickLinksElement } = popup.elements || {};
+    if (!quickLinksElement || !globalThis.document?.createElement) {
+      return;
+    }
+
+    const buttons = popup.getPageShortcutTargets().map((target) => {
+      const button = globalThis.document.createElement("button");
+      button.type = "button";
+      button.className = "secondary compact-button";
+      button.dataset.targetId = target.id;
+      button.textContent = popup.getOpenTargetButtonLabel(target);
+      button.addEventListener("click", async () => {
+        await ext.tabs.create({ url: target.pageUrl });
+      });
+      return button;
+    });
+
+    if (typeof quickLinksElement.replaceChildren === "function") {
+      quickLinksElement.replaceChildren(...buttons);
+      return;
+    }
+
+    if (Array.isArray(quickLinksElement.children)) {
+      quickLinksElement.children.length = 0;
+    }
+
+    buttons.forEach((button) => {
+      quickLinksElement.appendChild?.(button);
+    });
+  };
+
+  popup.renderQuickLinks();
 
   popup.isMissingReceiverError = (error) =>
     /Could not establish connection|Receiving end does not exist/i.test(
@@ -350,7 +408,7 @@
           t(
             "popupOpenCommentsPageInCurrentTabFirst",
             undefined,
-            "Open the comments page or the liked videos page in the current tab first."
+            "Open a supported cleaner page in the current tab first."
           )
         );
       }
@@ -429,14 +487,6 @@
       popup.renderError(error.message, await popup.resolveTargetContext());
       console.error(error);
     }
-  });
-
-  popup.elements.openCommentsPageButton.addEventListener("click", async () => {
-    await ext.tabs.create({ url: shared.Constants.COMMENTS_PAGE_URL });
-  });
-
-  popup.elements.openLikedVideosPageButton.addEventListener("click", async () => {
-    await ext.tabs.create({ url: shared.Constants.LIKES_PAGE_URL });
   });
 
   popup.elements.supportButton.addEventListener("click", async () => {

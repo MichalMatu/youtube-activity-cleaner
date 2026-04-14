@@ -39,7 +39,22 @@ function createElement(value = "") {
     disabled: false,
     hidden: false,
     attributes: {},
-    addEventListener() {},
+    children: [],
+    dataset: {},
+    listeners: {},
+    addEventListener(type, handler) {
+      this.listeners[type] = handler;
+    },
+    appendChild(child) {
+      this.children.push(child);
+      return child;
+    },
+    replaceChildren(...nextChildren) {
+      this.children = [...nextChildren];
+    },
+    click() {
+      return this.listeners.click?.({ currentTarget: this, target: this });
+    },
     setAttribute(name, nextValue) {
       this.attributes[name] = nextValue;
     },
@@ -49,9 +64,34 @@ function createElement(value = "") {
   };
 }
 
+function createPopupElements() {
+  return {
+    speedProfileSelect: createElement("safe"),
+    betweenItemsSecondsInput: createElement("1.2"),
+    scrollPauseSecondsInput: createElement("1.2"),
+    retryLimitInput: createElement("2"),
+    retryBackoffSecondsInput: createElement("1.2"),
+    failureStreakLimitInput: createElement("4"),
+    startButton: createElement(),
+    stopButton: createElement(),
+    quickLinksElement: createElement(),
+    supportButton: createElement(),
+    donateButton: createElement(),
+    appMetaElement: createElement(),
+    settingsPanel: createElement(),
+    settingsToggleButton: createElement(),
+    settingsCloseButton: createElement(),
+    settingsForm: createElement(),
+    resetSettingsButton: createElement(),
+    settingsPreviewElement: createElement(),
+    settingsStateElement: createElement(),
+  };
+}
+
 test("popup accepts comma decimals and shows localized preview text", async () => {
   const supportedUrl =
     "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments";
+  const createdUrls = [];
 
   const context = createContext({
     Intl,
@@ -61,6 +101,10 @@ test("popup accepts comma decimals and shows localized preview text", async () =
     clearInterval() {},
     document: {
       documentElement: { lang: "pl" },
+      createElement() {
+        return createElement();
+      },
+      addEventListener() {},
       querySelectorAll() {
         return [];
       },
@@ -88,14 +132,16 @@ test("popup accepts comma decimals and shows localized preview text", async () =
           async sendMessage() {
             return { status: { deleted: 0, attempted: 0, failed: 0 } };
           },
-          async create() {},
+          async create({ url }) {
+            createdUrls.push(url);
+          },
           async get(tabId) {
             return { id: tabId, url: supportedUrl, status: "complete", title: "Your YouTube comments" };
           },
         },
         runtime: {
           getManifest() {
-            return { version: "3.0.0" };
+            return { version: "4.0.0" };
           },
           async sendMessage(message) {
             if (message.type === "cleaner/get-tab") {
@@ -112,28 +158,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
       },
     },
     YtActivityCleanerPopup: {
-      elements: {
-        speedProfileSelect: createElement("safe"),
-        betweenItemsSecondsInput: createElement("1.2"),
-        scrollPauseSecondsInput: createElement("1.2"),
-        retryLimitInput: createElement("2"),
-        retryBackoffSecondsInput: createElement("1.2"),
-        failureStreakLimitInput: createElement("4"),
-        startButton: createElement(),
-        stopButton: createElement(),
-        openCommentsPageButton: createElement(),
-        openLikedVideosPageButton: createElement(),
-        supportButton: createElement(),
-        donateButton: createElement(),
-        appMetaElement: createElement(),
-        settingsPanel: createElement(),
-        settingsToggleButton: createElement(),
-        settingsCloseButton: createElement(),
-        settingsForm: createElement(),
-        resetSettingsButton: createElement(),
-        settingsPreviewElement: createElement(),
-        settingsStateElement: createElement(),
-      },
+      elements: createPopupElements(),
       renderStatus() {},
       renderError() {},
       renderDisconnectedPage() {},
@@ -154,7 +179,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   const popup = context.YtActivityCleanerPopup;
 
   assert.equal(popup.parseSecondsInput("1,2"), 1200);
-  assert.equal(popup.getAppMetaText(), "Podgląd V3 • Wersja 3.0.0");
+  assert.equal(popup.getAppMetaText(), "Podgląd V4 • Wersja 4.0.0");
   assert.equal(
     popup.getSettingsPreviewText({
       speedProfile: "safe",
@@ -166,6 +191,17 @@ test("popup accepts comma decimals and shows localized preview text", async () =
     }),
     "Bezpieczny • 1,2 s • 2x"
   );
+  assert.deepEqual(
+    popup.elements.quickLinksElement.children.map((child) => child.textContent),
+    [
+      "Otwórz komentarze YouTube",
+      "Otwórz polubienia komentarzy",
+      "Otwórz Polubione filmy",
+    ]
+  );
+
+  await popup.elements.quickLinksElement.children[1].click();
+  assert.deepEqual(createdUrls, ["https://myactivity.google.com/page?page=youtube_comment_likes"]);
 });
 
 test("popup recognizes the likes page and allows starting it", async () => {
@@ -179,6 +215,10 @@ test("popup recognizes the likes page and allows starting it", async () => {
     clearInterval() {},
     document: {
       documentElement: { lang: "en" },
+      createElement() {
+        return createElement();
+      },
+      addEventListener() {},
       querySelectorAll() {
         return [];
       },
@@ -219,7 +259,7 @@ test("popup recognizes the likes page and allows starting it", async () => {
         },
         runtime: {
           getManifest() {
-            return { version: "3.0.0" };
+            return { version: "4.0.0" };
           },
           async sendMessage(message) {
             if (message.type === "cleaner/get-tab") {
@@ -237,26 +277,8 @@ test("popup recognizes the likes page and allows starting it", async () => {
     },
     YtActivityCleanerPopup: {
       elements: {
+        ...createPopupElements(),
         speedProfileSelect: createElement("fast"),
-        betweenItemsSecondsInput: createElement("1.2"),
-        scrollPauseSecondsInput: createElement("1.2"),
-        retryLimitInput: createElement("2"),
-        retryBackoffSecondsInput: createElement("1.2"),
-        failureStreakLimitInput: createElement("4"),
-        startButton: createElement(),
-        stopButton: createElement(),
-        openCommentsPageButton: createElement(),
-        openLikedVideosPageButton: createElement(),
-        supportButton: createElement(),
-        donateButton: createElement(),
-        appMetaElement: createElement(),
-        settingsPanel: createElement(),
-        settingsToggleButton: createElement(),
-        settingsCloseButton: createElement(),
-        settingsForm: createElement(),
-        resetSettingsButton: createElement(),
-        settingsPreviewElement: createElement(),
-        settingsStateElement: createElement(),
       },
       renderStatus() {},
       renderError() {},
@@ -286,4 +308,5 @@ test("popup recognizes the likes page and allows starting it", async () => {
     popup.getTargetLabel(resolved.activeTabTarget),
     "Liked videos"
   );
+  assert.equal(popup.elements.quickLinksElement.children.length, 3);
 });

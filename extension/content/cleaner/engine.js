@@ -53,6 +53,11 @@
       }
 
       state.attempted += 1;
+      content.pushDebugEvent?.("action:attempt", {
+        description,
+        attemptNumber,
+        maxAttempts,
+      });
       const actionResult = await content.performSingleActionAttempt(
         currentActionButton,
         description
@@ -60,11 +65,20 @@
       if (actionResult.success) {
         state.retryAttempt = 0;
         state.retryDelayMs = 0;
+        content.pushDebugEvent?.("action:success", {
+          description,
+          attemptNumber,
+        });
         return actionResult;
       }
 
       lastFailureReason = actionResult.reason || "unknown error";
       content.setCleanerError(lastFailureReason);
+      content.pushDebugEvent?.("action:failure", {
+        description,
+        attemptNumber,
+        reason: lastFailureReason,
+      });
 
       if (lastFailureReason === "stopped") {
         return { success: false, reason: lastFailureReason };
@@ -101,6 +115,10 @@
       if (!currentActionButton) {
         lastFailureReason = "the action button disappeared before retrying";
         content.setCleanerError(lastFailureReason);
+        content.pushDebugEvent?.("action:retry_target_missing", {
+          description,
+          attemptNumber: nextAttemptNumber,
+        });
         break;
       }
 
@@ -121,6 +139,21 @@
 
     state.starting = false;
     await content.requestKeepAwake();
+    content.pushDebugEvent?.("run:start", {
+      targetId: content.getTarget()?.id || "",
+    });
+    const pageSignals = content.collectPageSignals?.();
+    if (pageSignals) {
+      content.pushDebugEvent?.("run:page_signals", {
+        deleteButtons: pageSignals.counts?.deleteButtons ?? "",
+        visibleDeleteButtons: pageSignals.counts?.visibleDeleteButtons ?? "",
+        confirmButtons: pageSignals.counts?.confirmButtons ?? "",
+        visibleConfirmButtons: pageSignals.counts?.visibleConfirmButtons ?? "",
+        statusNodes: pageSignals.counts?.statusNodes ?? "",
+        visibleStatusNodes: pageSignals.counts?.visibleStatusNodes ?? "",
+        delayedUpdateHint: pageSignals.delayedUpdateHint ?? false,
+      });
+    }
     content.setCleanerMessage(t("contentCleanerStarted", undefined, "Cleaner started."));
     console.log(
       t(
@@ -135,6 +168,9 @@
       const actionButton = strategy.getActionButtons()[0];
 
       if (actionButton) {
+        content.pushDebugEvent?.("run:action_visible", {
+          description: strategy.describeAction(actionButton),
+        });
         const actionResult = await content.processOneAction(actionButton);
 
         if (actionResult.success) {
@@ -143,6 +179,10 @@
           failureStreak = 0;
           content.setCleanerError("");
           content.setCleanerMessage(strategy.getCompletedCountMessage(state.deleted));
+          content.pushDebugEvent?.("run:deleted_incremented", {
+            deleted: state.deleted,
+            description: actionResult.description || "",
+          });
 
           if (!(await content.pauseAwareSleep(content.getSettingValue("betweenItemsMs")))) {
             break;
@@ -154,6 +194,11 @@
         state.failed += 1;
         failureStreak += 1;
         content.setCleanerError(actionResult.reason);
+        content.pushDebugEvent?.("run:failed_incremented", {
+          failed: state.failed,
+          reason: actionResult.reason,
+          failureStreak,
+        });
         content.setCleanerMessage(
           t(
             "contentFailedAttempt",
@@ -183,6 +228,12 @@
 
       const loadMoreButton = strategy.getLoadMoreButton();
       if (loadMoreButton) {
+        content.pushDebugEvent?.("run:load_more", {
+          label:
+            content.getElementLabel?.(loadMoreButton) ||
+            loadMoreButton.getAttribute?.("aria-label") ||
+            "",
+        });
         content.setCleanerMessage(
           strategy.getLoadingMoreMessage
             ? strategy.getLoadingMoreMessage()
@@ -199,6 +250,10 @@
       }
 
       const scrollSnapshot = content.captureScrollSnapshot();
+      content.pushDebugEvent?.("run:scroll_step", {
+        top: scrollSnapshot.top,
+        height: scrollSnapshot.height,
+      });
       content.scrollPageStep();
 
       if (!(await content.pauseAwareSleep(content.getSettingValue("scrollPauseMs")))) {
@@ -207,11 +262,20 @@
 
       if (!content.hasScrollSnapshotChanged(scrollSnapshot)) {
         idleRounds += 1;
+        content.pushDebugEvent?.("run:scroll_unchanged", {
+          idleRounds,
+        });
       } else {
         idleRounds = 0;
+        content.pushDebugEvent?.("run:scroll_changed", {
+          top: content.scrollRoot?.scrollTop || 0,
+        });
       }
 
       if (idleRounds >= content.getSettingValue("idleRoundsLimit")) {
+        content.pushDebugEvent?.("run:finished_no_more_actions", {
+          idleRounds,
+        });
         content.setCleanerMessage(strategy.getNoMoreActionsMessage());
         break;
       }
@@ -250,7 +314,7 @@
         t(
           "contentOpenCommentsPageFirst",
           undefined,
-          "Open the comments page or the liked videos page first."
+          "Open a supported cleaner page first."
         )
       );
       return content.getCleanerStatus();
@@ -279,6 +343,7 @@
     state.lastError = "";
     state.retryAttempt = 0;
     state.retryDelayMs = 0;
+    content.clearDebugEvents();
     content.setCleanerMessage(
       t("contentLoadingSavedSettings", undefined, "Loading saved settings...")
     );
@@ -296,6 +361,11 @@
 
     state.starting = false;
     state.running = true;
+    content.pushDebugEvent?.("run:settings_loaded", {
+      speedProfile: settings.speedProfile,
+      betweenItemsMs: settings.betweenItemsMs,
+      retryLimit: settings.retryLimit,
+    });
     const speedProfileLabel =
       shared.Settings?.profiles?.[settings.speedProfile]?.label || settings.speedProfile;
     content.setCleanerMessage(

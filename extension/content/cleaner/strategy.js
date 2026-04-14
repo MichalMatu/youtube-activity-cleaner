@@ -3,6 +3,27 @@
   const content = (globalThis.YtActivityCleanerContent =
     globalThis.YtActivityCleanerContent || {});
   const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
+  const formatTemplate = (template, substitutions) => {
+    const values =
+      substitutions === undefined
+        ? []
+        : Array.isArray(substitutions)
+          ? substitutions
+          : [substitutions];
+
+    return String(template || "").replace(/\$(\d+)/g, (_match, index) => {
+      const value = values[Number(index) - 1];
+      return value === undefined ? "" : String(value);
+    });
+  };
+  const translateWithFallback = (key, substitutions, fallbackTemplate) =>
+    t(key, substitutions, "") || formatTemplate(fallbackTemplate, substitutions);
+  const verificationDialogBlockedReason = () =>
+    t(
+      "contentVerificationDialogBlocked",
+      undefined,
+      "A My Activity verification dialog blocked the delete flow. Close it or disable extra verification for My Activity."
+    );
 
   const likesRemoveActionPatterns = [
     /remove from liked videos/,
@@ -75,19 +96,35 @@
     findRetryAction: (previousActionButton, description) =>
       content.findRetryDeleteButton(previousActionButton, description),
     getLoadMoreButton: () => content.getLoadMoreButton(),
-    getCompletedCountMessage: (count) =>
-      t("contentDeletedComments", count, `Deleted comments: ${count}`),
-    getNoMoreActionsMessage: () =>
-      t(
-        "contentNoMoreDeleteButtons",
+    getCompletedCountMessage: (count) => {
+      const target = content.getTarget();
+
+      return translateWithFallback(
+        target?.completedCountKey || "contentDeletedComments",
+        count,
+        target?.completedCountFallback || "Deleted comments: $1"
+      );
+    },
+    getNoMoreActionsMessage: () => {
+      const target = content.getTarget();
+
+      return translateWithFallback(
+        target?.noMoreActionsKey || "contentNoMoreDeleteButtons",
         undefined,
-        "No more visible delete buttons were found."
-      ),
+        target?.noMoreActionsFallback || "No more visible delete buttons were found."
+      );
+    },
     runSingleAttempt: async (actionButton, description) => {
       const state = content.getState();
       const itemContainer = content.getItemContainer(actionButton);
+      const startDescription = content.describeItem(itemContainer);
 
       state.lastItem = description;
+      content.pushDebugEvent?.("delete_attempt:start", {
+        description,
+        targetId: content.getTarget()?.id || "",
+        itemDescription: startDescription,
+      });
       content.setCleanerMessage(
         t(
           "contentPreparingToDelete",
@@ -99,6 +136,7 @@
       state.retryAttempt = 0;
       state.retryDelayMs = 0;
 
+      await content.dismissKnownBlockingDialog?.();
       await content.waitForStatusIdle();
 
       if (!(await content.clickElement(actionButton))) {
@@ -107,6 +145,10 @@
       }
 
       const firstState = await content.waitFor(() => {
+        if (content.getKnownBlockingDialog?.()) {
+          return { type: "blocking_dialog" };
+        }
+
         const confirmButton = content.getConfirmButton();
         if (confirmButton) {
           return { type: "confirm", confirmButton };
@@ -129,22 +171,77 @@
           return { type: "removed_without_confirm" };
         }
 
+        if (!actionButton.isConnected) {
+          return { type: "removed_without_confirm" };
+        }
+
+        if (content.hasMeaningfulDescriptionChange?.(itemContainer, description)) {
+          return { type: "removed_without_confirm" };
+        }
+
         return null;
       }, content.getSettingValue("waitForPostClickStateMs"));
 
       if (!firstState) {
+        content.pushDebugEvent?.("delete_attempt:no_initial_signal", {
+          description,
+        });
+        const lateOutcome = await content.waitForDeleteOutcome(itemContainer, {
+          firstStateType: "unknown_after_click",
+          expectedDescription: description,
+          actionButton,
+        });
+
+        if (lateOutcome.success) {
+          console.log(`Confirmed deletion after delayed UI update: ${description}`);
+          content.pushDebugEvent?.("delete_attempt:late_success", {
+            description,
+            reason: lateOutcome.reason,
+          });
+          content.setCleanerMessage(
+            t(
+              "contentConfirmedDeletion",
+              description,
+              `Confirmed deletion: ${description}`
+            )
+          );
+          await content.waitForStatusIdle();
+          content.setCleanerError("");
+          return { success: true, description };
+        }
+
         console.warn(
           "No confirm dialog and no visible deletion state after click for:",
           description
         );
+        content.pushDebugEvent?.("delete_attempt:late_failure", {
+          description,
+          reason: lateOutcome.reason,
+        });
         return {
           success: false,
-          reason: "no confirmation dialog or delete status appeared after clicking",
+          reason:
+            lateOutcome.reason || "no confirmation dialog or delete status appeared after clicking",
+        };
+      }
+
+      if (firstState.type === "blocking_dialog") {
+        await content.dismissKnownBlockingDialog?.();
+        content.pushDebugEvent?.("delete_attempt:blocked_dialog", {
+          description,
+        });
+        return {
+          success: false,
+          reason: verificationDialogBlockedReason(),
         };
       }
 
       if (firstState.type === "failure") {
         console.warn("Delete failed for:", description, `(${firstState.message})`);
+        content.pushDebugEvent?.("delete_attempt:failure_status", {
+          description,
+          reason: firstState.message || "delete failed",
+        });
         return { success: false, reason: firstState.message || "delete failed" };
       }
 
@@ -165,13 +262,23 @@
 
       const outcome = await content.waitForDeleteOutcome(itemContainer, {
         firstStateType: firstState.type,
+        expectedDescription: description,
+        actionButton,
       });
       if (!outcome.success) {
         console.warn(`Delete not confirmed for: ${description} (${outcome.reason})`);
+        content.pushDebugEvent?.("delete_attempt:outcome_failure", {
+          description,
+          reason: outcome.reason,
+        });
         return { success: false, reason: outcome.reason };
       }
 
       console.log(`Confirmed deletion: ${description}`);
+      content.pushDebugEvent?.("delete_attempt:success", {
+        description,
+        reason: outcome.reason,
+      });
       content.setCleanerMessage(
         t(
           "contentConfirmedDeletion",
@@ -207,6 +314,9 @@
       const itemContainer = content.getItemContainer(actionButton);
 
       state.lastItem = description;
+      content.pushDebugEvent?.("like_attempt:start", {
+        description,
+      });
       content.setCleanerMessage(
         t(
           "contentPreparingToRemoveLike",
@@ -230,6 +340,9 @@
 
       if (!removeMenuItem) {
         console.warn("Could not find the unlike menu item for:", description);
+        content.pushDebugEvent?.("like_attempt:no_menu_item", {
+          description,
+        });
         return {
           success: false,
           reason: "could not find the remove-from-liked-videos menu item",
@@ -238,6 +351,9 @@
 
       if (!(await content.clickElement(removeMenuItem))) {
         console.warn("Could not click the unlike menu item for:", description);
+        content.pushDebugEvent?.("like_attempt:menu_click_failed", {
+          description,
+        });
         return {
           success: false,
           reason: "could not click the remove-from-liked-videos menu item",
@@ -252,10 +368,18 @@
       );
       if (!outcome.success) {
         console.warn(`Like removal not confirmed for: ${description} (${outcome.reason})`);
+        content.pushDebugEvent?.("like_attempt:failure", {
+          description,
+          reason: outcome.reason,
+        });
         return outcome;
       }
 
       console.log(`Removed like: ${description}`);
+      content.pushDebugEvent?.("like_attempt:success", {
+        description,
+        reason: outcome.reason,
+      });
       content.setCleanerMessage(
         t("contentConfirmedUnlike", description, `Removed like: ${description}`)
       );
@@ -270,5 +394,5 @@
   });
 
   content.getTargetStrategy = () =>
-    strategies[content.getTarget()?.id] || commentsStrategy;
+    strategies[content.getTarget()?.strategyId || content.getTarget()?.id] || commentsStrategy;
 })();

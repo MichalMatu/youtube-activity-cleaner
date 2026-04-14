@@ -4,6 +4,25 @@
     globalThis.YtActivityCleanerContent || {});
   const { Settings, sanitizeSettings } = shared;
   const t = shared.t || ((_key, _substitutions, fallback = "") => fallback);
+  const DEBUG_EVENT_LIMIT = 40;
+  const truncateDebugText = (value, limit = 220) => {
+    const text = String(value || "");
+    return text.length > limit ? `${text.slice(0, limit - 1)}…` : text;
+  };
+  const sanitizeDebugDetails = (details = {}) =>
+    Object.fromEntries(
+      Object.entries(details).map(([key, value]) => {
+        if (value === undefined) {
+          return [key, ""];
+        }
+
+        if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+          return [key, truncateDebugText(value)];
+        }
+
+        return [key, truncateDebugText(JSON.stringify(value))];
+      })
+    );
 
   const state = (content.state = content.state || {
     targetId: shared.DEFAULT_TARGET_ID || "",
@@ -20,6 +39,8 @@
     retryAttempt: 0,
     retryDelayMs: 0,
     settings: { ...Settings.defaults },
+    debugEvents: [],
+    lastDebugEvent: "",
   });
 
   content.getState = () => state;
@@ -61,6 +82,8 @@
     retryAttempt: state.retryAttempt,
     retryDelayMs: state.retryDelayMs,
     settings: { ...state.settings },
+    debugEvents: state.debugEvents.slice(-10).map((entry) => ({ ...entry })),
+    lastDebugEvent: state.lastDebugEvent,
     supportedPage: content.isSupportedPage(),
     runnablePage: content.isRunnablePage(),
     visibilityState: document.visibilityState,
@@ -72,6 +95,28 @@
 
   content.setCleanerError = (message) => {
     state.lastError = message || "";
+  };
+
+  content.clearDebugEvents = () => {
+    state.debugEvents = [];
+    state.lastDebugEvent = "";
+  };
+
+  content.pushDebugEvent = (type, details = {}) => {
+    const entry = Object.freeze({
+      time: new Date().toISOString(),
+      type,
+      ...sanitizeDebugDetails(details),
+    });
+
+    state.debugEvents = [...state.debugEvents.slice(-(DEBUG_EVENT_LIMIT - 1)), entry];
+    state.lastDebugEvent = truncateDebugText(
+      [type, details.reason || details.description || details.message]
+        .filter(Boolean)
+        .join(": ")
+    );
+    console.debug("YtActivityCleaner debug", entry);
+    return entry;
   };
 
   content.setCleanerSettings = (settings) => {

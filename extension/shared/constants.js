@@ -9,6 +9,9 @@
     COMMENTS_PAGE_URL:
       commentsTarget?.pageUrl ||
       "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments",
+    COMMENT_LIKES_PAGE_URL:
+      shared.getTargetById?.("commentLikes")?.pageUrl ||
+      "https://myactivity.google.com/page?page=youtube_comment_likes",
     LIKES_PAGE_URL:
       shared.getTargetById?.("likes")?.pageUrl || "https://www.youtube.com/playlist?list=LL",
     SUPPORTED_PAGE_HOST: defaultTarget?.supportedHost || "myactivity.google.com",
