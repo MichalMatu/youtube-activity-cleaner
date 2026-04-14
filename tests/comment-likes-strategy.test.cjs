@@ -44,7 +44,7 @@ test("comment likes reuse the delete strategy with target-specific messages", ()
 
   const strategy = context.YtActivityCleanerContent.getTargetStrategy();
 
-  assert.equal(strategy.id, "comments");
+  assert.equal(strategy.id, "myActivityDelete");
   assert.equal(strategy.getCompletedCountMessage(2), "Deleted comment likes: 2");
   assert.equal(
     strategy.getNoMoreActionsMessage(),

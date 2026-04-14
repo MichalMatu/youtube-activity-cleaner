@@ -18,13 +18,16 @@ test("target registry resolves the comments page and keeps compatibility constan
 
   assert.equal(shared.DEFAULT_TARGET_ID, "comments");
   assert.equal(commentsTarget?.id, "comments");
+  assert.equal(commentsTarget?.strategyId, "myActivityDelete");
   assert.equal(commentLikesTarget?.id, "commentLikes");
+  assert.equal(commentLikesTarget?.strategyId, "myActivityDelete");
   assert.equal(shared.isSupportedUrl(commentsUrl), true);
   assert.equal(shared.isRunnableUrl(commentsUrl), true);
   assert.equal(shared.isSupportedUrl(commentLikesUrl), true);
   assert.equal(shared.isRunnableUrl(commentLikesUrl), true);
   assert.equal(shared.getTargetById("commentLikes")?.id, "commentLikes");
   assert.equal(shared.getTargetById("likes")?.id, "likes");
+  assert.equal(shared.getTargetById("likes")?.strategyId, "playlistRemove");
   assert.equal(shared.Constants.COMMENT_LIKES_PAGE_URL, commentLikesUrl);
   assert.equal(shared.Constants.LIKES_PAGE_URL, "https://www.youtube.com/playlist?list=LL");
   assert.equal(shared.isSupportedUrl("https://www.youtube.com/playlist?list=LL"), true);

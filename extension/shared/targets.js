@@ -72,7 +72,7 @@
       selectors: myActivityDeleteSelectors,
       dom: myActivityDeleteDom,
       statusPatterns: myActivityDeleteStatusPatterns,
-      strategyId: "comments",
+      strategyId: "myActivityDelete",
       ...definition,
     });
 
@@ -104,6 +104,7 @@
     }),
     likes: createTarget({
       id: "likes",
+      strategyId: "playlistRemove",
       labelKey: "targetLikesLabel",
       labelFallback: "Liked videos",
       enabled: true,

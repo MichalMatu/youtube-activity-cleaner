@@ -79,8 +79,8 @@
     });
   };
 
-  const likesStrategy = Object.freeze({
-    id: "likes",
+  const playlistRemoveStrategy = Object.freeze({
+    id: "playlistRemove",
     collectActionCandidates: () =>
       content
         .getVisibleActionButtons()
@@ -211,6 +211,6 @@
 
   content.Strategies = {
     ...(content.Strategies || {}),
-    likes: likesStrategy,
+    playlistRemove: playlistRemoveStrategy,
   };
 })();

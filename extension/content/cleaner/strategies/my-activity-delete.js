@@ -25,8 +25,8 @@
     });
   };
 
-  const commentsStrategy = Object.freeze({
-    id: "comments",
+  const myActivityDeleteStrategy = Object.freeze({
+    id: "myActivityDelete",
     collectActionCandidates: () =>
       content
         .getVisibleDeleteButtons()
@@ -256,6 +256,6 @@
 
   content.Strategies = {
     ...(content.Strategies || {}),
-    comments: commentsStrategy,
+    myActivityDelete: myActivityDeleteStrategy,
   };
 })();
