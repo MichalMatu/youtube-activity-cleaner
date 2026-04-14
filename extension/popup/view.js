@@ -20,6 +20,7 @@
     quickLinksElement: document.querySelector("#quick-links"),
     supportButton: document.querySelector("#support-button"),
     donateButton: document.querySelector("#donate-button"),
+    projectBannerButton: document.querySelector("#project-banner-button"),
     appMetaElement: document.querySelector("#app-meta"),
     settingsPanel: document.querySelector("#settings-panel"),
     settingsToggleButton: document.querySelector("#settings-toggle-button"),

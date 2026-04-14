@@ -25,5 +25,6 @@
     PROJECT_SITE_URL: "https://michalmatu.github.io/youtube-activity-cleaner/",
     SUPPORT_URL: "https://michalmatu.github.io/youtube-activity-cleaner/support.html",
     DONATE_URL: "https://buymeacoffee.com/michalmatuh",
+    OTHER_PROJECT_URL: "https://github.com/PlantNotifier",
   });
 })();

@@ -9,7 +9,10 @@
   <body>
     <main class="popup">
       <div class="header-row">
-        <h1 data-i18n="popupTitle">YouTube Activity Cleaner</h1>
+        <div class="title-block">
+          <p class="eyebrow-badge" data-i18n="popupFreeOpenSourceBadge">Free & open source</p>
+          <h1 data-i18n="popupTitle">YouTube Activity Cleaner</h1>
+        </div>
         <button
           id="settings-toggle-button"
           class="icon-button"
@@ -88,25 +91,68 @@
 
       <div id="quick-links" class="quick-links"></div>
 
-      <div class="extra-actions">
-        <button
-          id="support-button"
-          class="help-link compact-button"
-          type="button"
-          data-i18n="popupHelpSupportButton"
-        >
-          Help & support
-        </button>
+      <footer class="popup-footer">
+        <div class="extra-actions">
+          <button
+            id="support-button"
+            class="help-link compact-button"
+            type="button"
+            data-i18n="popupHelpSupportButton"
+          >
+            Help & support
+          </button>
+
+          <button
+            id="donate-button"
+            class="support compact-button"
+            type="button"
+            data-i18n="popupDonateButton"
+          >
+            Buy me a coffee
+          </button>
+        </div>
 
         <button
-          id="donate-button"
-          class="support compact-button"
+          id="project-banner-button"
+          class="project-banner"
           type="button"
-          data-i18n="popupDonateButton"
+          data-i18n-aria-label="popupOpenPlantNotifierButton"
+          data-i18n-title="popupOpenPlantNotifierButton"
         >
-          Buy me a coffee
+          <span class="project-banner-copy">
+            <span
+              class="project-banner-eyebrow"
+              data-i18n="popupOtherProjectLabel"
+            >
+              My other project
+            </span>
+            <span
+              class="project-banner-title"
+              data-i18n="popupPlantNotifierTitle"
+            >
+              PlantNotifier
+            </span>
+            <span
+              class="project-banner-description"
+              data-i18n="popupPlantNotifierDescription"
+            >
+              See the project on GitHub
+            </span>
+          </span>
+          <svg class="project-banner-icon" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M6 14L14 6M8 6h6v6"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+            />
+          </svg>
         </button>
-      </div>
+
+        <p id="app-meta" class="app-meta">V4 Preview • Version ...</p>
+      </footer>
 
       <section id="settings-panel" class="settings-popover" hidden aria-hidden="true">
         <div class="settings-card" role="dialog" aria-labelledby="settings-title">
@@ -272,7 +318,6 @@
         </div>
       </section>
 
-      <p id="app-meta" class="app-meta">V4 Preview • Version ...</p>
     </main>
 
     <script src="../shared/browser-api.js"></script>

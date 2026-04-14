@@ -17,7 +17,7 @@ Fallback URLs before GitHub Pages is enabled:
 
 ## Short Description
 
-Delete old YouTube comments from Google My Activity with a fast local-first Chrome extension.
+Free open-source cleaner for YouTube comments, comment likes, live chats, community posts, and liked videos.
 
 ## Suggested Category
 
@@ -26,22 +26,32 @@ Delete old YouTube comments from Google My Activity with a fast local-first Chro
 
 ## Detailed Description
 
-YouTube Activity Cleaner helps you remove old YouTube comments from the Google My Activity comments page without endless manual clicking.
+YouTube Activity Cleaner is a free open-source Chrome extension that helps you remove old YouTube activity without endless manual clicking.
 
-Open the Your YouTube comments page, launch the popup, choose Fast or Safe mode, and start the cleaner. The extension looks for visible delete controls, confirms the delete flow, waits for the page to react, and keeps going through the visible list while showing counters, retry state, and the latest status in the popup.
+Supported targets in the current build:
+
+- YouTube comments
+- Comment likes
+- Live chat history
+- Community posts
+- Liked videos
+
+Open one of the supported pages from the popup, choose Fast or Safe mode, and start the cleaner. The extension looks for visible cleanup controls, confirms the flow, waits for the page to react, and keeps going while showing counters, retry state, and the latest status in the popup.
 
 Highlights:
 
+- Free and open-source project
 - Fast and Safe run profiles
 - Retry and backoff for temporary delete failures
 - Local settings saved in Chrome
 - Keep-awake support while a run is active
 - Cleaner tab tracking so the popup can reconnect to the current run
+- Optional `Buy me a coffee` support button
 - No cloud sync or remote backend required
 
 Important:
 
-- The extension works only on the Google My Activity page for Your YouTube comments.
+- The extension works only on the supported Google My Activity pages and the YouTube `Liked videos` playlist page.
 - The target tab should stay visible while cleaning is running because hidden tabs are throttled by Chrome.
 - The current beta is best tested with the Google My Activity interface in English and Polish.
 - This tool automates the existing web UI. If Google changes the page layout, selectors may need updates.
@@ -57,13 +67,13 @@ Important:
 
 TODO before the next listing refresh:
 
-- Replace the generated/mock screenshots with real captures from the live extension popup on the Google My Activity comments page
+- Replace the generated/mock screenshots with real captures from the live extension popup on the supported cleanup pages
 - Capture one clear running-state screenshot with the popup open and progress counters visible
 - Re-export the final chosen screenshots to the Chrome Web Store required size without browser clutter
 
 ## Manual Items Still To Decide
 
-- Final public pricing model: free, donation, or paid service around the extension
+- Final public pricing model: free open-source release with optional donations
 - Whether to publish `unlisted` first or go straight to `public`
 - Whether to record a short YouTube demo video for the listing
 - Final license for the repository and distribution

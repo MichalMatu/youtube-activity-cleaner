@@ -43,6 +43,7 @@ function createViewTestContext() {
     "#quick-links",
     "#support-button",
     "#donate-button",
+    "#project-banner-button",
     "#app-meta",
     "#settings-panel",
     "#settings-toggle-button",

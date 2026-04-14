@@ -77,6 +77,7 @@ function createPopupElements() {
     quickLinksElement: createElement(),
     supportButton: createElement(),
     donateButton: createElement(),
+    projectBannerButton: createElement(),
     appMetaElement: createElement(),
     settingsPanel: createElement(),
     settingsToggleButton: createElement(),
@@ -212,7 +213,15 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   );
 
   await popup.elements.quickLinksElement.children[1].click();
-  assert.deepEqual(createdUrls, ["https://myactivity.google.com/page?page=youtube_comment_likes"]);
+  await popup.elements.supportButton.click();
+  await popup.elements.donateButton.click();
+  await popup.elements.projectBannerButton.click();
+  assert.deepEqual(createdUrls, [
+    "https://myactivity.google.com/page?page=youtube_comment_likes",
+    "https://michalmatu.github.io/youtube-activity-cleaner/support.html",
+    "https://buymeacoffee.com/michalmatuh",
+    "https://github.com/PlantNotifier",
+  ]);
 });
 
 test("popup recognizes the likes page and allows starting it", async () => {

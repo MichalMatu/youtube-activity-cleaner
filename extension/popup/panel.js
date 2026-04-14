@@ -36,12 +36,16 @@
   };
 
   popup.bindPanelControls = () => {
-    popup.elements.supportButton.addEventListener("click", async () => {
+    popup.elements.supportButton?.addEventListener("click", async () => {
       await ext.tabs.create({ url: shared.Constants.SUPPORT_URL });
     });
 
-    popup.elements.donateButton.addEventListener("click", async () => {
+    popup.elements.donateButton?.addEventListener("click", async () => {
       await ext.tabs.create({ url: shared.Constants.DONATE_URL });
+    });
+
+    popup.elements.projectBannerButton?.addEventListener("click", async () => {
+      await ext.tabs.create({ url: shared.Constants.OTHER_PROJECT_URL });
     });
 
     popup.elements.settingsToggleButton.addEventListener("click", () => {

@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Local-first cleaner for YouTube comments, comment likes, live chat history, community posts, and liked videos."
+    "message": "Free open-source local-first cleaner for YouTube comments, comment likes, live chat history, community posts, and liked videos."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -109,6 +109,21 @@
   },
   "popupDonateButton": {
     "message": "Buy me a coffee"
+  },
+  "popupFreeOpenSourceBadge": {
+    "message": "Free & open source"
+  },
+  "popupOtherProjectLabel": {
+    "message": "My other project"
+  },
+  "popupPlantNotifierTitle": {
+    "message": "PlantNotifier"
+  },
+  "popupPlantNotifierDescription": {
+    "message": "See the project on GitHub"
+  },
+  "popupOpenPlantNotifierButton": {
+    "message": "Open PlantNotifier"
   },
   "popupVersionValue": {
     "message": "Version $1"

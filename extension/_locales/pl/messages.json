@@ -3,7 +3,7 @@
     "message": "YouTube Activity Cleaner"
   },
   "extDescription": {
-    "message": "Lokalny cleaner aktywności YouTube dla komentarzy, polubień komentarzy, historii czatów na żywo, postów społeczności i polubionych filmów."
+    "message": "Darmowy open-source lokalny cleaner aktywności YouTube dla komentarzy, polubień komentarzy, historii czatów na żywo, postów społeczności i polubionych filmów."
   },
   "popupTitle": {
     "message": "YouTube Activity Cleaner"
@@ -109,6 +109,21 @@
   },
   "popupDonateButton": {
     "message": "Postaw mi kawę"
+  },
+  "popupFreeOpenSourceBadge": {
+    "message": "Darmowy i open source"
+  },
+  "popupOtherProjectLabel": {
+    "message": "Mój drugi projekt"
+  },
+  "popupPlantNotifierTitle": {
+    "message": "PlantNotifier"
+  },
+  "popupPlantNotifierDescription": {
+    "message": "Zobacz projekt na GitHubie"
+  },
+  "popupOpenPlantNotifierButton": {
+    "message": "Otwórz PlantNotifier"
   },
   "popupVersionValue": {
     "message": "Wersja $1"
