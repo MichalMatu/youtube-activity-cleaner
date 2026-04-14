@@ -36,15 +36,15 @@
   content.getRetryDelayMs = (failedAttemptNumber) =>
     content.getSettingValue("retryBackoffMs") * failedAttemptNumber;
 
-  content.performSingleActionAttempt = async (actionButton, description) =>
-    content.getTargetStrategy().runSingleAttempt(actionButton, description);
+  content.performSingleActionAttempt = async (actionCandidate, description) =>
+    content.getTargetStrategy().runSingleAttempt(actionCandidate, description);
 
-  content.processOneAction = async (actionButton) => {
+  content.processOneAction = async (actionCandidate) => {
     const state = content.getState();
     const strategy = content.getTargetStrategy();
-    const description = strategy.describeAction(actionButton);
+    const description = strategy.describeAction(actionCandidate);
     const maxAttempts = content.getSettingValue("retryLimit") + 1;
-    let currentActionButton = actionButton;
+    let currentActionCandidate = actionCandidate;
     let lastFailureReason = "unknown error";
 
     for (let attemptNumber = 1; attemptNumber <= maxAttempts; attemptNumber += 1) {
@@ -59,7 +59,7 @@
         maxAttempts,
       });
       const actionResult = await content.performSingleActionAttempt(
-        currentActionButton,
+        currentActionCandidate,
         description
       );
       if (actionResult.success) {
@@ -110,9 +110,12 @@
       );
 
       await content.waitForStatusIdle();
-      currentActionButton = strategy.findRetryAction(currentActionButton, description);
+      currentActionCandidate = strategy.findRetryAction(
+        currentActionCandidate,
+        description
+      );
 
-      if (!currentActionButton) {
+      if (!content.getCandidateElement?.(currentActionCandidate)) {
         lastFailureReason = "the action button disappeared before retrying";
         content.setCleanerError(lastFailureReason);
         content.pushDebugEvent?.("action:retry_target_missing", {
@@ -165,13 +168,14 @@
 
     while (!state.stopRequested) {
       const strategy = content.getTargetStrategy();
-      const actionButton = strategy.getActionButtons()[0];
+      const actionCandidate =
+        content.getFirstActionCandidate?.(strategy) || strategy.getActionButtons?.()[0] || null;
 
-      if (actionButton) {
+      if (actionCandidate) {
         content.pushDebugEvent?.("run:action_visible", {
-          description: strategy.describeAction(actionButton),
+          description: strategy.describeAction(actionCandidate),
         });
-        const actionResult = await content.processOneAction(actionButton);
+        const actionResult = await content.processOneAction(actionCandidate);
 
         if (actionResult.success) {
           state.deleted += 1;

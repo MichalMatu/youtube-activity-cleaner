@@ -33,10 +33,10 @@
     "message": "Failed"
   },
   "popupKeepAwakeAuto": {
-    "message": "Keep-awake will be enabled automatically while cleaning is running."
+    "message": "Keep-awake turns on during cleaning."
   },
   "popupKeepAwakeEnabled": {
-    "message": "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs."
+    "message": "Keep-awake is on during cleaning."
   },
   "popupNoRetriesOrErrors": {
     "message": "No active retries or errors."
@@ -111,7 +111,7 @@
     "message": "Buy me a coffee"
   },
   "popupVersionValue": {
-    "message": "V4 Preview • Version $1"
+    "message": "Version $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Ready on: $1."
@@ -119,20 +119,8 @@
   "popupPageConnectedOtherTabTarget": {
     "message": "Connected to a $1 cleaner tab in another tab."
   },
-  "popupPageReadyCurrent": {
-    "message": "Ready on the YouTube comments page."
-  },
-  "popupPageConnectedOtherTab": {
-    "message": "Connected to a cleaner tab in another tab."
-  },
-  "popupTabUsingCurrent": {
-    "message": "Using the current tab for cleaner commands."
-  },
   "popupTabUsingTitle": {
     "message": "Using: $1"
-  },
-  "popupFallbackTabTitle": {
-    "message": "YouTube comments tab"
   },
   "popupFallbackTabTitleTarget": {
     "message": "$1 tab"
@@ -149,9 +137,6 @@
   "popupPageReadyStartCurrentTab": {
     "message": "Ready to start on the current tab."
   },
-  "popupTabStartAttachesCurrent": {
-    "message": "Start will attach the cleaner to this tab."
-  },
   "popupPageDetectedTarget": {
     "message": "Detected page: $1."
   },
@@ -160,9 +145,6 @@
   },
   "popupPageOpenCommentsPrompt": {
     "message": "Use one of the supported page shortcuts below."
-  },
-  "popupTabNoConnectedCleaner": {
-    "message": "No connected cleaner tab was found right now."
   },
   "popupRetryScheduled": {
     "message": "Retry $1 scheduled in $2s."

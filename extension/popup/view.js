@@ -39,25 +39,50 @@
     popup.elements.stopButton.disabled = !canStop;
   };
 
+  popup.setText = (element, message) => {
+    if (!element) {
+      return;
+    }
+
+    const text = String(message || "");
+    element.textContent = text;
+  };
+
+  popup.setLineText = (element, message) => {
+    if (!element) {
+      return;
+    }
+
+    const text = String(message || "");
+    element.hidden = !text;
+    popup.setText(element, text);
+  };
+
   popup.renderPowerState = (status) => {
     if (status?.keepAwakeActive) {
-      popup.elements.powerStateElement.textContent = t(
+      popup.setText(
+        popup.elements.powerStateElement,
+        t(
         "popupKeepAwakeEnabled",
         undefined,
         "Keep-awake is enabled. Chrome should keep the display awake while cleaning runs."
+        )
       );
       return;
     }
 
-    popup.elements.powerStateElement.textContent = t(
-      "popupKeepAwakeAuto",
-      undefined,
-      "Keep-awake will be enabled automatically while cleaning is running."
+    popup.setText(
+      popup.elements.powerStateElement,
+      t(
+        "popupKeepAwakeAuto",
+        undefined,
+        "Keep-awake will be enabled automatically while cleaning is running."
+      )
     );
   };
 
   popup.renderDebugState = (message, isError = false) => {
-    popup.elements.debugStateElement.textContent = message;
+    popup.setText(popup.elements.debugStateElement, message);
     popup.elements.debugStateElement.style.color = isError ? "#fca5a5" : "#fcd34d";
   };
 
@@ -76,56 +101,70 @@
     const currentTargetLabel = popup.getTargetLabel(targetTabTarget || activeTabTarget);
 
     if (onSupportedPage) {
-      popup.elements.pageStateElement.textContent = isUsingActiveTab
-        ? t("popupPageReadyCurrentTarget", currentTargetLabel, `Ready on: ${currentTargetLabel}.`)
-        : t(
+      popup.setText(
+        popup.elements.pageStateElement,
+        isUsingActiveTab
+          ? t(
+              "popupPageReadyCurrentTarget",
+              currentTargetLabel,
+              `Ready on: ${currentTargetLabel}.`
+            )
+          : t(
             "popupPageConnectedOtherTabTarget",
             currentTargetLabel,
             `Connected to a ${currentTargetLabel} cleaner tab in another tab.`
-          );
-      popup.elements.tabStateElement.textContent = isUsingActiveTab
-        ? t("popupTabUsingCurrent", undefined, "Using the current tab for cleaner commands.")
-        : t(
+            )
+      );
+      popup.setLineText(
+        popup.elements.tabStateElement,
+        isUsingActiveTab
+          ? ""
+          : t(
             "popupTabUsingTitle",
             targetTab?.title ||
               t("popupFallbackTabTitleTarget", currentTargetLabel, `${currentTargetLabel} tab`),
             `Using: ${targetTab?.title || `${currentTargetLabel} tab`}`
-          );
+            )
+      );
     } else if (popup.isSupportedUrl(activeTab?.url)) {
       if (canStartFromActiveTab) {
-        popup.elements.pageStateElement.textContent = t(
-          "popupPageReadyStartCurrentTab",
-          undefined,
-          "Ready to start on the current tab."
+        popup.setText(
+          popup.elements.pageStateElement,
+          t(
+            "popupPageReadyStartCurrentTab",
+            undefined,
+            "Ready to start on the current tab."
+          )
         );
-        popup.elements.tabStateElement.textContent = t(
-          "popupTabStartAttachesCurrent",
-          undefined,
-          "Start will attach the cleaner to this tab."
-        );
+        popup.setLineText(popup.elements.tabStateElement, "");
       } else {
-        popup.elements.pageStateElement.textContent = t(
-          "popupPageDetectedTarget",
-          popup.getTargetLabel(activeTabTarget),
-          `Detected page: ${popup.getTargetLabel(activeTabTarget)}.`
+        popup.setText(
+          popup.elements.pageStateElement,
+          t(
+            "popupPageDetectedTarget",
+            popup.getTargetLabel(activeTabTarget),
+            `Detected page: ${popup.getTargetLabel(activeTabTarget)}.`
+          )
         );
-        popup.elements.tabStateElement.textContent = t(
-          "popupTargetComingSoon",
-          popup.getTargetLabel(activeTabTarget),
-          `${popup.getTargetLabel(activeTabTarget)} cleanup is planned, but it is not enabled yet.`
+        popup.setLineText(
+          popup.elements.tabStateElement,
+          t(
+            "popupTargetComingSoon",
+            popup.getTargetLabel(activeTabTarget),
+            `${popup.getTargetLabel(activeTabTarget)} cleanup is planned, but it is not enabled yet.`
+          )
         );
       }
     } else {
-      popup.elements.pageStateElement.textContent = t(
-        "popupPageOpenCommentsPrompt",
-        undefined,
-        "Use one of the supported page shortcuts below."
-      );
-      popup.elements.tabStateElement.textContent = t(
-        "popupTabNoConnectedCleaner",
-        undefined,
-        "No connected cleaner tab was found right now."
-      );
+        popup.setText(
+          popup.elements.pageStateElement,
+          t(
+            "popupPageOpenCommentsPrompt",
+            undefined,
+            "Use one of the supported page shortcuts below."
+          )
+        );
+      popup.setLineText(popup.elements.tabStateElement, "");
     }
 
     popup.elements.deletedCountElement.textContent = String(status?.deleted || 0);
@@ -154,8 +193,6 @@
         t("popupLastIssue", status.lastError, `Last issue: ${status.lastError}`),
         true
       );
-    } else if (status?.lastDebugEvent) {
-      popup.renderDebugState(status.lastDebugEvent);
     } else if (isTrackedTab && !isUsingActiveTab) {
       popup.renderDebugState(
         t(
@@ -171,7 +208,8 @@
     }
 
     if (!onSupportedPage) {
-      popup.elements.runStateElement.textContent =
+      popup.setText(
+        popup.elements.runStateElement,
         canStartFromActiveTab
           ? t(
               "popupStartAvailableSupportedTab",
@@ -184,56 +222,61 @@
                 popup.getTargetLabel(activeTabTarget),
                 `${popup.getTargetLabel(activeTabTarget)} cleanup is not enabled yet.`
               )
-          : t(
-              "popupOnlyWorksOnCommentsPage",
-              undefined,
-              "Open one of the supported cleaner pages to continue."
-            );
+            : t(
+                "popupOnlyWorksOnCommentsPage",
+                undefined,
+                "Open one of the supported cleaner pages to continue."
+              )
+      );
       popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
       return;
     }
 
     if (status?.starting || status?.running) {
-      popup.elements.runStateElement.textContent =
+      popup.setText(
+        popup.elements.runStateElement,
         status.lastMessage ||
-        (status?.starting
-          ? t(
-              "popupCleanerStartingCurrentPage",
-              undefined,
-              "Cleaner is starting on the current page."
-            )
-          : t(
-              "popupCleanerRunningCurrentPage",
-              undefined,
-              "Cleaner is running on the current page."
-            ));
+          (status?.starting
+            ? t(
+                "popupCleanerStartingCurrentPage",
+                undefined,
+                "Cleaner is starting on the current page."
+              )
+            : t(
+                "popupCleanerRunningCurrentPage",
+                undefined,
+                "Cleaner is running on the current page."
+              ))
+      );
       popup.setButtonsState({ canStart: false, canStop: true });
       return;
     }
 
-    popup.elements.runStateElement.textContent =
-      status?.lastMessage || t("popupCleanerIdle", undefined, "Cleaner is idle.");
+    popup.setText(
+      popup.elements.runStateElement,
+      status?.lastMessage || t("popupCleanerIdle", undefined, "Cleaner is idle.")
+    );
     popup.setButtonsState({ canStart: canStartFromActiveTab, canStop: false });
   };
 
   popup.renderError = (message, context) => {
     popup.renderStatus(null, context);
-    popup.elements.runStateElement.textContent = message;
+    popup.setText(popup.elements.runStateElement, message);
   };
 
   popup.renderDisconnectedPage = (message, context) => {
     popup.renderStatus(null, context);
-    popup.elements.runStateElement.textContent = message;
+    popup.setText(popup.elements.runStateElement, message);
     popup.setButtonsState({ canStart: false, canStop: false });
     popup.renderDebugState(message, true);
   };
 
   popup.renderSettingsState = (message, isError = false) => {
-    popup.elements.settingsStateElement.textContent = message;
+    popup.setText(popup.elements.settingsStateElement, message);
     popup.elements.settingsStateElement.style.color = isError ? "#fca5a5" : "#cbd5e1";
   };
 
   popup.renderSettingsPreview = (message) => {
-    popup.elements.settingsPreviewElement.textContent = message;
+    popup.setText(popup.elements.settingsPreviewElement, message);
   };
 })();

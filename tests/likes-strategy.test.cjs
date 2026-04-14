@@ -3,6 +3,14 @@ const assert = require("node:assert/strict");
 
 const { createContext, loadScript } = require("./helpers/load-script.cjs");
 
+function loadStrategyScripts(context) {
+  loadScript("extension/shared/text.js", context);
+  loadScript("extension/content/cleaner/candidates.js", context);
+  loadScript("extension/content/cleaner/strategies/my-activity-delete.js", context);
+  loadScript("extension/content/cleaner/strategies/playlist-remove.js", context);
+  loadScript("extension/content/cleaner/strategy.js", context);
+}
+
 test("likes strategy opens the action menu and removes the liked video", async () => {
   const itemContainer = {
     isConnected: true,
@@ -90,8 +98,7 @@ test("likes strategy opens the action menu and removes the liked video", async (
     YtActivityCleanerContent: content,
   });
 
-  loadScript("extension/shared/text.js", context);
-  loadScript("extension/content/cleaner/strategy.js", context);
+  loadStrategyScripts(context);
 
   const result = await context.YtActivityCleanerContent
     .getTargetStrategy()

@@ -3,6 +3,63 @@ const assert = require("node:assert/strict");
 
 const { createContext, loadScript } = require("./helpers/load-script.cjs");
 
+function loadStrategyScripts(context) {
+  loadScript("extension/shared/text.js", context);
+  loadScript("extension/content/cleaner/candidates.js", context);
+  loadScript("extension/content/cleaner/strategies/my-activity-delete.js", context);
+  loadScript("extension/content/cleaner/strategies/playlist-remove.js", context);
+  loadScript("extension/content/cleaner/strategy.js", context);
+}
+
+test("comments strategy exposes structured delete candidates", () => {
+  const itemContainer = {
+    isConnected: true,
+  };
+  const actionButton = {
+    id: "delete-button",
+    isConnected: true,
+  };
+
+  const content = {
+    getTarget: () => ({ id: "comments" }),
+    getVisibleDeleteButtons: () => [actionButton],
+    getItemContainer: () => itemContainer,
+    describeItem: () => "test comment",
+    findRetryDeleteButton: () => actionButton,
+    getLoadMoreButton: () => null,
+  };
+
+  const context = createContext({
+    YtActivityCleanerShared: {
+      t(_key, substitutions, fallback = "") {
+        if (Array.isArray(substitutions)) {
+          return fallback.replace(/\$(\d+)/g, (_match, index) => {
+            const value = substitutions[Number(index) - 1];
+            return value === undefined ? "" : String(value);
+          });
+        }
+
+        if (substitutions !== undefined) {
+          return fallback.replace("$1", String(substitutions));
+        }
+
+        return fallback;
+      },
+    },
+    YtActivityCleanerContent: content,
+  });
+
+  loadStrategyScripts(context);
+
+  const strategy = context.YtActivityCleanerContent.getTargetStrategy();
+  const candidate = strategy.collectActionCandidates()[0];
+
+  assert.equal(candidate.element, actionButton);
+  assert.equal(candidate.itemContainer, itemContainer);
+  assert.equal(candidate.description, "test comment");
+  assert.equal(candidate.kind, "delete");
+});
+
 test("comments strategy counts a recycled row as a successful delete", async () => {
   const itemContainer = {
     isConnected: true,
@@ -86,8 +143,7 @@ test("comments strategy counts a recycled row as a successful delete", async () 
     YtActivityCleanerContent: content,
   });
 
-  loadScript("extension/shared/text.js", context);
-  loadScript("extension/content/cleaner/strategy.js", context);
+  loadStrategyScripts(context);
 
   const result = await context.YtActivityCleanerContent
     .getTargetStrategy()
@@ -175,8 +231,7 @@ test("comments strategy accepts a delayed success when no initial status appears
     YtActivityCleanerContent: content,
   });
 
-  loadScript("extension/shared/text.js", context);
-  loadScript("extension/content/cleaner/strategy.js", context);
+  loadStrategyScripts(context);
 
   const result = await context.YtActivityCleanerContent
     .getTargetStrategy()

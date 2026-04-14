@@ -33,10 +33,14 @@ These objects are registries, not single-file god objects. New logic should live
   DOM lookup, click helpers, item-container resolution, and viewport prioritization.
 - `extension/content/cleaner/status.js`
   Status/toast parsing and deletion outcome confirmation.
+- `extension/content/cleaner/candidates.js`
+  Shared action-candidate model used to collect, describe, and retry work items.
+- `extension/content/cleaner/strategies/*.js`
+  Per-family action logic such as My Activity deletes and playlist removals.
 - `extension/content/cleaner/strategy.js`
-  Per-flow action logic for My Activity deletes and playlist likes.
+  Strategy registry and target-to-strategy resolution.
 - `extension/content/cleaner/engine.js`
-  Main run loop, retry policy, and progress accounting.
+  Main run loop, candidate pipeline, retry policy, and progress accounting.
 - `extension/content/debug.js`
   Read-only diagnostics and one-shot probing helpers.
 
@@ -56,7 +60,9 @@ These objects are registries, not single-file god objects. New logic should live
 - `extension/popup/index.js`
   Still owns the popup session lifecycle and polling loop. Keep new form or target-specific behavior out of it; if it grows again, split the session transport and refresh logic into a dedicated popup runtime file.
 - `extension/content/cleaner/strategy.js`
-  Intentionally centralizes the currently supported delete flows. If a future target needs a materially different lifecycle, add a new strategy file or registry entry instead of layering more target branches into the existing one.
+  Kept intentionally thin as the registry. New flow logic should land in `strategies/*.js`, not here.
+- `extension/content/cleaner/strategies/my-activity-delete.js`
+  This is now the main hotspot for future My Activity targets. Reuse it for targets with the same delete lifecycle, but split again if Google introduces a genuinely different flow.
 
 ## Target Model
 
@@ -79,8 +85,10 @@ Rules for new targets:
 ## Next Safe Extension Points
 
 - New My Activity targets:
-  Extend `shared/targets.js`, then decide whether they fit the existing comments strategy.
+  Extend `shared/targets.js`, then decide whether they fit the `my-activity-delete` strategy family.
 - New popup panels/settings:
   Add view rendering to `popup/view.js` and form behavior to `popup/settings-form.js`.
+- Candidate-based features:
+  Add filters, dry-run preview, and pause/resume around the shared candidate pipeline before changing individual strategy files.
 - Richer diagnostics:
   Extend `content/debug.js` and only expose narrow public helpers on `YtActivityCleanerDebug`.

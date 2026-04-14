@@ -3,6 +3,14 @@ const assert = require("node:assert/strict");
 
 const { createContext, loadScript } = require("./helpers/load-script.cjs");
 
+function loadStrategyScripts(context) {
+  loadScript("extension/shared/text.js", context);
+  loadScript("extension/content/cleaner/candidates.js", context);
+  loadScript("extension/content/cleaner/strategies/my-activity-delete.js", context);
+  loadScript("extension/content/cleaner/strategies/playlist-remove.js", context);
+  loadScript("extension/content/cleaner/strategy.js", context);
+}
+
 test("comment likes reuse the delete strategy with target-specific messages", () => {
   const context = createContext({
     YtActivityCleanerShared: {
@@ -25,7 +33,7 @@ test("comment likes reuse the delete strategy with target-specific messages", ()
   });
 
   loadScript("extension/shared/targets.js", context);
-  loadScript("extension/shared/text.js", context);
+  loadStrategyScripts(context);
 
   const target = context.YtActivityCleanerShared.getTargetById("commentLikes");
   context.YtActivityCleanerContent.getTarget = () => target;
@@ -33,8 +41,6 @@ test("comment likes reuse the delete strategy with target-specific messages", ()
   context.YtActivityCleanerContent.describeItem = () => "test";
   context.YtActivityCleanerContent.findRetryDeleteButton = () => null;
   context.YtActivityCleanerContent.getLoadMoreButton = () => null;
-
-  loadScript("extension/content/cleaner/strategy.js", context);
 
   const strategy = context.YtActivityCleanerContent.getTargetStrategy();
 

@@ -17,7 +17,7 @@
     translateWithFallback(
       "popupVersionValue",
       popup.getAppVersion(),
-      `V4 Preview • Version ${popup.getAppVersion()}`
+      `Version ${popup.getAppVersion()}`
     );
 
   popup.renderAppMeta = () => {

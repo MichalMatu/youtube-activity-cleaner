@@ -4,9 +4,9 @@ Ten dokument zawiera plan wdrożenia nowych celów usuwania oraz ulepszeń w kod
 
 ## 1. Nowe cele (Targets) do dodania
 
-Obecnie wtyczka wspiera "comments" i "likes". Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
+Obecnie wtyczka wspiera `comments`, `commentLikes` i `likes` (liked videos). Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
 
-- [ ] **Polubienia komentarzy (Comment Likes):** 
+- [x] **Polubienia komentarzy (Comment Likes):**
   - Dodanie obsługi dla zakładki My Activity: `https://myactivity.google.com/page?page=youtube_comment_likes`.
   - Powinno korzystać z takiej samej logiki jak zwykłe komentarze.
 - [ ] **Wiadomości na Czacie na Żywo (Live Chat Messages):** 
@@ -39,7 +39,18 @@ Proponowane modyfikacje mające poprawić "ludzkość" skryptu oraz dodać nowe,
 
 ## 3. Ważne modyfikacje architektury UI (Dla przyszłego Agenta)
 
-- [ ] **Dynamiczne renderowanie menu GUI (Pop-up):**
+- [x] **Dynamiczne renderowanie menu GUI (Pop-up):**
   - **Problem:** Obecnie przyciski skrótów w pliku `popup/popup.html` (sekcja `<div class="quick-links">`) są dodane na tzw. "sztywno". Dodanie każdego nowego obsługiwanego linku wymagałoby ręcznej ingerencji w 3 plikach naraz (nowy tag `<button>` w HTML, definicja w `constants.js` oraz przypinanie zdarzeń click() w `popup/index.js`).
   - **Zadanie:** Należy przeprowadzić refaktoring w pliku `popup/index.js`. Pop-up powinien używać sprytnej pętli, która sama w locie przeczyta wszystkie obiekty celów pobierane z `shared.Targets` (z pliku `targets.js` należącego do logiki z tła) i dynamicznie wygeneruje te przyciski bazując na obiektach tam zapisanych.
   - **Zysk:** Znacznie mniejszy wysiłek integracji nowych funkcji – w przyszłości dodanie wsparcia dla nowego elementu ograniczy się tylko i wyłącznie do zaktualizowana słownika w pliku `targets.js`, a interfejs wtyczki sam zaktualizuje się automatycznie o nowe opcje!
+
+## 4. Aktualny fundament pod kolejne funkcje
+
+- [x] **Rozdzielenie strategii na rodziny przepływów:**
+  - Cleaner ma już osobne pliki strategii dla My Activity delete i playlist remove.
+  - Rejestr strategii jest cienką warstwą, a engine pracuje na wspólnym modelu kandydatów akcji.
+- [ ] **Wykorzystać pipeline kandydatów do kolejnych funkcji:**
+  - `Dry Run`: skanowanie i podświetlanie kandydatów bez `click()`.
+  - filtrowanie po słowie: odsiać kandydatów przed wykonaniem akcji.
+  - `Pause/Resume`: zatrzymanie/wznowienie pomiędzy etapami pipeline.
+  - nowe targety: mapować je do istniejącej rodziny strategii albo dopisać nową rodzinę, jeśli lifecycle jest inny.

@@ -33,10 +33,10 @@
     "message": "Błędy"
   },
   "popupKeepAwakeAuto": {
-    "message": "Keep-awake włączy się automatycznie podczas działania cleanera."
+    "message": "Keep-awake włączy się podczas czyszczenia."
   },
   "popupKeepAwakeEnabled": {
-    "message": "Keep-awake jest włączony. Chrome powinien utrzymać ekran aktywny podczas pracy cleanera."
+    "message": "Keep-awake jest włączony podczas czyszczenia."
   },
   "popupNoRetriesOrErrors": {
     "message": "Brak aktywnych ponowień ani błędów."
@@ -111,7 +111,7 @@
     "message": "Postaw mi kawę"
   },
   "popupVersionValue": {
-    "message": "Podgląd V4 • Wersja $1"
+    "message": "Wersja $1"
   },
   "popupPageReadyCurrentTarget": {
     "message": "Gotowe na stronie: $1."
@@ -119,20 +119,8 @@
   "popupPageConnectedOtherTabTarget": {
     "message": "Połączono z kartą cleanera dla $1 w innej karcie."
   },
-  "popupPageReadyCurrent": {
-    "message": "Gotowe na stronie komentarzy YouTube."
-  },
-  "popupPageConnectedOtherTab": {
-    "message": "Połączono z kartą cleanera w innej karcie."
-  },
-  "popupTabUsingCurrent": {
-    "message": "Do poleceń cleanera używana jest bieżąca karta."
-  },
   "popupTabUsingTitle": {
     "message": "Używana karta: $1"
-  },
-  "popupFallbackTabTitle": {
-    "message": "Karta komentarzy YouTube"
   },
   "popupFallbackTabTitleTarget": {
     "message": "Karta: $1"
@@ -149,9 +137,6 @@
   "popupPageReadyStartCurrentTab": {
     "message": "Gotowe do startu na bieżącej karcie."
   },
-  "popupTabStartAttachesCurrent": {
-    "message": "Start przypnie cleaner do tej karty."
-  },
   "popupPageDetectedTarget": {
     "message": "Wykryta strona: $1."
   },
@@ -160,9 +145,6 @@
   },
   "popupPageOpenCommentsPrompt": {
     "message": "Użyj jednego z poniższych skrótów do obsługiwanych stron."
-  },
-  "popupTabNoConnectedCleaner": {
-    "message": "Nie znaleziono teraz podłączonej karty cleanera."
   },
   "popupRetryScheduled": {
     "message": "Ponowienie $1 zaplanowane za $2 s."

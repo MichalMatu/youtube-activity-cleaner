@@ -182,7 +182,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
   const popup = context.YtActivityCleanerPopup;
 
   assert.equal(popup.parseSecondsInput("1,2"), 1200);
-  assert.equal(popup.getAppMetaText(), "Podgląd V4 • Wersja 4.0.0");
+  assert.equal(popup.getAppMetaText(), "Wersja 4.0.0");
   assert.equal(
     popup.getSettingsPreviewText({
       speedProfile: "safe",
