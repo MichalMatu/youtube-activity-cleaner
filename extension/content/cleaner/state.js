@@ -89,6 +89,19 @@
     visibilityState: document.visibilityState,
   });
 
+  content.getPopupStatus = () => ({
+    starting: state.starting,
+    running: state.running,
+    paused: state.paused,
+    attempted: state.attempted,
+    deleted: state.deleted,
+    failed: state.failed,
+    lastMessage: state.lastMessage,
+    lastError: state.lastError,
+    retryAttempt: state.retryAttempt,
+    retryDelayMs: state.retryDelayMs,
+  });
+
   content.setCleanerMessage = (message) => {
     state.lastMessage = message;
   };

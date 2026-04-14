@@ -35,28 +35,29 @@
     }
 
     if (message.type === Messages.GET_CLEANER_STATUS) {
-      sendResponse({ ok: true, status: content.getCleanerStatus() });
+      sendResponse({ ok: true, status: content.getPopupStatus() });
       return;
     }
 
     if (message.type === Messages.START_CLEANER) {
       content
         .startCleaner()
-        .then((status) => {
-          sendResponse({ ok: true, status });
+        .then(() => {
+          sendResponse({ ok: true, status: content.getPopupStatus() });
         })
         .catch((error) => {
           sendResponse({
             ok: false,
             error: error.message,
-            status: content.getCleanerStatus(),
+            status: content.getPopupStatus(),
           });
         });
       return true;
     }
 
     if (message.type === Messages.STOP_CLEANER) {
-      sendResponse({ ok: true, status: content.stopCleaner() });
+      content.stopCleaner();
+      sendResponse({ ok: true, status: content.getPopupStatus() });
     }
   });
 })();
