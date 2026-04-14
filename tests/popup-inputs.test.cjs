@@ -88,6 +88,20 @@ function createPopupElements() {
   };
 }
 
+function loadPopupStack(context) {
+  loadScript("extension/shared/i18n.js", context);
+  loadScript("extension/shared/text.js", context);
+  loadScript("extension/shared/messages.js", context);
+  loadScript("extension/shared/targets.js", context);
+  loadScript("extension/shared/constants.js", context);
+  loadScript("extension/shared/settings.js", context);
+  loadScript("extension/popup/targets.js", context);
+  loadScript("extension/popup/settings-form.js", context);
+  loadScript("extension/popup/panel.js", context);
+  loadScript("extension/popup/runtime.js", context);
+  loadScript("extension/popup/index.js", context);
+}
+
 test("popup accepts comma decimals and shows localized preview text", async () => {
   const supportedUrl =
     "https://myactivity.google.com/page?hl=en-GB&utm_medium=web&utm_source=youtube&page=youtube_comments";
@@ -167,15 +181,7 @@ test("popup accepts comma decimals and shows localized preview text", async () =
     },
   });
 
-  loadScript("extension/shared/i18n.js", context);
-  loadScript("extension/shared/text.js", context);
-  loadScript("extension/shared/messages.js", context);
-  loadScript("extension/shared/targets.js", context);
-  loadScript("extension/shared/constants.js", context);
-  loadScript("extension/shared/settings.js", context);
-  loadScript("extension/popup/targets.js", context);
-  loadScript("extension/popup/settings-form.js", context);
-  loadScript("extension/popup/index.js", context);
+  loadPopupStack(context);
 
   await Promise.resolve();
 
@@ -291,15 +297,7 @@ test("popup recognizes the likes page and allows starting it", async () => {
     },
   });
 
-  loadScript("extension/shared/i18n.js", context);
-  loadScript("extension/shared/text.js", context);
-  loadScript("extension/shared/messages.js", context);
-  loadScript("extension/shared/targets.js", context);
-  loadScript("extension/shared/constants.js", context);
-  loadScript("extension/shared/settings.js", context);
-  loadScript("extension/popup/targets.js", context);
-  loadScript("extension/popup/settings-form.js", context);
-  loadScript("extension/popup/index.js", context);
+  loadPopupStack(context);
 
   await Promise.resolve();
 

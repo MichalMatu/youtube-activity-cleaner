@@ -22,6 +22,8 @@ test("locale files cover all popup and runtime message keys", () => {
     "extension/manifest.json",
     "extension/popup/popup.html",
     "extension/popup/index.js",
+    "extension/popup/panel.js",
+    "extension/popup/runtime.js",
     "extension/popup/targets.js",
     "extension/popup/settings-form.js",
     "extension/popup/view.js",
