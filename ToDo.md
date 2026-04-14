@@ -4,7 +4,7 @@ Ten dokument zawiera plan wdrożenia nowych celów usuwania oraz ulepszeń w kod
 
 ## 1. Nowe cele (Targets) do dodania
 
-Obecnie wtyczka wspiera `comments`, `commentLikes` i `likes` (liked videos). Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
+Obecnie wtyczka wspiera `comments`, `commentLikes`, `liveChats`, `communityPosts` i `likes` (liked videos). Poniżej lista nowych, proponowanych podstron do zautomatyzowania:
 
 - [x] **Polubienia komentarzy (Comment Likes):**
   - Dodanie obsługi dla zakładki My Activity: `https://myactivity.google.com/page?page=youtube_comment_likes`.

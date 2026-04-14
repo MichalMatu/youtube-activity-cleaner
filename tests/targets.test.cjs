@@ -37,7 +37,7 @@ test("target registry resolves the comments page and keeps compatibility constan
   assert.equal(shared.isSupportedUrl(liveChatsUrl), true);
   assert.equal(shared.isRunnableUrl(liveChatsUrl), true);
   assert.equal(shared.isSupportedUrl(communityPostsUrl), true);
-  assert.equal(shared.isRunnableUrl(communityPostsUrl), false);
+  assert.equal(shared.isRunnableUrl(communityPostsUrl), true);
   assert.equal(shared.getTargetById("commentLikes")?.id, "commentLikes");
   assert.equal(shared.getTargetById("liveChats")?.id, "liveChats");
   assert.equal(shared.getTargetById("communityPosts")?.id, "communityPosts");

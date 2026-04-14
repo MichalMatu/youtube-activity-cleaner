@@ -418,7 +418,7 @@ test("popup recognizes the live chat history page and allows starting it", async
   );
 });
 
-test("popup recognizes planned community-post cleanup without allowing start", async () => {
+test("popup recognizes the community-post page and allows starting it", async () => {
   const communityPostsUrl =
     "https://myactivity.google.com/page?utm_source=my-activity&hl=en&page=youtube_posts_activity";
 
@@ -504,7 +504,11 @@ test("popup recognizes planned community-post cleanup without allowing start", a
   const resolved = await popup.resolveTargetContext();
 
   assert.equal(resolved.activeTabSupported, true);
-  assert.equal(resolved.activeTabRunnable, false);
-  assert.equal(resolved.canStartFromActiveTab, false);
+  assert.equal(resolved.activeTabRunnable, true);
+  assert.equal(resolved.canStartFromActiveTab, true);
   assert.equal(resolved.activeTabTarget?.id, "communityPosts");
+  assert.equal(
+    popup.getTargetLabel(resolved.activeTabTarget),
+    "Community posts"
+  );
 });
