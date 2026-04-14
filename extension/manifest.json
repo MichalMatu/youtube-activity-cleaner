@@ -55,6 +55,8 @@
         "content/cleaner/strategies/my-activity-delete.js",
         "content/cleaner/strategies/playlist-remove.js",
         "content/cleaner/strategy.js",
+        "content/cleaner/run-loop.js",
+        "content/cleaner/lifecycle.js",
         "content/cleaner/engine.js",
         "content/debug.js",
         "content/index.js"

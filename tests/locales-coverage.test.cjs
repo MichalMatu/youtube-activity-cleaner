@@ -37,6 +37,8 @@ test("locale files cover all popup and runtime message keys", () => {
     "extension/content/cleaner/strategies/my-activity-delete.js",
     "extension/content/cleaner/strategies/playlist-remove.js",
     "extension/content/cleaner/strategy.js",
+    "extension/content/cleaner/run-loop.js",
+    "extension/content/cleaner/lifecycle.js",
     "extension/content/cleaner/engine.js",
     "tests/likes-strategy.test.cjs",
   ];

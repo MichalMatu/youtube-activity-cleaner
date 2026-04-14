@@ -39,8 +39,12 @@ These objects are registries, not single-file god objects. New logic should live
   Per-family action logic such as My Activity deletes and playlist removals.
 - `extension/content/cleaner/strategy.js`
   Strategy registry and target-to-strategy resolution.
+- `extension/content/cleaner/run-loop.js`
+  Candidate loop, retry pacing, load-more handling, and idle detection.
+- `extension/content/cleaner/lifecycle.js`
+  Run start/stop lifecycle, settings load, keep-awake, and crash finalization.
 - `extension/content/cleaner/engine.js`
-  Main run loop, candidate pipeline, retry policy, and progress accounting.
+  Thin composition entrypoint wiring lifecycle and run-loop helpers into `runCleaner()`.
 - `extension/content/debug.js`
   Read-only diagnostics and one-shot probing helpers.
 
@@ -61,8 +65,10 @@ These objects are registries, not single-file god objects. New logic should live
 
 ## Current Hotspots
 
-- `extension/content/cleaner/engine.js`
-  Still owns the full run lifecycle, retry pacing, idle detection, and stop/finalization logic. If new run states appear, split lifecycle transitions from the main loop before adding more branches.
+- `extension/content/cleaner/run-loop.js`
+  This is now the main runtime hotspot. If pause/resume, dry-run, or queue policies expand, split action processing from navigation/idle detection before adding more branches.
+- `extension/content/cleaner/lifecycle.js`
+  Holds start/stop transitions and failure recovery. If more run phases appear, move the state transitions into narrower helpers instead of growing one long initializer.
 - `extension/content/cleaner/dom.js`
   This file is now the densest collection of heuristics. Prefer extracting dialog handling or viewport candidate ranking into narrower helpers before adding more selector exceptions.
 - `extension/content/cleaner/strategy.js`
@@ -86,7 +92,8 @@ Rules for new targets:
 - Do not add new target shortcut logic to `popup/index.js`; keep it in `popup/targets.js`.
 - Do not add popup polling or cleaner-tab session code back into `popup/index.js`; keep it in `popup/runtime.js`.
 - Do not add settings-panel behavior or external-link buttons to `popup/index.js`; keep it in `popup/panel.js`.
-- Do not put target-specific selector exceptions directly into the engine loop.
+- Do not add start/stop lifecycle or keep-awake policy back into `content/cleaner/engine.js`; keep it in `lifecycle.js`.
+- Do not put target-specific selector exceptions directly into the run loop.
 - Prefer adding a helper to the closest layer over attaching another generic utility to every namespace.
 - Keep debug helpers read-only unless the function name clearly says it mutates state or performs a probe.
 
