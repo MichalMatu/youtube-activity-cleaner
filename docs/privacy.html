@@ -11,27 +11,29 @@
       <section class="panel">
         <p class="eyebrow">Privacy Policy</p>
         <h1>YouTube Activity Cleaner</h1>
-        <p>Last updated: April 10, 2026</p>
+        <p>Last updated: April 16, 2026</p>
         <p>
           YouTube Activity Cleaner is designed to run locally in your browser. The extension helps
-          you automate repetitive delete actions on the Google My Activity comments page for your
-          own signed-in Google account.
+          you automate repetitive cleanup actions for your own signed-in Google account on
+          supported Google My Activity pages and on the YouTube <code>Liked videos</code> playlist
+          page.
         </p>
       </section>
 
       <section class="panel">
         <h2>What Data The Extension Accesses</h2>
         <ul class="list">
-          <li>The extension reads and interacts with the Google My Activity comments page at <code>https://myactivity.google.com/*</code> so it can find visible delete controls and status messages.</li>
+          <li>The extension reads and interacts with supported Google My Activity pages at <code>https://myactivity.google.com/*</code> so it can find visible remove controls, item rows, and status messages for comments, comment likes, live chat history, and community posts.</li>
+          <li>The extension also reads and interacts with the YouTube <code>Liked videos</code> playlist page at <code>https://www.youtube.com/playlist?list=LL</code> so it can trigger the visible remove action there.</li>
           <li>The extension stores your cleaner preferences locally in Chrome, such as pacing, retry count, and failure limits.</li>
-          <li>The extension uses the Chrome tabs and power APIs to open the comments page, track the active cleaner tab, and request keep-awake while a run is active.</li>
+          <li>The extension uses the Chrome tabs and power APIs to open supported cleanup pages, track the active cleaner tab, and request keep-awake while a run is active.</li>
         </ul>
       </section>
 
       <section class="panel">
         <h2>What Data We Do Not Collect</h2>
         <ul class="list">
-          <li>We do not collect, transmit, sell, or share your browsing history, comment content, account credentials, or personal data with external servers.</li>
+          <li>We do not collect, transmit, sell, or share your browsing history, activity content, account credentials, or personal data with external servers.</li>
           <li>We do not send your data to analytics, ads, or third-party tracking systems.</li>
           <li>We do not use remote code execution or fetch external scripts to operate the extension.</li>
         </ul>
@@ -42,7 +44,8 @@
         <p>
           Cleaner settings are stored locally in Chrome storage on your device. Session information
           about the currently attached cleaner tab may also be stored in browser session storage so
-          the popup can reconnect to the current run.
+          the popup can reconnect to the current run. The extension does not maintain any remote
+          database of your YouTube activity.
         </p>
       </section>
 

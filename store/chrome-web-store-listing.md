@@ -1,6 +1,6 @@
 # Chrome Web Store Listing Draft
 
-Prepared on April 10, 2026.
+Prepared on April 16, 2026.
 
 ## Suggested URLs
 
@@ -53,7 +53,7 @@ Important:
 
 - The extension works only on the supported Google My Activity pages and the YouTube `Liked videos` playlist page.
 - The target tab should stay visible while cleaning is running because hidden tabs are throttled by Chrome.
-- The current beta is best tested with the Google My Activity interface in English and Polish.
+- The current release is best tested with the Google My Activity interface in English and Polish.
 - This tool automates the existing web UI. If Google changes the page layout, selectors may need updates.
 
 ## Store Assets Prepared In This Repo
@@ -61,17 +61,19 @@ Important:
 - Store icon: [store-icon-128.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/store-icon-128.png)
 - Small promo tile: [small-promo-tile-440x280.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/small-promo-tile-440x280.png)
 - Marquee promo tile: [marquee-promo-tile-1400x560.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/marquee-promo-tile-1400x560.png)
-- Live popup capture 1: [screenshot-04-live-popup-ready-overview-676x1206.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-04-live-popup-ready-overview-676x1206.png)
-- Live popup capture 2: [screenshot-05-live-popup-footer-banner-674x746.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-05-live-popup-footer-banner-674x746.png)
-- Screenshot 1: [screenshot-01-ready-overview-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-01-ready-overview-1280x800.png)
-- Screenshot 2: [screenshot-02-fast-mode-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-02-fast-mode-1280x800.png)
-- Screenshot 3: [screenshot-03-settings-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-03-settings-1280x800.png)
+- Chrome Web Store screenshots ready to upload:
+  - [screenshot-01-ready-overview-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-01-ready-overview-1280x800.png)
+  - [screenshot-02-fast-mode-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-02-fast-mode-1280x800.png)
+  - [screenshot-03-settings-1280x800.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-03-settings-1280x800.png)
+- Supporting popup captures for the website or docs only:
+  - [screenshot-04-live-popup-ready-overview-676x1206.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-04-live-popup-ready-overview-676x1206.png)
+  - [screenshot-05-live-popup-footer-banner-674x746.png](/Users/michal/Documents/PlatformIO/Projects/yt-comments/store/assets/screenshot-05-live-popup-footer-banner-674x746.png)
 
-TODO before the next listing refresh:
+Recommended before the first public listing refresh:
 
-- Replace the remaining generated/mock screenshots with real captures from the live extension popup on the supported cleanup pages
-- Capture one clear running-state screenshot with the popup open and progress counters visible
-- Re-export the final chosen screenshots to the Chrome Web Store required size without browser clutter
+- Capture one strong running-state screenshot at `1280x800` or `640x400` with `Deleted > 0`
+- Replace the most marketing-heavy screenshot with one cleaner real-product screenshot if you want a more policy-safe listing
+- Keep the vertical popup captures for the project site or docs instead of uploading them as Chrome Web Store screenshots
 
 ## Manual Items Still To Decide
 
