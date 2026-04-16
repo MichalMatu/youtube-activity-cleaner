@@ -205,7 +205,7 @@ def draw_popup_panel(
   x0, y0, x1, y1 = panel_box
   draw.text((x0 + 28, y0 + 26), "Chrome extension", font=load_font(18, bold=True), fill="#fca5a5")
   draw.text((x0 + 28, y0 + 56), "YouTube Activity Cleaner", font=load_font(28, bold=True), fill=WHITE)
-  draw.text((x0 + 28, y0 + 98), "Clean comments from the Google My Activity comments page.", font=load_font(16), fill=SLATE_300)
+  draw.text((x0 + 28, y0 + 98), "Clean YouTube activity from supported pages.", font=load_font(16), fill=SLATE_300)
 
   section_box = (x0 + 22, y0 + 136, x1 - 22, y0 + 262)
   draw.rounded_rectangle(section_box, radius=18, fill=SLATE_800)
@@ -273,7 +273,7 @@ def draw_popup_panel(
 
   if expanded_settings:
     fields = [
-      "Delay between comments: 1.2 sec",
+      "Delay between items: 1.2 sec",
       "Wait after scroll/load: 1.2 sec",
       "Retry failed delete: 2 times",
       "Retry backoff: 1.2 sec",
@@ -374,7 +374,7 @@ def draw_promo_tile(path: Path, size: tuple[int, int], title: str, subtitle: str
 
     draw.text(
       (preview_box[0] + 22, preview_box[1] + 228),
-      "Delete your own YouTube comments from\nGoogle My Activity with saved local settings.",
+      "Clean comments, likes, chats, posts,\nand liked videos with saved local settings.",
       font=load_font(18),
       fill="#dbe4f0",
       spacing=6,
@@ -402,23 +402,23 @@ def generate_store_images() -> None:
     STORE_ASSETS_DIR / "small-promo-tile-440x280.png",
     (440, 280),
     "YouTube Activity Cleaner",
-    "Delete old YouTube comments from Google My Activity.",
+    "Clean comments, likes, chats, posts, and liked videos.",
   )
   draw_promo_tile(
     STORE_ASSETS_DIR / "marquee-promo-tile-1400x560.png",
     (1400, 560),
     "YouTube Activity Cleaner",
-    "Fast local cleanup for the Google My Activity comments page.",
+    "Fast local cleanup across supported YouTube activity pages.",
   )
 
   draw_store_screenshot(
     STORE_ASSETS_DIR / "screenshot-01-ready-overview-1280x800.png",
-    "Clean old YouTube\ncomments faster",
-    "Open the Google My Activity comments page,\nclick Start and let the cleaner repeat the delete flow.",
+    "Clean old YouTube\nactivity faster",
+    "Open one of the supported pages from the popup,\nclick Start and let the cleaner repeat the visible cleanup flow.",
     {
-      "title": "Ready on the comments page.",
+      "title": "Ready on a supported page.",
       "subtitle": "Current tab connected.",
-      "run_message": "Fast mode",
+      "run_message": "5 cleanup targets ready.",
       "deleted": "0",
       "attempts": "0",
       "failed": "0",
@@ -430,11 +430,11 @@ def generate_store_images() -> None:
   )
   draw_store_screenshot(
     STORE_ASSETS_DIR / "screenshot-02-fast-mode-1280x800.png",
-    "Watch progress,\nretries and failures",
-    "Use the popup to track counters, retry timing\nand the latest status while cleanup runs.",
+    "Track progress,\nretries and failures",
+    "Use the popup to watch counters, retry timing,\nand the latest status while cleanup runs.",
     {
       "title": "Cleaner tab connected.",
-      "subtitle": "Your YouTube comments page.",
+      "subtitle": "Supported cleanup page active.",
       "run_message": "Deleted: 214",
       "deleted": "214",
       "attempts": "221",
@@ -448,7 +448,43 @@ def generate_store_images() -> None:
   draw_store_screenshot(
     STORE_ASSETS_DIR / "screenshot-03-settings-1280x800.png",
     "Tune speed,\nretries and pacing",
-    "Pick Fast or Safe mode and save preferred\nsettings in Chrome before each run.",
+    "Pick Fast or Safe mode and save pacing,\nretry, and stop settings in Chrome before each run.",
+    {
+      "title": "Ready to start.",
+      "subtitle": "This tab becomes the cleaner tab.",
+      "run_message": "Saved settings loaded",
+      "deleted": "0",
+      "attempts": "0",
+      "failed": "0",
+      "debug": "No active retries or errors.",
+      "settings_preview": "Fast mode • 1.2s pace • 2 retries",
+      "settings_mode": "Fast",
+      "expanded_settings": True,
+    },
+  )
+
+  draw_store_screenshot(
+    STORE_ASSETS_DIR / "localized-en-screenshot-01-supported-pages-1280x800.png",
+    "Start from any\nsupported page",
+    "Open comments, likes, chats, posts, or liked videos\nfrom the popup and launch cleanup on the current tab.",
+    {
+      "title": "Ready on a supported page.",
+      "subtitle": "Current tab connected.",
+      "run_message": "5 cleanup targets ready.",
+      "deleted": "0",
+      "attempts": "0",
+      "failed": "0",
+      "debug": "Keep-awake turns on during cleanup.",
+      "settings_preview": "Fast mode • 1.2s pace • 2 retries",
+      "settings_mode": "Fast",
+      "expanded_settings": False,
+    },
+  )
+
+  draw_store_screenshot(
+    STORE_ASSETS_DIR / "localized-en-screenshot-02-saved-settings-1280x800.png",
+    "Save settings\nbefore each run",
+    "Choose Fast or Safe mode and keep pacing,\nretry, and stop settings saved in Chrome.",
     {
       "title": "Ready to start.",
       "subtitle": "This tab becomes the cleaner tab.",
